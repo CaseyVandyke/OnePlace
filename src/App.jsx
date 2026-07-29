@@ -165,7 +165,7 @@ const mapStops = [
 function WorldMap({ chapter = 0, explorer = explorers[0], compact = false, preview = false }) {
   const position = mapStops[Math.min(chapter, 5)];
   return (
-    <div className={`world-map ${compact ? "map-compact" : ""}`}>
+    <div className={`world-map ${compact ? "map-compact" : ""} ${preview ? "map-preview" : ""}`}>
       <div className="map-paper">
         <svg className="map-contours" viewBox="0 0 700 530" preserveAspectRatio="none" aria-hidden="true">
           <path className="map-shore" d="M65 390C20 315 56 215 133 179c55-26 66-116 169-122 91-6 118 69 188 77 115 13 166 80 140 169-21 72 5 128-83 164-100 41-157-4-237 12-103 21-199-14-245-89Z" />

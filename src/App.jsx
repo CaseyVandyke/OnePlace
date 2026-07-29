@@ -258,6 +258,68 @@ function Welcome({ onStart, onPreview }) {
   );
 }
 
+const journeyIntroSlides = [
+  {
+    eyebrow: "HOW THE JOURNEY WORKS · 1 OF 3",
+    icon: "check",
+    title: "One small step at a time.",
+    copy: "We’ll ask one clear question at a time. Add what you know, skip what you don’t, and come back whenever you’re ready.",
+    note: "There is no deadline and no perfect way to begin.",
+  },
+  {
+    eyebrow: "HOW THE JOURNEY WORKS · 2 OF 3",
+    icon: "spark",
+    title: "Your guide lights the way.",
+    copy: "Choose a character to travel across your family map. Every finished task earns Glow and brings another important place to life.",
+    note: "Discover new places, then light them by making progress.",
+  },
+  {
+    eyebrow: "HOW THE JOURNEY WORKS · 3 OF 3",
+    icon: "shield",
+    title: "You stay in control.",
+    copy: "You choose what to add, who can see it, and when they can access it. Adding a trusted person never gives them automatic access.",
+    note: "For this concept, use fictional information only.",
+  },
+];
+
+function JourneyIntro({ onContinue, onSkip }) {
+  const [slide, setSlide] = useState(0);
+  const item = journeyIntroSlides[slide];
+  const isLast = slide === journeyIntroSlides.length - 1;
+  useScrollToTop(slide);
+  return (
+    <main className="journey-intro-screen" role="dialog" aria-modal="true" aria-labelledby="journey-intro-title">
+      <section className="journey-intro-card">
+        <header><Logo /><button onClick={onSkip}>Skip introduction</button></header>
+        <div className="journey-intro-content" key={slide}>
+          <div className="journey-intro-art">
+            <span><Icon name={item.icon} size={38} /></span>
+            {slide === 1 && <Explorer explorer={explorers[0]} size={82} />}
+            <i /><i /><i />
+          </div>
+          <div>
+            <p className="question-eyebrow">{item.eyebrow}</p>
+            <h1 id="journey-intro-title">{item.title}</h1>
+            <p>{item.copy}</p>
+            <aside><Icon name={slide === 2 ? "lock" : "heart"} size={20} /> {item.note}</aside>
+          </div>
+        </div>
+        <footer>
+          <div className="intro-dots" aria-label={`Introduction screen ${slide + 1} of ${journeyIntroSlides.length}`}>
+            {journeyIntroSlides.map((_, index) => <i className={index === slide ? "active" : ""} key={index} />)}
+          </div>
+          <div>
+            <button className="back-button" disabled={slide === 0} onClick={() => setSlide((value) => value - 1)}><Icon name="back" size={18} /> Back</button>
+            <button className="continue-button" onClick={() => isLast ? onContinue() : setSlide((value) => value + 1)}>
+              {isLast ? "Choose my character" : "Next"} <Icon name="arrow" size={18} />
+            </button>
+          </div>
+        </footer>
+      </section>
+    </main>
+  );
+}
+
 function JourneyHeader({ current, points, onExit }) {
   const chapter = questions[current]?.chapter ?? 0;
   return (
@@ -514,8 +576,9 @@ export default function App() {
   const [points, setPoints] = useState(0);
   const [explorer, setExplorer] = useState(explorers[0]);
   useScrollToTop(screen);
-  if (screen === "welcome") return <Welcome onStart={() => setScreen("avatar")} onPreview={() => setScreen("app")} />;
-  if (screen === "avatar") return <AvatarPicker onBack={() => setScreen("welcome")} onChoose={(value) => { setExplorer(value); setScreen("journey"); }} />;
+  if (screen === "welcome") return <Welcome onStart={() => setScreen("intro")} onPreview={() => setScreen("app")} />;
+  if (screen === "intro") return <JourneyIntro onSkip={() => setScreen("avatar")} onContinue={() => setScreen("avatar")} />;
+  if (screen === "avatar") return <AvatarPicker onBack={() => setScreen("intro")} onChoose={(value) => { setExplorer(value); setScreen("journey"); }} />;
   if (screen === "journey") return <SetupJourney explorer={explorer} onExit={() => setScreen("welcome")} onComplete={(value) => { setPoints(value); setScreen("complete"); }} />;
   if (screen === "complete") return <Complete explorer={explorer} points={points} onEnter={() => setScreen("app")} />;
   return <MainApp explorer={explorer} onRestart={() => setScreen("welcome")} />;

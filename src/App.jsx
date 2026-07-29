@@ -1,456 +1,507 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
-const icons = {
-  home: "M3 10.8 12 3l9 7.8V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1V10.8Z",
-  vault: "M4 3h16a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm4 9h8m-4-4v8",
+const paths = {
+  arrow: "M5 12h14m-6-6 6 6-6 6",
+  back: "M19 12H5m6 6-6-6 6-6",
+  check: "m5 12 4 4L19 6",
+  lock: "M6 10V7a6 6 0 0 1 12 0v3m1 0H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2Z",
+  file: "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Zm0 0v6h6M8 13h8M8 17h6",
+  bank: "M3 10h18M5 10v8m4-8v8m6-8v8m4-8v8M3 21h18M12 3 3 7h18l-9-4Z",
+  heart: "M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z",
   people: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm13 10v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75",
   message: "M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v8Z",
   shield: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Zm-3-10 2 2 4-4",
-  settings: "M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7ZM19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-2.83 2.83-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21h-4v-.09A1.7 1.7 0 0 0 8.6 19.4a1.7 1.7 0 0 0-1.88.34l-.06.06-2.83-2.83.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H3v-4h.09A1.7 1.7 0 0 0 4.6 8.6a1.7 1.7 0 0 0-.34-1.88l-.06-.06 2.83-2.83.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V3h4v.09A1.7 1.7 0 0 0 15.4 4.6a1.7 1.7 0 0 0 1.88-.34l.06-.06 2.83 2.83-.06.06A1.7 1.7 0 0 0 19.4 9c.12.37.34.72.6 1 .3.3.68.5 1.1.6h.09v4h-.09a1.7 1.7 0 0 0-1.7.4Z",
-  file: "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Zm0 0v6h6M8 13h8M8 17h6",
-  heart: "M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z",
-  bank: "M3 10h18M5 10v8m4-8v8m6-8v8m4-8v8M3 21h18M12 3 3 7h18l-9-4Z",
-  key: "M21 2 13.6 9.4a5 5 0 1 0 1 3.6L17 11h2V9h2V7h2V2h-2ZM7.5 17.5h.01",
-  house: "M3 11 12 3l9 8M5 10v11h14V10M9 21v-7h6v7",
-  chevron: "m9 18 6-6-6-6",
-  plus: "M12 5v14M5 12h14",
-  bell: "M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4",
-  lock: "M6 10V7a6 6 0 0 1 12 0v3m1 0H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2Z",
+  upload: "M12 16V4m-5 5 5-5 5 5M4 15v5h16v-5",
+  spark: "m12 2 1.6 6.4L20 10l-6.4 1.6L12 18l-1.6-6.4L4 10l6.4-1.6L12 2Z",
   play: "m8 5 11 7-11 7V5Z",
-  check: "m5 12 4 4L19 6",
+  mic: "M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Zm-7 9a7 7 0 0 0 14 0M12 18v4m-4 0h8",
   clock: "M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Zm0-16v6l4 2",
-  arrow: "M5 12h14m-6-6 6 6-6 6",
-  search: "m21 21-4.35-4.35M19 11a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z",
+  key: "M21 2 13.6 9.4a5 5 0 1 0 1 3.6L17 11h2V9h2V7h2V2h-2ZM7.5 17.5h.01",
   menu: "M4 6h16M4 12h16M4 18h16",
-  x: "M18 6 6 18M6 6l12 12",
+  close: "M18 6 6 18M6 6l12 12",
+  home: "M3 11 12 3l9 8M5 10v11h14V10M9 21v-7h6v7",
+  gift: "M20 12v10H4V12M2 7h20v5H2V7Zm10 15V7m0 0H7.5A2.5 2.5 0 1 1 10 4.5L12 7Zm0 0h4.5A2.5 2.5 0 1 0 14 4.5L12 7Z",
+  eye: "M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Zm10 3a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z",
+  plus: "M12 5v14M5 12h14",
+  logout: "M10 17l5-5-5-5m5 5H3m10-9h7a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1h-7",
 };
 
 function Icon({ name, size = 20, strokeWidth = 1.8 }) {
   return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={strokeWidth}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d={icons[name]} />
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d={paths[name]} />
     </svg>
   );
 }
 
-const navItems = [
-  ["home", "Home"],
-  ["vault", "My OnePlace"],
-  ["people", "My People"],
-  ["message", "Messages"],
-  ["shield", "Access plan"],
-];
-
-const categories = [
-  { icon: "file", name: "Important documents", count: 8, tone: "rose", detail: "Will, IDs & certificates" },
-  { icon: "bank", name: "Money & accounts", count: 6, tone: "violet", detail: "Banking, retirement & debts" },
-  { icon: "heart", name: "Insurance & care", count: 4, tone: "blue", detail: "Policies & medical wishes" },
-  { icon: "house", name: "Home & property", count: 5, tone: "plum", detail: "Property, vehicles & utilities" },
-  { icon: "key", name: "Digital life", count: 11, tone: "indigo", detail: "Accounts, devices & access" },
-  { icon: "message", name: "Personal wishes", count: 3, tone: "coral", detail: "Messages, memories & plans" },
-];
-
-const people = [
-  { initials: "DM", name: "Daniel Morgan", role: "Spouse", color: "blue", access: "12 items" },
-  { initials: "EM", name: "Emma Morgan", role: "Daughter", color: "rose", access: "5 items" },
-  { initials: "JM", name: "Jack Morgan", role: "Son", color: "violet", access: "5 items" },
-];
-
-const recent = [
-  { icon: "file", name: "Last will & testament", meta: "Important documents · PDF", time: "Updated today" },
-  { icon: "bank", name: "Mountain West Credit Union", meta: "Money & accounts · Account", time: "Updated Monday" },
-  { icon: "heart", name: "Life insurance policy", meta: "Insurance & care · PDF", time: "Updated Jul 18" },
-];
-
-const vaultItems = [
-  ...recent,
-  { icon: "house", name: "Home deed and mortgage", meta: "Home & property · 3 files", time: "Updated Jul 12" },
-  { icon: "key", name: "Password vault recovery", meta: "Digital life · Secure note", time: "Updated Jul 8" },
-  { icon: "message", name: "My funeral wishes", meta: "Personal wishes · Note", time: "Updated Jun 30" },
-];
-
-function Logo() {
+function Logo({ light = false }) {
   return (
-    <div className="logo">
-      <span className="logo-mark"><span /></span>
+    <div className={`brand ${light ? "brand-light" : ""}`}>
+      <span className="brand-door"><i /></span>
       <span>oneplace</span>
     </div>
   );
 }
 
-function Sidebar({ page, setPage, mobileOpen, setMobileOpen }) {
+const explorers = [
+  { id: "ruby", name: "Ruby", description: "Warm & brave", skin: "#8f563f", hair: "#35251f", coat: "#df5e59" },
+  { id: "milo", name: "Milo", description: "Calm & steady", skin: "#d29a72", hair: "#5b3929", coat: "#4775a5" },
+  { id: "sage", name: "Sage", description: "Bright & curious", skin: "#6d4032", hair: "#1f1b24", coat: "#7758a5" },
+  { id: "sol", name: "Sol", description: "Kind & hopeful", skin: "#e0ad88", hair: "#b36942", coat: "#bd526e" },
+];
+
+function Explorer({ explorer = explorers[0], size = 54 }) {
   return (
-    <>
-      {mobileOpen && <button className="sidebar-scrim" aria-label="Close navigation" onClick={() => setMobileOpen(false)} />}
-      <aside className={`sidebar ${mobileOpen ? "is-open" : ""}`}>
-        <div className="sidebar-top">
-          <Logo />
-          <button className="mobile-close" onClick={() => setMobileOpen(false)} aria-label="Close menu"><Icon name="x" /></button>
-        </div>
-        <nav>
-          <p className="nav-label">Your space</p>
-          {navItems.map(([icon, label]) => (
-            <button
-              key={label}
-              className={page === label ? "active" : ""}
-              onClick={() => { setPage(label); setMobileOpen(false); }}
-            >
-              <Icon name={icon} />
-              <span>{label}</span>
-              {label === "My OnePlace" && <small>37</small>}
-            </button>
-          ))}
-        </nav>
-        <div className="sidebar-bottom">
-          <div className="privacy-note">
-            <span><Icon name="lock" size={16} /></span>
-            <div><strong>Private by design</strong><p>Your choices stay yours.</p></div>
-          </div>
-          <button className="settings-button"><Icon name="settings" /><span>Settings</span></button>
-          <div className="profile">
-            <div className="avatar avatar-main">MM</div>
-            <div><strong>Mara Morgan</strong><span>Personal plan</span></div>
-            <Icon name="chevron" size={16} />
-          </div>
-        </div>
-      </aside>
-    </>
+    <span className="explorer" style={{ "--size": `${size}px`, "--skin": explorer.skin, "--hair": explorer.hair, "--coat": explorer.coat }}>
+      <i className="explorer-hair" />
+      <i className="explorer-head"><b /><b /></i>
+      <i className="explorer-body" />
+      <i className="explorer-pack" />
+      <i className="explorer-leg leg-left" />
+      <i className="explorer-leg leg-right" />
+    </span>
   );
 }
 
-function Header({ setMobileOpen, onAdd }) {
+const chapters = [
+  { name: "Basecamp", icon: "home", color: "coral", short: "Start with what matters" },
+  { name: "Paper Port", icon: "file", color: "red", short: "The papers they’ll need" },
+  { name: "Money Meadow", icon: "bank", color: "purple", short: "Accounts without the hunt" },
+  { name: "Safety Harbor", icon: "shield", color: "blue", short: "Insurance and care" },
+  { name: "Kindred Grove", icon: "people", color: "iris", short: "The right access" },
+  { name: "Memory Lake", icon: "message", color: "pink", short: "More than paperwork" },
+];
+
+const questions = [
+  {
+    chapter: 0,
+    eyebrow: "Let’s make it yours",
+    title: "Who are you preparing this for?",
+    copy: "Choose everyone who comes to mind. This helps us shape the questions around your life.",
+    type: "multi",
+    options: ["My spouse or partner", "My children", "Extended family", "A close friend", "Someone else"],
+    reward: 10,
+  },
+  {
+    chapter: 0,
+    eyebrow: "A little about you",
+    title: "What should your family call this place?",
+    copy: "It can simply be your name, your family name, or something more personal.",
+    type: "name",
+    reward: 10,
+  },
+  {
+    chapter: 1,
+    eyebrow: "Paper Port · Important documents",
+    title: "Do you have a will?",
+    copy: "No judgment either way. Your answer helps us give you the right next step.",
+    type: "single",
+    options: ["Yes, I have one", "I’m working on it", "Not yet", "I’m not sure"],
+    reward: 15,
+  },
+  {
+    chapter: 1,
+    eyebrow: "Bring it into OnePlace",
+    title: "Want to add your will now?",
+    copy: "Upload a copy, take a photo, or tell us where the original is kept.",
+    type: "upload",
+    reward: 25,
+  },
+  {
+    chapter: 2,
+    eyebrow: "Money Meadow · Accounts",
+    title: "Where do you keep everyday accounts?",
+    copy: "We’ll make a simple inventory first. You decide whether to add account details or passwords later.",
+    type: "banks",
+    options: ["Chase", "Wells Fargo", "Mountain America", "Capital One", "Another institution"],
+    reward: 20,
+  },
+  {
+    chapter: 2,
+    eyebrow: "One helpful detail",
+    title: "How should your family identify this account?",
+    copy: "For this concept, use fictional information only.",
+    type: "account",
+    reward: 20,
+  },
+  {
+    chapter: 3,
+    eyebrow: "Safety Harbor · Protection",
+    title: "Which protections do you already have?",
+    copy: "Select anything that applies. We’ll create a short task for each one.",
+    type: "multi",
+    options: ["Life insurance", "Health insurance", "Long-term care", "Advance directive", "Power of attorney"],
+    reward: 20,
+  },
+  {
+    chapter: 4,
+    eyebrow: "Kindred Grove · Your people",
+    title: "Who should be your first trusted person?",
+    copy: "They won’t see anything until you explicitly choose what to share.",
+    type: "person",
+    reward: 25,
+  },
+  {
+    chapter: 5,
+    eyebrow: "Memory Lake · Your voice",
+    title: "Would you like to leave a hello?",
+    copy: "A short voice note can mean more than every document combined.",
+    type: "voice",
+    reward: 30,
+  },
+];
+
+const mapStops = [
+  { name: "Basecamp", icon: "home", x: 17, y: 79, className: "basecamp" },
+  { name: "Paper Port", icon: "file", x: 12, y: 43, className: "paper-port" },
+  { name: "Money Meadow", icon: "bank", x: 39, y: 24, className: "money-meadow" },
+  { name: "Safety Harbor", icon: "shield", x: 67, y: 74, className: "safety-harbor" },
+  { name: "Kindred Grove", icon: "people", x: 82, y: 43, className: "kindred-grove" },
+  { name: "Memory Lake", icon: "message", x: 56, y: 47, className: "memory-lake" },
+  { name: "Mount Vault", icon: "key", x: 78, y: 14, className: "mount-vault" },
+];
+
+function WorldMap({ chapter = 0, explorer = explorers[0], compact = false, preview = false }) {
+  const position = mapStops[Math.min(chapter, 5)];
   return (
-    <header className="topbar">
-      <button className="menu-button" onClick={() => setMobileOpen(true)} aria-label="Open menu"><Icon name="menu" /></button>
-      <div className="mobile-logo"><Logo /></div>
-      <div className="top-actions">
-        <span className="demo-pill">Concept demo</span>
-        <button className="icon-button" aria-label="Notifications"><Icon name="bell" size={19} /><i /></button>
-        <button className="primary small" onClick={onAdd}><Icon name="plus" size={17} /> Add something</button>
+    <div className={`world-map ${compact ? "map-compact" : ""}`}>
+      <div className="map-paper">
+        <svg className="map-contours" viewBox="0 0 700 530" preserveAspectRatio="none" aria-hidden="true">
+          <path className="map-shore" d="M65 390C20 315 56 215 133 179c55-26 66-116 169-122 91-6 118 69 188 77 115 13 166 80 140 169-21 72 5 128-83 164-100 41-157-4-237 12-103 21-199-14-245-89Z" />
+          <path d="M97 361c-22-76 33-124 88-151 63-31 70-99 143-106 69-6 105 69 173 70 67 1 111 47 89 111-25 74 13 118-70 143-75 23-137-8-204 9-80 20-192-15-219-76Z" />
+          <path d="M154 339c-9-56 40-86 79-106 48-25 71-78 126-73 48 4 74 42 119 43 58 1 78 40 58 84-26 57 0 86-57 104-58 19-96-4-147 9-64 16-165-7-178-61Z" />
+          <path className="trail-line" d="M119 406C93 326 78 267 95 228s108-47 151-97 158 70 145 129 82 134 78 90 79-117 105-131 9-77 8-112" />
+          <path className="river-line" d="M338 112c12 70 93 65 60 132s-15 98 46 143" />
+        </svg>
+        <div className="map-water water-one"><i /><i /><i /></div>
+        <div className="map-mountains"><i /><i /><i /><span>▲</span></div>
+        <div className="map-trees trees-a">{Array.from({ length: 6 }).map((_, i) => <i key={i} />)}</div>
+        <div className="map-trees trees-b">{Array.from({ length: 5 }).map((_, i) => <i key={i} />)}</div>
+        <div className="map-compass"><b>N</b><i /><span>✦</span></div>
+        {mapStops.map((stop, index) => (
+          <div className={`map-stop ${stop.className} ${index <= chapter || preview ? "unlocked" : "locked"}`} style={{ left: `${stop.x}%`, top: `${stop.y}%` }} key={stop.name}>
+            <span><Icon name={stop.icon} size={15} /></span>
+            <strong>{stop.name}</strong>
+            {stop.name === "Mount Vault" && <small>Codes & digital keys</small>}
+          </div>
+        ))}
+        {!preview && <div className="map-explorer" style={{ left: `${position.x}%`, top: `${position.y}%` }}><Explorer explorer={explorer} size={compact ? 42 : 54} /><span>You are here</span></div>}
+        {preview && <div className="map-preview-note"><Icon name="spark" size={13} /> Your family map begins here</div>}
       </div>
+    </div>
+  );
+}
+
+function AvatarPicker({ onChoose, onBack }) {
+  const [selected, setSelected] = useState(explorers[0]);
+  return (
+    <main className="avatar-screen">
+      <header><Logo /><button onClick={onBack}><Icon name="back" size={17} /> Back</button></header>
+      <section>
+        <div className="avatar-copy">
+          <p className="question-eyebrow">BEFORE WE SET OUT</p>
+          <h1>Choose your guide.</h1>
+          <p>This little explorer travels with you, celebrates each completed task, and opens new places on your family map.</p>
+          <div className="explorer-options">
+            {explorers.map((item) => <button className={selected.id === item.id ? "selected" : ""} onClick={() => setSelected(item)} key={item.id}><Explorer explorer={item} size={64} /><strong>{item.name}</strong><span>{item.description}</span><i>{selected.id === item.id && <Icon name="check" size={13} />}</i></button>)}
+          </div>
+          <button className="continue-button avatar-continue" onClick={() => onChoose(selected)}>Travel with {selected.name} <Icon name="arrow" /></button>
+        </div>
+        <div className="avatar-map"><WorldMap chapter={0} explorer={selected} compact /><div><Explorer explorer={selected} size={76} /><p><strong>{selected.name} is ready.</strong><span>First stop: Basecamp</span></p></div></div>
+      </section>
+    </main>
+  );
+}
+
+function Welcome({ onStart, onPreview }) {
+  return (
+    <main className="welcome-screen">
+      <header className="welcome-nav">
+        <Logo light />
+        <div><span><Icon name="lock" size={14} /> Private concept demo</span><button onClick={onPreview}>Preview the app</button></div>
+      </header>
+      <div className="welcome-glow glow-red" /><div className="welcome-glow glow-blue" />
+      <section className="welcome-layout">
+        <div className="welcome-copy">
+          <span className="hello-pill"><i /> A kinder way to get prepared</span>
+          <h1>Build the one place<br />they’ll know to look.</h1>
+          <p>We’ll ask the questions, organize the answers, and help you leave less searching—and more of you.</p>
+          <button className="journey-button" onClick={onStart}>Build my OnePlace <Icon name="arrow" /></button>
+          <div className="welcome-promises">
+            <span><Icon name="clock" /> Go at your pace</span>
+            <span><Icon name="shield" /> You choose who sees what</span>
+            <span><Icon name="heart" /> Pause anytime</span>
+          </div>
+        </div>
+        <WorldMap chapter={0} preview />
+      </section>
+      <footer className="welcome-footer">
+        <span>One question at a time.</span>
+        <div><i className="active" /><i /><i /><i /></div>
+        <span>No real information is stored.</span>
+      </footer>
+    </main>
+  );
+}
+
+function JourneyHeader({ current, points, onExit }) {
+  const chapter = questions[current]?.chapter ?? 0;
+  return (
+    <header className="journey-header">
+      <Logo />
+      <div className="chapter-track">
+        {chapters.map((item, index) => (
+          <div className={`${index < chapter ? "complete" : ""} ${index === chapter ? "current" : ""}`} key={item.name}>
+            <span>{index < chapter ? <Icon name="check" size={13} /> : index + 1}</span><small>{item.name}</small>
+          </div>
+        ))}
+      </div>
+      <div className="journey-points"><Icon name="spark" size={16} /><strong>{points}</strong><span>glow</span></div>
+      <button className="exit-button" onClick={onExit} aria-label="Exit setup"><Icon name="close" /></button>
     </header>
   );
 }
 
-function ProgressRing({ value = 68, size = 118 }) {
-  const radius = 49;
-  const circumference = 2 * Math.PI * radius;
-  return (
-    <div className="progress-ring" style={{ width: size, height: size }}>
-      <svg viewBox="0 0 112 112">
-        <circle className="ring-bg" cx="56" cy="56" r={radius} />
-        <circle
-          className="ring-value"
-          cx="56"
-          cy="56"
-          r={radius}
-          strokeDasharray={circumference}
-          strokeDashoffset={circumference * (1 - value / 100)}
-        />
-      </svg>
-      <div><strong>{value}%</strong><span>ready</span></div>
-    </div>
-  );
+function QuestionBody({ question, answer, setAnswer, uploaded, setUploaded }) {
+  const fileRef = useRef(null);
+  if (question.type === "multi") {
+    const selected = Array.isArray(answer) ? answer : [];
+    return <div className="answer-list multi-answer">{question.options.map((option) =>
+      <button className={selected.includes(option) ? "selected" : ""} onClick={() => setAnswer(selected.includes(option) ? selected.filter((x) => x !== option) : [...selected, option])} key={option}>
+        <span>{selected.includes(option) && <Icon name="check" size={15} />}</span>{option}
+      </button>)}</div>;
+  }
+  if (question.type === "single") {
+    return <div className="answer-list">{question.options.map((option) =>
+      <button className={answer === option ? "selected" : ""} onClick={() => setAnswer(option)} key={option}><span>{answer === option && <Icon name="check" size={15} />}</span>{option}</button>)}</div>;
+  }
+  if (question.type === "name") {
+    return <div className="name-answer"><label>Your place’s name<input autoFocus value={answer || ""} onChange={(e) => setAnswer(e.target.value)} placeholder="The Morgan family’s OnePlace" /></label><div className="name-preview"><span className="brand-door mini"><i /></span><p>Welcome to</p><strong>{answer || "your OnePlace"}</strong></div></div>;
+  }
+  if (question.type === "upload") {
+    return <div className="upload-answer">
+      <input ref={fileRef} type="file" accept=".pdf,image/*" onChange={(e) => { if (e.target.files[0]) { setUploaded(e.target.files[0].name); setAnswer("uploaded"); } }} />
+      <button className={uploaded ? "upload-zone has-file" : "upload-zone"} onClick={() => fileRef.current?.click()}>
+        <span><Icon name={uploaded ? "check" : "upload"} /></span>
+        <strong>{uploaded || "Choose a file or take a photo"}</strong>
+        <small>{uploaded ? "Ready to keep safely at Paper Port" : "PDF, JPG or PNG · Concept only"}</small>
+      </button>
+      <button className="location-choice" onClick={() => setAnswer("location")}><Icon name="home" /><span><strong>Tell us where the original is</strong><small>Example: fireproof box in the home office</small></span><i className={answer === "location" ? "chosen" : ""} /></button>
+    </div>;
+  }
+  if (question.type === "banks") {
+    const selected = Array.isArray(answer) ? answer : [];
+    return <div className="bank-answer">{question.options.map((option, index) =>
+      <button className={selected.includes(option) ? "selected" : ""} onClick={() => setAnswer(selected.includes(option) ? selected.filter((x) => x !== option) : [...selected, option])} key={option}>
+        <span className={`bank-logo logo-${index}`}>{option === "Another institution" ? <Icon name="plus" /> : option.split(" ").map((x) => x[0]).join("").slice(0, 2)}</span>
+        <strong>{option}</strong><i>{selected.includes(option) && <Icon name="check" size={14} />}</i>
+      </button>)}</div>;
+  }
+  if (question.type === "account") {
+    const value = answer || {};
+    return <div className="account-answer">
+      <label>Nickname<input value={value.nickname || ""} onChange={(e) => setAnswer({ ...value, nickname: e.target.value })} placeholder="Everyday checking" /></label>
+      <div><label>Institution<input value={value.bank || ""} onChange={(e) => setAnswer({ ...value, bank: e.target.value })} placeholder="Mountain America" /></label>
+      <label>Last 4 digits<input inputMode="numeric" maxLength="4" value={value.last4 || ""} onChange={(e) => setAnswer({ ...value, last4: e.target.value.replace(/\D/g, "") })} placeholder="••••" /></label></div>
+      <p><Icon name="lock" size={15} /> In the real product, sensitive details would be encrypted before leaving your device.</p>
+    </div>;
+  }
+  if (question.type === "person") {
+    const value = answer || {};
+    return <div className="person-answer">
+      <div className="person-avatar">{value.name ? value.name.split(" ").map((x) => x[0]).join("").slice(0, 2) : <Icon name="people" />}</div>
+      <label>Full name<input value={value.name || ""} onChange={(e) => setAnswer({ ...value, name: e.target.value })} placeholder="Daniel Morgan" /></label>
+      <label>Relationship<select value={value.relationship || ""} onChange={(e) => setAnswer({ ...value, relationship: e.target.value })}><option value="">Choose one</option><option>Spouse or partner</option><option>Child</option><option>Relative</option><option>Friend</option><option>Professional</option></select></label>
+      <div className="access-note"><Icon name="eye" /><span><strong>No access yet</strong><small>You’ll choose specific items and timing later.</small></span></div>
+    </div>;
+  }
+  if (question.type === "voice") {
+    return <div className="voice-answer">
+      <div className={`voice-orb ${answer ? "recorded" : ""}`}><button onClick={() => setAnswer(answer ? "" : "recorded")}><Icon name={answer ? "check" : "mic"} size={27} /></button><i /><i /></div>
+      <strong>{answer ? "A little hello is ready" : "Tap to record a demo message"}</strong>
+      <p>{answer ? "0:14 · For my family" : "Nothing has to be perfect. Just sound like you."}</p>
+      {answer && <div className="voice-wave">{Array.from({ length: 24 }).map((_, i) => <i key={i} style={{ height: `${6 + ((i * 7) % 19)}px` }} />)}</div>}
+    </div>;
+  }
+  return null;
 }
 
-function HomePage({ setPage, openJourney, openAdd }) {
+function SetupJourney({ onComplete, onExit, explorer }) {
+  const [current, setCurrent] = useState(0);
+  const [answers, setAnswers] = useState({});
+  const [points, setPoints] = useState(0);
+  const [uploaded, setUploaded] = useState("");
+  const [reward, setReward] = useState(null);
+  const question = questions[current];
+  const answer = answers[current];
+  const completedChapters = new Set(questions.slice(0, current).map((q) => q.chapter)).size;
+  const canContinue = useMemo(() => {
+    if (!answer) return false;
+    if (Array.isArray(answer)) return answer.length > 0;
+    if (typeof answer === "object") return Object.values(answer).some(Boolean);
+    return String(answer).trim().length > 0;
+  }, [answer]);
+
+  const continueJourney = () => {
+    if (!canContinue) return;
+    const earned = question.reward;
+    setPoints((value) => value + earned);
+    setReward(earned);
+    window.setTimeout(() => {
+      setReward(null);
+      if (current === questions.length - 1) onComplete(points + earned);
+      else setCurrent((value) => value + 1);
+    }, 780);
+  };
+
   return (
-    <div className="page home-page">
-      <section className="welcome">
-        <div>
-          <p className="eyebrow">Wednesday, July 29</p>
-          <h1>Good morning, Mara.</h1>
-          <p>You’re making life a little easier for the people you love.</p>
-        </div>
-        <button className="text-button"><Icon name="shield" size={18} /> Your information is protected</button>
-      </section>
-
-      <section className="readiness-card">
-        <div className="readiness-copy">
-          <span className="soft-badge"><i /> Your readiness</span>
-          <h2>You’ve already made meaningful progress.</h2>
-          <p>Three more small steps will bring your essential plan to 80%.</p>
-          <button className="primary" onClick={openJourney}>Continue my plan <Icon name="arrow" size={18} /></button>
-        </div>
-        <div className="readiness-visual">
-          <div className="orb orb-one" />
-          <div className="orb orb-two" />
-          <div className="orb orb-three" />
-          <div className="glow-path"><i /><i /><i /><i /><i /></div>
-          <ProgressRing />
-          <p><Icon name="check" size={15} /> 23 of 34 essentials added</p>
-        </div>
-      </section>
-
-      <div className="section-heading">
-        <div><p className="eyebrow">Everything, organized</p><h2>Your OnePlace</h2></div>
-        <button className="link-button" onClick={() => setPage("My OnePlace")}>View everything <Icon name="arrow" size={17} /></button>
-      </div>
-      <section className="category-grid">
-        {categories.map((category) => (
-          <button className="category-card" key={category.name} onClick={() => setPage("My OnePlace")}>
-            <span className={`category-icon ${category.tone}`}><Icon name={category.icon} /></span>
-            <span className="category-count">{category.count}</span>
-            <strong>{category.name}</strong>
-            <small>{category.detail}</small>
-            <span className="card-arrow"><Icon name="arrow" size={17} /></span>
-          </button>
-        ))}
-      </section>
-
-      <section className="two-column">
-        <div className="panel">
-          <div className="panel-head">
-            <div><p className="eyebrow">Your circle</p><h3>People you trust</h3></div>
-            <button className="link-button" onClick={() => setPage("My People")}>Manage</button>
-          </div>
-          <div className="people-stack">
-            {people.map((person) => (
-              <div className="person-row" key={person.name}>
-                <span className={`avatar ${person.color}`}>{person.initials}</span>
-                <div><strong>{person.name}</strong><span>{person.role}</span></div>
-                <small>{person.access}</small>
-                <Icon name="chevron" size={17} />
-              </div>
-            ))}
-          </div>
-          <button className="quiet-button full" onClick={() => setPage("My People")}><Icon name="plus" size={16} /> Add someone you trust</button>
-        </div>
-
-        <div className="panel message-panel">
-          <div className="panel-head">
-            <div><p className="eyebrow">In your own words</p><h3>Leave something personal</h3></div>
-            <span className="category-icon coral"><Icon name="message" /></span>
-          </div>
-          <p>Record a thought, tell a story, or simply say what matters most.</p>
-          <div className="recording">
-            <button aria-label="Play message"><Icon name="play" size={18} /></button>
-            <div><strong>For my family</strong><span><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /></span></div>
-            <small>1:42</small>
-          </div>
-          <button className="quiet-button full" onClick={() => setPage("Messages")}><Icon name="plus" size={16} /> Create a message</button>
-        </div>
-      </section>
-
-      <section className="recent-section">
-        <div className="section-heading compact">
-          <div><p className="eyebrow">Recently cared for</p><h2>Latest updates</h2></div>
-        </div>
-        <div className="recent-list">
-          {recent.map((item) => <ItemRow item={item} key={item.name} />)}
-          <button className="add-row" onClick={openAdd}><span><Icon name="plus" /></span><div><strong>Add something important</strong><small>It only takes a minute or two</small></div><Icon name="arrow" size={18} /></button>
-        </div>
-      </section>
-    </div>
-  );
-}
-
-function ItemRow({ item }) {
-  return (
-    <button className="item-row">
-      <span className="item-icon"><Icon name={item.icon} /></span>
-      <div><strong>{item.name}</strong><small>{item.meta}</small></div>
-      <time>{item.time}</time>
-      <Icon name="chevron" size={18} />
-    </button>
-  );
-}
-
-function VaultPage({ openAdd }) {
-  const [filter, setFilter] = useState("All");
-  const [search, setSearch] = useState("");
-  const filtered = useMemo(() => vaultItems.filter((item) => item.name.toLowerCase().includes(search.toLowerCase())), [search]);
-  return (
-    <div className="page inner-page">
-      <div className="inner-hero">
-        <div><p className="eyebrow">Your private space</p><h1>My OnePlace</h1><p>Everything important, thoughtfully organized and easy to find.</p></div>
-        <button className="primary" onClick={openAdd}><Icon name="plus" size={17} /> Add something</button>
-      </div>
-      <div className="overview-strip">
-        <div><strong>37</strong><span>items protected</span></div>
-        <div><strong>6</strong><span>categories</span></div>
-        <div><strong>3</strong><span>trusted people</span></div>
-        <div className="overview-safe"><Icon name="shield" /><strong>All secure</strong><span>Last reviewed today</span></div>
-      </div>
-      <div className="vault-tools">
-        <label><Icon name="search" size={18} /><input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search your OnePlace" /></label>
-        <div>{["All", "Documents", "Accounts", "Wishes"].map((name) => <button key={name} className={filter === name ? "active" : ""} onClick={() => setFilter(name)}>{name}</button>)}</div>
-      </div>
-      <div className="vault-layout">
-        <div className="vault-list panel">
-          <div className="panel-head"><div><p className="eyebrow">Your essentials</p><h3>{filtered.length} items</h3></div><span className="view-note">Updated recently</span></div>
-          {filtered.map((item) => <ItemRow item={item} key={item.name} />)}
-          {!filtered.length && <div className="empty-state"><Icon name="search" /><strong>Nothing found</strong><p>Try a different search.</p></div>}
-        </div>
-        <aside className="vault-aside">
-          <div className="panel gentle-card">
-            <span className="category-icon violet"><Icon name="heart" /></span>
-            <p className="eyebrow">A gentle suggestion</p>
-            <h3>Add your healthcare wishes</h3>
-            <p>Help your family understand what matters to you if they ever need to make decisions.</p>
-            <button className="quiet-button full" onClick={openAdd}>Add my wishes</button>
-          </div>
-          <div className="panel mini-progress">
-            <div><strong>68%</strong><span>readiness</span></div>
-            <p><span style={{ width: "68%" }} /></p>
-            <small>You’re making wonderful progress.</small>
-          </div>
+    <main className="journey-screen">
+      <JourneyHeader current={current} points={points} onExit={onExit} />
+      <section className="journey-layout">
+        <aside className="journey-place">
+          <div className="journey-place-copy"><span>YOUR PLACE</span><strong>{Math.round((current / questions.length) * 100)}% lit</strong></div>
+          <WorldMap chapter={question.chapter} explorer={explorer} compact />
+          <div className="next-unlock"><span><Icon name={chapters[question.chapter].icon} size={17} /></span><div><small>NOW BUILDING</small><strong>{chapters[question.chapter].name}</strong></div></div>
         </aside>
-      </div>
+        <article className="question-stage" key={current}>
+          <div className="question-counter"><span>Question {current + 1} of {questions.length}</span><i><b style={{ width: `${((current + 1) / questions.length) * 100}%` }} /></i><small>About 4 min left</small></div>
+          <p className="question-eyebrow">{question.eyebrow}</p>
+          <h1>{question.title}</h1>
+          <p className="question-copy">{question.copy}</p>
+          <QuestionBody question={question} answer={answer} setAnswer={(value) => setAnswers({ ...answers, [current]: value })} uploaded={uploaded} setUploaded={setUploaded} />
+          <div className="question-actions">
+            <button className="back-button" disabled={current === 0} onClick={() => setCurrent((value) => Math.max(0, value - 1))}><Icon name="back" size={18} /> Back</button>
+            <button className="continue-button" disabled={!canContinue} onClick={continueJourney}>Save & continue <Icon name="arrow" size={18} /></button>
+          </div>
+          <button className="skip-question" onClick={() => current === questions.length - 1 ? onComplete(points) : setCurrent((value) => value + 1)}>I’ll come back to this</button>
+        </article>
+      </section>
+      {reward && <div className="reward-pop"><span><Icon name="spark" size={24} /></span><strong>+{reward} glow</strong><small>Your OnePlace just got brighter</small></div>}
+    </main>
+  );
+}
+
+function Complete({ points, onEnter, explorer }) {
+  return (
+    <main className="complete-screen">
+      <div className="confetti">{Array.from({ length: 18 }).map((_, i) => <i key={i} />)}</div>
+      <Logo light />
+      <section>
+        <div className="complete-art"><WorldMap chapter={5} explorer={explorer} compact /></div>
+        <div className="complete-copy">
+          <span className="hello-pill"><Icon name="spark" size={15} /> First path complete</span>
+          <h1>Look what you’ve<br />already made.</h1>
+          <p>Your family now has a starting point. Keep going whenever you’re ready—OnePlace remembers the path.</p>
+          <div className="complete-stats"><div><strong>{points}</strong><span>glow earned</span></div><div><strong>6</strong><span>places discovered</span></div><div><strong>1</strong><span>person protected</span></div></div>
+          <button className="journey-button" onClick={onEnter}>Enter my OnePlace <Icon name="arrow" /></button>
+        </div>
+      </section>
+    </main>
+  );
+}
+
+function AppHeader({ active, setActive, onJourney, explorer }) {
+  const [menu, setMenu] = useState(false);
+  const items = ["My path", "My things", "My people", "Messages"];
+  return (
+    <header className="app-header">
+      <Logo />
+      <nav className={menu ? "open" : ""}>{items.map((item) => <button className={active === item ? "active" : ""} onClick={() => { setActive(item); setMenu(false); }} key={item}>{item}</button>)}</nav>
+      <div className="app-header-actions"><span><Icon name="spark" size={15} /> 95 glow</span><button onClick={onJourney}>Continue my path</button><div className="app-avatar"><Explorer explorer={explorer} size={32} /></div><button className="mobile-menu" onClick={() => setMenu(!menu)}><Icon name={menu ? "close" : "menu"} /></button></div>
+    </header>
+  );
+}
+
+const pathStops = [
+  { chapter: "The essentials", title: "Make your legal papers easy to find", copy: "Will, identification, powers of attorney", icon: "file", state: "complete", count: "3 of 3" },
+  { chapter: "Money map", title: "Leave a clear trail—not a treasure hunt", copy: "Banking, investments, debts and bills", icon: "bank", state: "current", count: "2 of 6" },
+  { chapter: "Protection", title: "Connect the policies that protect your family", copy: "Insurance, medical and care wishes", icon: "shield", state: "", count: "1 of 5" },
+  { chapter: "Digital keys", title: "Show them how to reach your digital life", copy: "Devices, accounts and recovery access", icon: "key", state: "", count: "0 of 4" },
+  { chapter: "Only you", title: "Leave the stories no document can tell", copy: "Voice notes, letters and personal wishes", icon: "heart", state: "", count: "1 of 5" },
+];
+
+function PathHome({ onContinue, explorer }) {
+  return (
+    <div className="path-page">
+      <section className="path-intro">
+        <div><span className="hello-pill"><i /> Wednesday’s small win</span><h1>Your place is<br /><em>42% glowing.</em></h1><p>One thoughtful answer today will make the path clearer for your family tomorrow.</p><button className="continue-button" onClick={onContinue}>Take today’s 3-minute step <Icon name="arrow" /></button></div>
+        <WorldMap chapter={2} explorer={explorer} compact />
+      </section>
+      <section className="today-quest">
+        <div className="quest-number"><span>+20</span><small>GLOW</small></div>
+        <div><p>TODAY’S STEP · MONEY MAP</p><h2>Add where your retirement account is held.</h2><span>We only need the institution to start. Details can come later.</span></div>
+        <button onClick={onContinue}>Let’s do it <Icon name="arrow" /></button>
+      </section>
+      <section className="path-section">
+        <div className="path-heading"><div><p>YOUR JOURNEY</p><h2>A little clearer with every stop.</h2></div><span>7 of 23 essentials cared for</span></div>
+        <div className="winding-path">
+          <svg viewBox="0 0 900 720" preserveAspectRatio="none" aria-hidden="true"><path d="M160 0 C160 100 730 70 730 190 S170 285 170 390 S730 480 730 570 S380 690 160 720" /></svg>
+          {pathStops.map((stop, index) => <article className={`path-stop stop-${index} ${stop.state}`} key={stop.chapter}>
+            <span className="stop-icon">{stop.state === "complete" ? <Icon name="check" /> : <Icon name={stop.icon} />}</span>
+            <div><p>{stop.chapter}</p><h3>{stop.title}</h3><span>{stop.copy}</span></div>
+            <small>{stop.count}</small>
+            {stop.state === "current" && <button onClick={onContinue}>Continue <Icon name="arrow" size={15} /></button>}
+          </article>)}
+        </div>
+      </section>
+      <section className="achievement-strip">
+        <div><Icon name="gift" size={27} /><span><small>NEW KEEPSAKE</small><strong>The Trail Starter</strong></span></div>
+        <p>You mapped your first account and gave your family a clear place to begin.</p>
+        <div className="badge-stack"><i /><i /><i /><span>+2</span></div>
+      </section>
     </div>
   );
+}
+
+function ThingsPage({ onContinue }) {
+  const rooms = [
+    ["file", "Paper Port", "3 items", "Your important papers are in good order", "red"],
+    ["bank", "Money Meadow", "2 items", "Four steps will make the trail clear", "purple"],
+    ["shield", "Safety Harbor", "1 item", "Add your life insurance next", "blue"],
+    ["key", "Mount Vault", "Not started", "Vault codes, devices and digital access", "iris"],
+    ["heart", "Memory Lake", "1 message", "Stories and wishes in your own words", "pink"],
+  ];
+  return <div className="collection-page"><header><p>MY THINGS</p><h1>Every part of your life,<br />given a proper place.</h1><span>Seven items are safely organized in this concept.</span></header><div className="room-shelf">{rooms.map(([icon, name, count, copy, color], i) => <button className={`room-block room-${color}`} key={name}><span className="room-number">0{i + 1}</span><span className="room-icon"><Icon name={icon} /></span><small>{count}</small><strong>{name}</strong><p>{copy}</p><i><Icon name="arrow" /></i></button>)}</div><button className="floating-add" onClick={onContinue}><Icon name="plus" /> Add something</button></div>;
 }
 
 function PeoplePage() {
-  return (
-    <div className="page inner-page">
-      <div className="inner-hero">
-        <div><p className="eyebrow">Your trusted circle</p><h1>My People</h1><p>You decide who can see what—and when they can see it.</p></div>
-        <button className="primary"><Icon name="plus" size={17} /> Invite someone</button>
-      </div>
-      <section className="people-grid">
-        {people.map((person, index) => (
-          <article className="person-card panel" key={person.name}>
-            <div className="person-card-top">
-              <span className={`avatar large ${person.color}`}>{person.initials}</span>
-              <span className={index === 0 ? "status live" : "status"}>{index === 0 ? "Access now" : "When needed"}</span>
-            </div>
-            <h3>{person.name}</h3><p>{person.role}</p>
-            <div className="access-summary"><Icon name="lock" size={17} /><span><strong>{person.access}</strong> shared privately</span></div>
-            <button className="quiet-button full">Review their access <Icon name="arrow" size={16} /></button>
-          </article>
-        ))}
-        <button className="invite-card">
-          <span><Icon name="plus" /></span><strong>Add someone you trust</strong><p>You can change their access anytime.</p>
-        </button>
-      </section>
-      <section className="panel access-explainer">
-        <div className="access-illustration"><span><Icon name="shield" size={30} /></span><i /><i /><i /></div>
-        <div><p className="eyebrow">You stay in control</p><h2>Private until you say otherwise.</h2><p>Share selected information today, prepare emergency access, or arrange for information to become available only after a carefully verified life event.</p></div>
-        <button className="quiet-button">See how access works</button>
-      </section>
-    </div>
-  );
+  return <div className="people-page"><header><p>MY PEOPLE</p><h1>A circle built on trust.</h1><span>Each person sees only what you choose, when you choose.</span></header><section className="people-orbit"><div className="orbit-center"><span className="brand-door"><i /></span><strong>Your<br />OnePlace</strong></div><i className="orbit-line line-a" /><i className="orbit-line line-b" /><div className="orbit-person person-one"><span>DM</span><strong>Daniel</strong><small>12 items · access now</small></div><div className="orbit-person person-two"><span>EM</span><strong>Emma</strong><small>5 items · when needed</small></div><div className="orbit-person person-three"><span>JM</span><strong>Jack</strong><small>5 items · when needed</small></div><button className="orbit-add"><Icon name="plus" /> Invite someone</button></section><div className="trust-note"><Icon name="shield" /><div><strong>You are always in control.</strong><p>Adding someone never gives them automatic access. Every item has its own sharing choice.</p></div><button>Review access</button></div></div>;
 }
 
 function MessagesPage() {
+  return <div className="messages-page"><header><p>MESSAGES</p><h1>Leave more than instructions.</h1><span>Your voice, your stories, your way of saying what matters.</span></header><section className="message-stage"><div className="record-disc"><button><Icon name="play" size={30} /></button><i /><i /></div><div><small>FOR MY FAMILY · 0:14</small><h2>“There are a few things I hope you’ll always remember...”</h2><div className="big-wave">{Array.from({ length: 38 }).map((_, i) => <i key={i} style={{ height: `${7 + ((i * 11) % 29)}px` }} />)}</div><button><Icon name="mic" /> Record another message</button></div></section><section className="message-prompts"><p>NOT SURE WHAT TO SAY?</p><div>{["Tell the story behind something you treasure.", "Share a family tradition you hope continues.", "Say what you’re most proud of.", "Leave advice for a future milestone."].map((prompt, i) => <button key={prompt}><span>0{i + 1}</span><strong>{prompt}</strong><Icon name="arrow" /></button>)}</div></section></div>;
+}
+
+function MainApp({ onRestart, explorer }) {
+  const [active, setActive] = useState("My path");
+  const [resume, setResume] = useState(false);
+  useEffect(() => { window.scrollTo(0, 0); }, [active]);
   return (
-    <div className="page inner-page">
-      <div className="inner-hero">
-        <div><p className="eyebrow">In your own words</p><h1>Messages</h1><p>Stories, guidance, and love—saved for the people who matter most.</p></div>
-        <button className="primary"><Icon name="plus" size={17} /> Create a message</button>
-      </div>
-      <div className="message-feature">
-        <div className="message-feature-art"><span><Icon name="message" size={32} /></span><i className="wave-a" /><i className="wave-b" /></div>
-        <div><span className="soft-badge">A message for everyone</span><h2>For my family</h2><p>“There are a few things I hope you’ll always remember...”</p>
-          <div className="audio-player"><button><Icon name="play" /></button><div><span><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /><i /></span><small>0:00</small><small>1:42</small></div></div>
-        </div>
-      </div>
-      <div className="section-heading"><div><p className="eyebrow">Saved with care</p><h2>Your messages</h2></div><button className="link-button">View all</button></div>
-      <section className="message-grid">
-        {[
-          ["EM", "For Emma", "A note for your wedding day", "Written note", "rose"],
-          ["JM", "For Jack", "The story behind Grandpa’s watch", "Audio · 3:08", "violet"],
-          ["DM", "For Daniel", "Things I never want you to forget", "Written note", "blue"],
-        ].map(([initials, title, copy, type, color]) => (
-          <article className="message-card panel" key={title}><span className={`avatar ${color}`}>{initials}</span><small>{type}</small><h3>{title}</h3><p>{copy}</p><button className="link-button">Open message <Icon name="arrow" size={15} /></button></article>
-        ))}
-      </section>
-    </div>
+    <main className="main-app">
+      <AppHeader active={active} setActive={setActive} onJourney={() => setResume(true)} explorer={explorer} />
+      {active === "My path" && <PathHome onContinue={() => setResume(true)} explorer={explorer} />}
+      {active === "My things" && <ThingsPage onContinue={() => setResume(true)} />}
+      {active === "My people" && <PeoplePage />}
+      {active === "Messages" && <MessagesPage />}
+      <footer className="app-footer"><Logo /><p>Everything that matters, ready for the people who matter.</p><button onClick={onRestart}><Icon name="logout" size={15} /> Replay first-time experience</button></footer>
+      {resume && <MiniQuest onClose={() => setResume(false)} />}
+    </main>
   );
 }
 
-function AccessPage() {
-  return (
-    <div className="page inner-page">
-      <div className="inner-hero">
-        <div><p className="eyebrow">Prepared, your way</p><h1>Access plan</h1><p>Choose how the right information reaches the right people.</p></div>
-        <button className="primary">Review my plan</button>
-      </div>
-      <section className="access-timeline panel">
-        <div className="timeline-intro"><span className="category-icon blue"><Icon name="shield" /></span><h2>Your plan at a glance</h2><p>You can adjust these choices at any time.</p></div>
-        {[
-          ["check", "Shared access", "Daniel can access 12 selected items now.", "Complete"],
-          ["clock", "Emergency access", "A 72-hour waiting period gives you time to decline.", "Set up"],
-          ["shield", "Legacy access", "Requires two verifiers and supporting documentation.", "Review"],
-        ].map(([icon, title, copy, action], i) => (
-          <div className="timeline-step" key={title}><span className={`step-dot step-${i}`}><Icon name={icon} size={17} /></span><div><strong>{title}</strong><p>{copy}</p></div><button>{action}</button></div>
-        ))}
-      </section>
-      <section className="two-column access-bottom">
-        <div className="panel checklist-card"><p className="eyebrow">Your safeguards</p><h3>A plan built around certainty</h3>{["Owner notifications on every request", "Waiting period before emergency release", "Two trusted verifiers required", "A complete access history"].map((x) => <p className="checkline" key={x}><span><Icon name="check" size={14} /></span>{x}</p>)}</div>
-        <div className="panel calm-card"><Icon name="heart" /><p className="eyebrow">Peace of mind</p><h3>Nothing happens silently.</h3><p>OnePlace checks, waits, and verifies before protected information is ever released.</p><button className="link-button">Learn about verification <Icon name="arrow" size={16} /></button></div>
-      </section>
-    </div>
-  );
-}
-
-function JourneyModal({ onClose }) {
-  const [step, setStep] = useState(0);
-  const steps = [
-    { icon: "heart", kicker: "A small step today", title: "Who should speak for your healthcare wishes?", copy: "Choose someone you trust to understand your values and make decisions if you cannot.", options: ["Daniel Morgan", "Someone else", "I’m not sure yet"] },
-    { icon: "file", kicker: "One more detail", title: "Do you have an advance healthcare directive?", copy: "You can upload it now, note where it’s kept, or come back to this later.", options: ["Yes, I’ll add it", "Not yet", "I’m not sure"] },
-    { icon: "check", kicker: "Beautifully done", title: "Your care plan is taking shape.", copy: "We saved your choices. You can review or change them whenever life changes.", options: [] },
-  ];
-  const current = steps[step];
-  return (
-    <div className="modal-backdrop" role="presentation" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
-      <div className="journey-modal" role="dialog" aria-modal="true" aria-label="Continue your plan">
-        <button className="modal-close" onClick={onClose} aria-label="Close"><Icon name="x" /></button>
-        <div className="modal-progress">{steps.map((_, i) => <span key={i} className={i <= step ? "filled" : ""} />)}</div>
-        <span className="modal-icon"><Icon name={current.icon} size={28} /></span>
-        <p className="eyebrow">{current.kicker}</p><h2>{current.title}</h2><p>{current.copy}</p>
-        {current.options.length > 0 ? <div className="choice-list">{current.options.map((option, i) => <button key={option} onClick={() => setStep(step + 1)}><span>{i === 0 ? "DM" : <Icon name={i === 1 ? "plus" : "clock"} size={16} />}</span>{option}<Icon name="arrow" size={16} /></button>)}</div> : <button className="primary modal-done" onClick={onClose}>Back to my home <Icon name="arrow" size={17} /></button>}
-        {step < 2 && <button className="skip" onClick={() => setStep(step + 1)}>I’ll do this later</button>}
-      </div>
-    </div>
-  );
-}
-
-function AddModal({ onClose }) {
-  return (
-    <div className="modal-backdrop" role="presentation" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
-      <div className="add-modal" role="dialog" aria-modal="true" aria-label="Add something">
-        <button className="modal-close" onClick={onClose} aria-label="Close"><Icon name="x" /></button>
-        <p className="eyebrow">Add to your OnePlace</p><h2>What would you like to care for?</h2><p>Choose a starting point. We’ll guide you through the rest.</p>
-        <div className="add-grid">{categories.map((category) => <button key={category.name} onClick={onClose}><span className={`category-icon ${category.tone}`}><Icon name={category.icon} /></span><strong>{category.name}</strong><Icon name="arrow" size={16} /></button>)}</div>
-      </div>
-    </div>
-  );
+function MiniQuest({ onClose }) {
+  const [done, setDone] = useState(false);
+  return <div className="quest-overlay" onMouseDown={(e) => e.target === e.currentTarget && onClose()}><div className="mini-quest"><button className="quest-close" onClick={onClose}><Icon name="close" /></button>{done ? <div className="mini-done"><span><Icon name="spark" size={27} /></span><p>+20 GLOW</p><h2>Another light is on.</h2><p>Your family will know exactly where to begin.</p><button className="continue-button" onClick={onClose}>Back to my path <Icon name="arrow" /></button></div> : <><p className="question-eyebrow">TODAY’S 3-MINUTE STEP</p><h2>Where is your retirement account held?</h2><p>You can add more detail later. The institution is enough for today.</p><div className="quick-options">{["Fidelity", "Vanguard", "Charles Schwab", "Another institution"].map((x) => <button onClick={() => setDone(true)} key={x}><span>{x.slice(0, 2).toUpperCase()}</span><strong>{x}</strong><Icon name="arrow" /></button>)}</div><button className="skip-question" onClick={onClose}>Not today</button></>}</div></div>;
 }
 
 export default function App() {
-  const [page, setPage] = useState("Home");
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [journeyOpen, setJourneyOpen] = useState(false);
-  const [addOpen, setAddOpen] = useState(false);
-  const pages = {
-    Home: <HomePage setPage={setPage} openJourney={() => setJourneyOpen(true)} openAdd={() => setAddOpen(true)} />,
-    "My OnePlace": <VaultPage openAdd={() => setAddOpen(true)} />,
-    "My People": <PeoplePage />,
-    Messages: <MessagesPage />,
-    "Access plan": <AccessPage />,
-  };
-  return (
-    <div className="app-shell">
-      <Sidebar page={page} setPage={setPage} mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
-      <main>
-        <Header setMobileOpen={setMobileOpen} onAdd={() => setAddOpen(true)} />
-        {pages[page]}
-        <footer><Logo /><p>Everything that matters, ready for the people who matter.</p><span>Fictional concept · No real information is stored</span></footer>
-      </main>
-      {journeyOpen && <JourneyModal onClose={() => setJourneyOpen(false)} />}
-      {addOpen && <AddModal onClose={() => setAddOpen(false)} />}
-    </div>
-  );
+  const [screen, setScreen] = useState("welcome");
+  const [points, setPoints] = useState(0);
+  const [explorer, setExplorer] = useState(explorers[0]);
+  if (screen === "welcome") return <Welcome onStart={() => setScreen("avatar")} onPreview={() => setScreen("app")} />;
+  if (screen === "avatar") return <AvatarPicker onBack={() => setScreen("welcome")} onChoose={(value) => { setExplorer(value); setScreen("journey"); }} />;
+  if (screen === "journey") return <SetupJourney explorer={explorer} onExit={() => setScreen("welcome")} onComplete={(value) => { setPoints(value); setScreen("complete"); }} />;
+  if (screen === "complete") return <Complete explorer={explorer} points={points} onEnter={() => setScreen("app")} />;
+  return <MainApp explorer={explorer} onRestart={() => setScreen("welcome")} />;
 }

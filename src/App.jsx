@@ -153,13 +153,13 @@ const questions = [
 ];
 
 const mapStops = [
-  { name: "Basecamp", icon: "home", x: 17, y: 79, className: "basecamp" },
-  { name: "Paper Port", icon: "file", x: 12, y: 43, className: "paper-port" },
+  { name: "Basecamp", icon: "home", x: 23, y: 75, className: "basecamp" },
+  { name: "Paper Port", icon: "file", x: 18, y: 43, className: "paper-port" },
   { name: "Money Meadow", icon: "bank", x: 39, y: 24, className: "money-meadow" },
   { name: "Safety Harbor", icon: "shield", x: 67, y: 74, className: "safety-harbor" },
-  { name: "Kindred Grove", icon: "people", x: 82, y: 43, className: "kindred-grove" },
+  { name: "Kindred Grove", icon: "people", x: 76, y: 43, className: "kindred-grove" },
   { name: "Memory Lake", icon: "message", x: 56, y: 47, className: "memory-lake" },
-  { name: "Mount Vault", icon: "key", x: 78, y: 14, className: "mount-vault" },
+  { name: "Mount Vault", icon: "key", x: 72, y: 18, className: "mount-vault" },
 ];
 
 function WorldMap({ chapter = 0, explorer = explorers[0], compact = false, preview = false }) {

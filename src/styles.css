@@ -318,3 +318,139 @@ button { cursor: pointer; }
 @media (prefers-reduced-motion: reduce) {
   *,*::before,*::after { animation-duration: .01ms!important; transition-duration: .01ms!important; scroll-behavior: auto!important; }
 }
+
+/* Senior-first accessibility floor
+   Keep meaningful text comfortably readable and controls easy to target. */
+:root { --muted: #5e5a64; }
+.brand { font-size: 26px; }
+
+.welcome-nav > div span,
+.welcome-nav button,
+.hello-pill,
+.welcome-promises,
+.welcome-footer { font-size: 15px; line-height: 1.5; }
+.welcome-promises { color: #d2ccd8; }
+.welcome-footer { color: #c9c3cf; }
+.welcome-copy > p { font-size: 19px; line-height: 1.75; }
+.journey-button { min-height: 52px; font-size: 17px; }
+
+.avatar-screen > header button { min-height: 44px; font-size: 15px; }
+.avatar-copy > p:not(.question-eyebrow) { font-size: 18px; line-height: 1.7; }
+.explorer-options button { min-height: 174px; }
+.explorer-options strong { font-size: 19px; }
+.explorer-options span { font-size: 16px; line-height: 1.4; }
+.avatar-map > div:last-child strong { font-size: 15px; }
+.avatar-map > div:last-child span { font-size: 13px; }
+
+.chapter-track small { font-size: 15px; }
+.chapter-track span { font-size: 13px; }
+.journey-points strong { font-size: 16px; }
+.journey-points span { font-size: 13px; }
+.journey-place-copy span { color: #c9c3cf; font-size: 14px; }
+.journey-place-copy strong { font-size: 25px; }
+.next-unlock small { color: #c4beca; font-size: 13px; }
+.next-unlock strong { font-size: 17px; }
+.map-stop { min-width: 132px; }
+.map-stop strong { font-size: 15px; line-height: 1.3; }
+.map-stop small { color: #eee8f0; font-size: 13px; }
+.map-explorer > span:last-child { font-size: 13px; }
+.map-preview-note { font-size: 14px; }
+
+.question-counter { color: #625e67; font-size: 14px; }
+.question-eyebrow { font-size: 15px; line-height: 1.45; }
+.question-copy { color: #5e5a64; font-size: 19px; line-height: 1.65; }
+.answer-list button { min-height: 66px; font-size: 17px; line-height: 1.4; }
+.back-button,
+.continue-button,
+.skip-question { min-height: 44px; font-size: 16px; }
+.back-button { padding: 10px 12px; }
+.skip-question { padding: 10px 14px; }
+.name-answer label,
+.account-answer label,
+.person-answer label { font-size: 15px; }
+.name-answer input,
+.account-answer input,
+.person-answer input,
+.person-answer select { min-height: 50px; font-size: 17px; }
+.name-preview p { font-size: 14px; }
+.name-preview strong { font-size: 20px; }
+.upload-zone { min-height: 165px; }
+.upload-zone strong { font-size: 17px; }
+.upload-zone small { color: #625e67; font-size: 15px; }
+.location-choice { min-height: 70px; }
+.location-choice strong { font-size: 16px; }
+.location-choice small { font-size: 14px; }
+.bank-answer button { min-height: 72px; }
+.bank-logo { font-size: 13px; }
+.bank-answer strong { font-size: 16px; }
+.account-answer p { font-size: 14px; line-height: 1.5; }
+.access-note strong { font-size: 16px; }
+.access-note small { font-size: 14px; }
+.voice-answer > strong { font-size: 24px; }
+.voice-answer > p { font-size: 16px; }
+.reward-pop small { color: #d2ccd6; font-size: 14px; }
+
+.complete-copy > p { font-size: 18px; line-height: 1.7; }
+.complete-stats span { color: #c9c2ce; font-size: 13px; }
+
+.app-header nav button { min-height: 44px; font-size: 17px; }
+.app-header-actions > span,
+.app-header-actions > button:not(.mobile-menu) { font-size: 14px; }
+.app-header-actions > button:not(.mobile-menu) { min-height: 44px; }
+.path-intro > div:first-child > p { font-size: 18px; line-height: 1.7; }
+.today-quest p,
+.path-heading p { font-size: 15px; line-height: 1.45; }
+.today-quest > div:nth-child(2) > span,
+.path-heading > span { font-size: 15px; }
+.today-quest > button { min-height: 44px; font-size: 15px; }
+.quest-number small { font-size: 11px; }
+.path-stop p,
+.path-stop > small { font-size: 14px; }
+.path-stop h3 { font-size: 19px; line-height: 1.3; }
+.path-stop div > span { font-size: 16px; line-height: 1.5; }
+.path-stop > button { min-height: 44px; font-size: 14px; }
+.achievement-strip small { font-size: 13px; }
+.achievement-strip > p { font-size: 15px; line-height: 1.55; }
+
+.collection-page header > p,
+.people-page header > p,
+.messages-page header > p { font-size: 13px; }
+.collection-page header > span,
+.people-page header > span,
+.messages-page header > span { font-size: 17px; }
+.room-number,
+.room-block small { color: rgba(255,255,255,.84); font-size: 13px; }
+.room-block strong { font-size: 23px; }
+.room-block p { color: rgba(255,255,255,.9); font-size: 15px; line-height: 1.5; }
+.floating-add { min-height: 44px; font-size: 15px; }
+.orbit-person strong { font-size: 15px; }
+.orbit-person small { font-size: 13px; }
+.orbit-add { min-height: 44px; font-size: 14px; }
+.trust-note strong { font-size: 16px; }
+.trust-note p,
+.trust-note button { font-size: 14px; line-height: 1.5; }
+.trust-note button { min-height: 44px; }
+.message-stage small { color: #d1cbd6; font-size: 13px; }
+.message-stage > div:last-child > button { min-height: 44px; font-size: 14px; }
+.message-prompts > p,
+.message-prompts button span { font-size: 13px; }
+.message-prompts button { min-height: 64px; }
+.message-prompts button strong { font-size: 17px; }
+.app-footer p,
+.app-footer > button { font-size: 16px; line-height: 1.55; }
+.app-footer > button { min-height: 44px; }
+
+.mini-quest > p:not(.question-eyebrow),
+.mini-done > p { font-size: 16px; line-height: 1.6; }
+.quick-options button { min-height: 60px; }
+.quick-options span { font-size: 13px; }
+.quick-options strong { font-size: 15px; }
+.mini-done > p:first-of-type { font-size: 13px; }
+
+@media (max-width: 780px) {
+  .chapter-track small { display: none; }
+  .welcome-copy > p { font-size: 18px; }
+  .map-stop { min-width: 108px; }
+  .map-stop strong { font-size: 13px; }
+  .map-stop small { font-size: 12px; }
+}

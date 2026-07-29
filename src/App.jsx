@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 const paths = {
   arrow: "M5 12h14m-6-6 6 6-6 6",
@@ -284,7 +284,6 @@ const journeyIntroSlides = [
 
 function JourneyIntro({ onContinue, onSkip }) {
   const [slide, setSlide] = useState(0);
-  const contentRef = useRef(null);
   const item = journeyIntroSlides[slide];
   const isLast = slide === journeyIntroSlides.length - 1;
   useEffect(() => {
@@ -297,47 +296,11 @@ function JourneyIntro({ onContinue, onSkip }) {
       document.body.style.overflow = bodyOverflow;
     };
   }, []);
-  useEffect(() => {
-    const panel = contentRef.current;
-    if (!panel) return;
-    let previousY = 0;
-    const maxScroll = () => Math.max(0, panel.scrollHeight - panel.clientHeight);
-    const handleTouchStart = (event) => {
-      previousY = event.touches[0]?.clientY ?? 0;
-      const maximum = maxScroll();
-      if (maximum <= 0) return;
-      if (panel.scrollTop <= 0) panel.scrollTop = 1;
-      else if (panel.scrollTop >= maximum) panel.scrollTop = maximum - 1;
-    };
-    const handleTouchMove = (event) => {
-      const currentY = event.touches[0]?.clientY ?? previousY;
-      const movingTowardTop = currentY > previousY;
-      const movingTowardBottom = currentY < previousY;
-      const maximum = maxScroll();
-      const atTop = panel.scrollTop <= 1;
-      const atBottom = panel.scrollTop >= maximum - 1;
-      if (maximum <= 0 || (atTop && movingTowardTop) || (atBottom && movingTowardBottom)) {
-        event.preventDefault();
-      }
-      previousY = currentY;
-    };
-    panel.addEventListener("touchstart", handleTouchStart, { passive: true });
-    panel.addEventListener("touchmove", handleTouchMove, { passive: false });
-    return () => {
-      panel.removeEventListener("touchstart", handleTouchStart);
-      panel.removeEventListener("touchmove", handleTouchMove);
-    };
-  }, []);
-  useLayoutEffect(() => {
-    if (!contentRef.current) return;
-    contentRef.current.scrollTop = 0;
-    contentRef.current.scrollLeft = 0;
-  }, [slide]);
   return (
     <main className="journey-intro-screen" role="dialog" aria-modal="true" aria-labelledby="journey-intro-title">
       <section className="journey-intro-card">
         <header><Logo /><button onClick={onSkip}>Skip introduction</button></header>
-        <div className="journey-intro-content" ref={contentRef}>
+        <div className="journey-intro-content">
           <div className="journey-intro-art">
             <span><Icon name={item.icon} size={38} /></span>
             {slide === 1 && <Explorer explorer={explorers[0]} size={82} />}

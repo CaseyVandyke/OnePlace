@@ -22,6 +22,7 @@ const paths = {
   home: "M3 11 12 3l9 8M5 10v11h14V10M9 21v-7h6v7",
   gift: "M20 12v10H4V12M2 7h20v5H2V7Zm10 15V7m0 0H7.5A2.5 2.5 0 1 1 10 4.5L12 7Zm0 0h4.5A2.5 2.5 0 1 0 14 4.5L12 7Z",
   eye: "M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Zm10 3a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z",
+  mail: "M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm-2 3 10 7L22 7",
   plus: "M12 5v14M5 12h14",
   logout: "M10 17l5-5-5-5m5 5H3m10-9h7a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1h-7",
 };
@@ -393,10 +394,34 @@ function QuestionBody({ question, answer, setAnswer, uploaded, setUploaded }) {
   }
   if (question.type === "person") {
     const value = answer || {};
+    const createAccessCode = () => {
+      const code = `ONE-${Math.floor(1000 + Math.random() * 9000)}`;
+      setAnswer({ ...value, inviteMethod: "code", inviteCode: code, inviteSent: false });
+    };
     return <div className="person-answer">
       <div className="person-avatar">{value.name ? value.name.split(" ").map((x) => x[0]).join("").slice(0, 2) : <Icon name="people" />}</div>
       <label>Full name<input value={value.name || ""} onChange={(e) => setAnswer({ ...value, name: e.target.value })} placeholder="Daniel Morgan" /></label>
       <label>Relationship<select value={value.relationship || ""} onChange={(e) => setAnswer({ ...value, relationship: e.target.value })}><option value="">Choose one</option><option>Spouse or partner</option><option>Child</option><option>Relative</option><option>Friend</option><option>Professional</option></select></label>
+      <label className="contact-email">Email address <span>Optional</span><input type="email" inputMode="email" autoCapitalize="none" value={value.email || ""} onChange={(e) => setAnswer({ ...value, email: e.target.value, inviteSent: false })} placeholder="daniel@example.com" /></label>
+      <div className="invite-choice">
+        <p>How would you like to connect them?</p>
+        <div>
+          <button className={value.inviteMethod === "email" ? "selected" : ""} onClick={() => setAnswer({ ...value, inviteMethod: "email", inviteCode: "", inviteSent: false })}>
+            <span><Icon name="mail" /></span><strong>Email invitation</strong><small>Prepare a secure link</small>
+          </button>
+          <button className={value.inviteMethod === "code" ? "selected" : ""} onClick={createAccessCode}>
+            <span><Icon name="key" /></span><strong>Private code</strong><small>Share it another way</small>
+          </button>
+        </div>
+        {value.inviteMethod === "email" && <div className="invite-result">
+          <div><Icon name={value.inviteSent ? "check" : "mail"} /><span><strong>{value.inviteSent ? "Invitation prepared" : "Ready when you are"}</strong><small>{value.inviteSent ? `For ${value.email}` : "Concept demo—no real email will be sent."}</small></span></div>
+          <button disabled={!value.email} onClick={() => setAnswer({ ...value, inviteSent: true })}>{value.inviteSent ? "Prepared" : "Preview invitation"}</button>
+        </div>}
+        {value.inviteMethod === "code" && <div className="invite-result code-result">
+          <div><Icon name="key" /><span><strong>{value.inviteCode}</strong><small>Demo code—share privately with your trusted person.</small></span></div>
+          <button onClick={createAccessCode}>New code</button>
+        </div>}
+      </div>
       <div className="access-note"><Icon name="eye" /><span><strong>No access yet</strong><small>You’ll choose specific items and timing later.</small></span></div>
     </div>;
   }

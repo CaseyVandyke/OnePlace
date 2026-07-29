@@ -156,6 +156,7 @@ button { cursor: pointer; }
 .bank-answer { display: grid; grid-template-columns: repeat(2, 1fr); gap: 9px; margin-top: 28px; }.bank-answer button { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px; min-height: 58px; border: 1px solid var(--line); border-radius: 11px; background: #fff; padding: 9px; text-align: left; }.bank-answer button.selected { border-color: var(--purple); background: #f4f0f6; }.bank-logo { width: 35px; height: 35px; border-radius: 9px; display: grid; place-items: center; color: #fff; background: #3c6288; font-size: 8px; font-weight: 800; }.logo-0 { background: #214c78; }.logo-1 { background: #a84f4c; }.logo-2 { background: #75559b; }.logo-3 { background: #315d87; }.logo-4 { background: #eee8ed; color: var(--purple); }.bank-answer strong { font-size: 9px; }.bank-answer i { width: 20px; height: 20px; display: grid; place-items: center; border-radius: 50%; color: #fff; background: var(--purple); }
 .account-answer { margin-top: 28px; }.account-answer > div { display: grid; grid-template-columns: 1fr .65fr; gap: 10px; margin-top: 10px; }.account-answer p { display: flex; gap: 7px; align-items: center; margin: 14px 0 0; color: #858087; font-size: 8px; }.account-answer p svg { color: var(--blue); }
 .person-answer { display: grid; grid-template-columns: auto 1fr 1fr; gap: 12px; align-items: end; margin-top: 28px; }.person-avatar { width: 53px; height: 53px; display: grid; place-items: center; border-radius: 50%; color: #fff; background: linear-gradient(135deg, var(--red), var(--purple)); font-size: 12px; font-weight: 800; }.access-note { grid-column: 2/4; display: flex; gap: 9px; align-items: center; padding: 11px; border-radius: 9px; background: #eeeef3; color: var(--blue); }.access-note strong, .access-note small { display: block; }.access-note strong { color: var(--ink); font-size: 9px; }.access-note small { color: var(--muted); margin-top: 2px; font-size: 8px; }
+.contact-email { position: relative; grid-column: 2 / 4; }.contact-email > span { position: absolute; right: 0; top: 0; color: var(--muted); font-weight: 500; }.invite-choice { grid-column: 1 / -1; margin-top: 8px; }.invite-choice > p { margin: 0 0 10px; color: var(--ink); font-size: 16px; font-weight: 800; }.invite-choice > div:first-of-type { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }.invite-choice > div:first-of-type button { min-height: 78px; display: grid; grid-template-columns: auto 1fr; column-gap: 10px; align-items: center; border: 1px solid var(--line); border-radius: 12px; background: #fff; padding: 12px; text-align: left; }.invite-choice > div:first-of-type button.selected { border-color: var(--purple); background: #f2edf5; box-shadow: 0 0 0 3px rgba(120,87,168,.08); }.invite-choice > div:first-of-type button > span { grid-row: 1 / 3; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 11px; color: var(--purple); background: #eee7f1; }.invite-choice button strong,.invite-choice button small { display: block; }.invite-choice button strong { color: var(--ink); font-size: 16px; }.invite-choice button small { margin-top: 2px; color: #5e5a64; font-size: 14px; line-height: 1.35; }.invite-result { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 10px; border-radius: 12px; padding: 12px 14px; color: var(--blue); background: #edf1f5; }.invite-result > div { display: flex; align-items: center; gap: 10px; }.invite-result strong,.invite-result small { display: block; }.invite-result strong { color: var(--ink); font-size: 16px; }.invite-result small { margin-top: 3px; color: #5e5a64; font-size: 14px; line-height: 1.4; }.invite-result > button { flex: 0 0 auto; min-height: 44px; border: 0; border-radius: 99px; color: #fff; background: var(--purple); padding: 9px 14px; font-size: 14px; font-weight: 800; }.invite-result > button:disabled { color: #625e67; background: #d4d0d5; cursor: not-allowed; }.code-result { background: #f2edf5; }.code-result strong { font: 700 18px "DM Mono"; letter-spacing: .08em; }
 .voice-answer { text-align: center; margin-top: 25px; }.voice-orb { width: 120px; height: 120px; position: relative; margin: 0 auto 17px; display: grid; place-items: center; }.voice-orb button { position: relative; z-index: 3; width: 66px; height: 66px; border: 0; border-radius: 50%; color: #fff; background: linear-gradient(145deg, var(--red), var(--purple)); box-shadow: 0 0 0 11px rgba(155,78,137,.1), 0 12px 35px rgba(120,87,168,.23); }.voice-orb i { position: absolute; inset: 9px; border: 1px solid rgba(120,87,168,.18); border-radius: 50%; animation: pulse 2.2s infinite; }.voice-orb i:nth-child(3) { inset: 0; animation-delay: .7s; }.voice-orb.recorded button { background: #527b63; }.voice-answer > strong { font: 600 18px "Playfair Display"; }.voice-answer > p { color: var(--muted); margin-top: 4px; font-size: 9px; }.voice-wave { height: 31px; display: flex; justify-content: center; align-items: center; gap: 3px; }.voice-wave i { width: 2px; border-radius: 2px; background: linear-gradient(var(--red), var(--purple)); }
 .reward-pop { position: fixed; z-index: 30; left: 50%; top: 50%; transform: translate(-50%,-50%); min-width: 250px; padding: 23px; text-align: center; border-radius: 18px; color: #fff; background: rgba(31,28,48,.95); box-shadow: 0 30px 80px rgba(27,21,35,.35); animation: reward-in .8s ease forwards; }.reward-pop > span { width: 48px; height: 48px; display: grid; place-items: center; margin: 0 auto 10px; border-radius: 50%; color: #f4b0b3; background: rgba(225,89,85,.14); }.reward-pop strong, .reward-pop small { display: block; }.reward-pop strong { font: 600 22px "Playfair Display"; }.reward-pop small { margin-top: 4px; color: #aaa4b3; font-size: 8px; }
 
@@ -1002,5 +1003,24 @@ button { cursor: pointer; }
   .journey-intro-card > footer {
     min-height: 102px;
     padding-top: 10px;
+  }
+}
+
+@media (max-width: 540px) {
+  .invite-choice > p { font-size: 17px; }
+  .invite-choice > div:first-of-type { grid-template-columns: 1fr; }
+  .invite-choice > div:first-of-type button { min-height: 82px; }
+  .invite-choice button strong,
+  .invite-result strong { font-size: 17px; }
+  .invite-choice button small,
+  .invite-result small { font-size: 15px; }
+  .invite-result {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .invite-result > button {
+    width: 100%;
+    min-height: 50px;
+    font-size: 16px;
   }
 }

@@ -611,3 +611,73 @@ button { cursor: pointer; }
   .journey-place { min-height: 290px; height: 290px; flex-basis: 290px; }
   .question-stage { padding-left: 17px; padding-right: 17px; }
 }
+
+/* Mobile reading floor for older adults.
+   This stays last so compact layout rules cannot shrink important text again. */
+@media (max-width: 780px) {
+  .question-counter {
+    gap: 12px;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.45;
+  }
+  .question-counter small {
+    max-width: 96px;
+    font-size: 16px;
+    line-height: 1.4;
+  }
+  .question-eyebrow { font-size: 16px; }
+  .question-copy { font-size: 19px; }
+  .journey-points strong { font-size: 17px; }
+  .journey-points span { font-size: 15px; }
+  .chapter-track span { font-size: 16px; }
+  .journey-place-copy span { font-size: 15px; }
+  .journey-place .map-stop.current strong { font-size: 16px; }
+
+  .welcome-promises span,
+  .welcome-footer > span:last-child { font-size: 16px; }
+  .avatar-screen > header button,
+  .explorer-options span,
+  .avatar-map > div:last-child span { font-size: 17px; }
+
+  .name-answer label,
+  .account-answer label,
+  .person-answer label,
+  .name-preview p,
+  .upload-zone small,
+  .location-choice small,
+  .account-answer p,
+  .access-note small,
+  .reward-pop small { font-size: 16px; }
+  .bank-logo { font-size: 14px; }
+
+  .today-quest p,
+  .path-heading p,
+  .path-heading > span,
+  .today-quest > button,
+  .path-stop p,
+  .path-stop > small,
+  .path-stop > button,
+  .achievement-strip > p,
+  .room-number,
+  .room-block small,
+  .room-block p,
+  .floating-add,
+  .orbit-person strong,
+  .orbit-person small,
+  .orbit-add,
+  .trust-note p,
+  .trust-note button,
+  .message-stage small,
+  .message-stage > div:last-child > button,
+  .message-prompts > p,
+  .message-prompts button span,
+  .quick-options strong { font-size: 16px; }
+  .quest-number small,
+  .achievement-strip small,
+  .collection-page header > p,
+  .people-page header > p,
+  .messages-page header > p,
+  .quick-options span,
+  .mini-done > p:first-of-type { font-size: 15px; }
+}

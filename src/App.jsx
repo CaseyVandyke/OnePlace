@@ -54,10 +54,10 @@ function useScrollToTop(value) {
 }
 
 const explorers = [
-  { id: "ruby", name: "Ruby", description: "Warm & brave", skin: "#8f563f", hair: "#35251f", coat: "#df5e59" },
-  { id: "milo", name: "Milo", description: "Calm & steady", skin: "#d29a72", hair: "#5b3929", coat: "#4775a5" },
-  { id: "sage", name: "Sage", description: "Bright & curious", skin: "#6d4032", hair: "#1f1b24", coat: "#7758a5" },
-  { id: "sol", name: "Sol", description: "Kind & hopeful", skin: "#e0ad88", hair: "#b36942", coat: "#bd526e" },
+  { id: "coral", name: "Your guide", description: "Warm & brave", style: "Coral coat", skin: "#8f563f", hair: "#35251f", coat: "#df5e59" },
+  { id: "blue", name: "Your guide", description: "Calm & steady", style: "Blue coat", skin: "#d29a72", hair: "#5b3929", coat: "#4775a5" },
+  { id: "violet", name: "Your guide", description: "Bright & curious", style: "Violet coat", skin: "#6d4032", hair: "#1f1b24", coat: "#7758a5" },
+  { id: "rose", name: "Your guide", description: "Kind & hopeful", style: "Rose coat", skin: "#e0ad88", hair: "#b36942", coat: "#bd526e" },
 ];
 
 function Explorer({ explorer = explorers[0], size = 54 }) {
@@ -206,19 +206,20 @@ function AvatarPicker({ onChoose, onBack }) {
   const [selected, setSelected] = useState(explorers[0]);
   const [guideName, setGuideName] = useState("");
   const chosenGuide = { ...selected, name: guideName.trim() || selected.name };
+  const continueLabel = guideName.trim() ? `Travel with ${guideName.trim()}` : "Continue with this guide";
   return (
     <main className="avatar-screen">
       <header><Logo /><button onClick={onBack}><Icon name="back" size={17} /> Back</button></header>
       <section>
         <div className="avatar-copy">
           <p className="question-eyebrow">BEFORE WE SET OUT</p>
-          <h1>Choose your guide.</h1>
-          <p>This little explorer travels with you, celebrates each completed task, and opens new places on your family map.</p>
+          <h1>Pick your character.</h1>
+          <p>Choose the explorer that feels right. They’ll celebrate each completed task and travel with you around your family map.</p>
           <div className="explorer-options">
-            {explorers.map((item) => <button className={selected.id === item.id ? "selected" : ""} onClick={() => setSelected(item)} key={item.id}><Explorer explorer={item} size={64} /><strong>{item.name}</strong><span>{item.description}</span><i>{selected.id === item.id && <Icon name="check" size={13} />}</i></button>)}
+            {explorers.map((item) => <button className={selected.id === item.id ? "selected" : ""} onClick={() => setSelected(item)} key={item.id}><Explorer explorer={item} size={64} /><strong>{item.description}</strong><span>{item.style}</span><i>{selected.id === item.id && <Icon name="check" size={13} />}</i></button>)}
           </div>
-          <label className="guide-name">Name your guide <span>Optional</span><input value={guideName} maxLength="24" onChange={(event) => setGuideName(event.target.value)} placeholder={`Keep “${selected.name}” or choose your own`} /></label>
-          <button className="continue-button avatar-continue" onClick={() => onChoose(chosenGuide)}>Travel with {chosenGuide.name} <Icon name="arrow" /></button>
+          <label className="guide-name">Name your character <span>Optional</span><input value={guideName} maxLength="24" onChange={(event) => setGuideName(event.target.value)} placeholder="Type any name, or leave this blank" /></label>
+          <button className="continue-button avatar-continue" onClick={() => onChoose(chosenGuide)}>{continueLabel} <Icon name="arrow" /></button>
         </div>
         <div className="avatar-map"><WorldMap chapter={0} explorer={chosenGuide} compact /><div><Explorer explorer={chosenGuide} size={76} /><p><strong>{chosenGuide.name} is ready.</strong><span>First stop: Basecamp</span></p></div></div>
       </section>

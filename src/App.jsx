@@ -178,7 +178,7 @@ function WorldMap({ chapter = 0, explorer = explorers[0], compact = false, previ
         <div className="map-mountains"><i /><i /><i /><span>▲</span></div>
         <div className="map-trees trees-a">{Array.from({ length: 6 }).map((_, i) => <i key={i} />)}</div>
         <div className="map-trees trees-b">{Array.from({ length: 5 }).map((_, i) => <i key={i} />)}</div>
-        <div className="map-compass"><b>N</b><i /><span>✦</span></div>
+        <div className="map-compass" aria-label="Map compass pointing north"><b>NORTH</b><i /><span>✦</span></div>
         {mapStops.map((stop, index) => (
           <div className={`map-stop ${stop.className} ${index <= chapter || preview ? "unlocked" : "locked"}`} style={{ left: `${stop.x}%`, top: `${stop.y}%` }} key={stop.name}>
             <span><Icon name={stop.icon} size={15} /></span>

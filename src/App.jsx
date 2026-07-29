@@ -204,6 +204,8 @@ function WorldMap({ chapter = 0, explorer = explorers[0], compact = false, previ
 
 function AvatarPicker({ onChoose, onBack }) {
   const [selected, setSelected] = useState(explorers[0]);
+  const [guideName, setGuideName] = useState("");
+  const chosenGuide = { ...selected, name: guideName.trim() || selected.name };
   return (
     <main className="avatar-screen">
       <header><Logo /><button onClick={onBack}><Icon name="back" size={17} /> Back</button></header>
@@ -215,9 +217,10 @@ function AvatarPicker({ onChoose, onBack }) {
           <div className="explorer-options">
             {explorers.map((item) => <button className={selected.id === item.id ? "selected" : ""} onClick={() => setSelected(item)} key={item.id}><Explorer explorer={item} size={64} /><strong>{item.name}</strong><span>{item.description}</span><i>{selected.id === item.id && <Icon name="check" size={13} />}</i></button>)}
           </div>
-          <button className="continue-button avatar-continue" onClick={() => onChoose(selected)}>Travel with {selected.name} <Icon name="arrow" /></button>
+          <label className="guide-name">Name your guide <span>Optional</span><input value={guideName} maxLength="24" onChange={(event) => setGuideName(event.target.value)} placeholder={`Keep “${selected.name}” or choose your own`} /></label>
+          <button className="continue-button avatar-continue" onClick={() => onChoose(chosenGuide)}>Travel with {chosenGuide.name} <Icon name="arrow" /></button>
         </div>
-        <div className="avatar-map"><WorldMap chapter={0} explorer={selected} compact /><div><Explorer explorer={selected} size={76} /><p><strong>{selected.name} is ready.</strong><span>First stop: Basecamp</span></p></div></div>
+        <div className="avatar-map"><WorldMap chapter={0} explorer={chosenGuide} compact /><div><Explorer explorer={chosenGuide} size={76} /><p><strong>{chosenGuide.name} is ready.</strong><span>First stop: Basecamp</span></p></div></div>
       </section>
     </main>
   );

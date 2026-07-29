@@ -284,14 +284,20 @@ const journeyIntroSlides = [
 
 function JourneyIntro({ onContinue, onSkip }) {
   const [slide, setSlide] = useState(0);
+  const contentRef = useRef(null);
   const item = journeyIntroSlides[slide];
   const isLast = slide === journeyIntroSlides.length - 1;
-  useScrollToTop(slide);
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => {
+      contentRef.current?.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [slide]);
   return (
     <main className="journey-intro-screen" role="dialog" aria-modal="true" aria-labelledby="journey-intro-title">
       <section className="journey-intro-card">
         <header><Logo /><button onClick={onSkip}>Skip introduction</button></header>
-        <div className="journey-intro-content" key={slide}>
+        <div className="journey-intro-content" ref={contentRef} key={slide}>
           <div className="journey-intro-art">
             <span><Icon name={item.icon} size={38} /></span>
             {slide === 1 && <Explorer explorer={explorers[0]} size={82} />}

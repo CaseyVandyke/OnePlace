@@ -691,7 +691,7 @@ button { cursor: pointer; }
   position: relative;
   z-index: 2;
   display: block;
-  animation: map-guide-bob 1.8s ease-in-out infinite;
+  animation: map-guide-bob 2.6s ease-in-out infinite;
 }
 .map-explorer-character::after {
   content: "";
@@ -704,7 +704,12 @@ button { cursor: pointer; }
   border: 2px solid rgba(239, 106, 105, .8);
   border-radius: 50%;
   transform: translateX(-50%);
-  animation: map-guide-pulse 1.8s ease-out infinite;
+  animation: map-guide-pulse 2.6s ease-out infinite;
+}
+.map-explorer {
+  transition:
+    left 2.4s .2s cubic-bezier(.22,.75,.25,1),
+    top 2.4s .2s cubic-bezier(.22,.75,.25,1);
 }
 .map-explorer > span:last-child {
   bottom: calc(100% + 8px);

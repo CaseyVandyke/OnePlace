@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
 const paths = {
   arrow: "M5 12h14m-6-6 6 6-6 6",
@@ -287,17 +287,16 @@ function JourneyIntro({ onContinue, onSkip }) {
   const contentRef = useRef(null);
   const item = journeyIntroSlides[slide];
   const isLast = slide === journeyIntroSlides.length - 1;
-  useEffect(() => {
-    const frame = window.requestAnimationFrame(() => {
-      contentRef.current?.scrollTo({ top: 0, left: 0, behavior: "auto" });
-    });
-    return () => window.cancelAnimationFrame(frame);
+  useLayoutEffect(() => {
+    if (!contentRef.current) return;
+    contentRef.current.scrollTop = 0;
+    contentRef.current.scrollLeft = 0;
   }, [slide]);
   return (
     <main className="journey-intro-screen" role="dialog" aria-modal="true" aria-labelledby="journey-intro-title">
       <section className="journey-intro-card">
         <header><Logo /><button onClick={onSkip}>Skip introduction</button></header>
-        <div className="journey-intro-content" ref={contentRef} key={slide}>
+        <div className="journey-intro-content" ref={contentRef}>
           <div className="journey-intro-art">
             <span><Icon name={item.icon} size={38} /></span>
             {slide === 1 && <Explorer explorer={explorers[0]} size={82} />}

@@ -735,3 +735,25 @@ button { cursor: pointer; }
     font-size: 16px;
   }
 }
+
+/* WCAG AA contrast on cream and white surfaces. */
+.guide-name input::placeholder {
+  color: #625e67;
+  opacity: 1;
+}
+.app-header nav button,
+.upload-zone small,
+.account-answer p,
+.path-stop > small,
+.message-prompts button span,
+.app-footer > button {
+  color: #5e5a64;
+}
+.chapter-track .current span,
+.path-heading p,
+.achievement-strip > div:first-child {
+  color: #ad383b;
+}
+.chapter-track .current span {
+  border-color: #ad383b;
+}

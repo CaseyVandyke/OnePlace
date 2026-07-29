@@ -932,11 +932,13 @@ button { cursor: pointer; }
     min-height: 0;
     grid-template-columns: 1fr;
     gap: 34px;
-    align-content: center;
+    align-content: start;
     overflow-y: auto;
-    overscroll-behavior: contain;
+    overflow-anchor: none;
+    overscroll-behavior-y: none;
     scroll-behavior: auto;
-    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    -webkit-overflow-scrolling: auto;
     padding: 42px 20px;
   }
   .journey-intro-art {

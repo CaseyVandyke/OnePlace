@@ -287,6 +287,16 @@ function JourneyIntro({ onContinue, onSkip }) {
   const contentRef = useRef(null);
   const item = journeyIntroSlides[slide];
   const isLast = slide === journeyIntroSlides.length - 1;
+  useEffect(() => {
+    const htmlOverflow = document.documentElement.style.overflow;
+    const bodyOverflow = document.body.style.overflow;
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.documentElement.style.overflow = htmlOverflow;
+      document.body.style.overflow = bodyOverflow;
+    };
+  }, []);
   useLayoutEffect(() => {
     if (!contentRef.current) return;
     contentRef.current.scrollTop = 0;

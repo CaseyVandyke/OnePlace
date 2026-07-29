@@ -196,7 +196,7 @@ function WorldMap({ chapter = 0, explorer = explorers[0], compact = false, previ
             {stop.name === "Mount Vault" && <small>Codes & digital keys</small>}
           </div>
         ))}
-        {!preview && <div className="map-explorer" style={{ left: `${position.x}%`, top: `${position.y}%` }}><span className="map-explorer-character"><Explorer explorer={explorer} size={compact ? 42 : 54} /></span><span>You are here</span></div>}
+        {!preview && <div className={`map-explorer map-explorer-${position.className}`} style={{ left: `${position.x}%`, top: `${position.y}%` }}><span className="map-explorer-character"><Explorer explorer={explorer} size={compact ? 42 : 54} /></span><span>You are here</span></div>}
         {preview && <div className="map-preview-note"><Icon name="spark" size={13} /> Your family map begins here</div>}
       </div>
     </div>

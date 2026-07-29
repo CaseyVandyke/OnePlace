@@ -721,6 +721,27 @@ button { cursor: pointer; }
   font-weight: 700;
   line-height: 1.2;
 }
+.map-explorer-basecamp > span:last-child,
+.map-explorer-paper-port > span:last-child {
+  transform: translateX(-18%);
+}
+.map-explorer-kindred-grove > span:last-child,
+.map-explorer-safety-harbor > span:last-child {
+  transform: translateX(-82%);
+}
+.map-explorer-money-meadow > span:last-child {
+  left: calc(100% + 10px);
+  top: 45%;
+  bottom: auto;
+  transform: translateY(-50%);
+}
+.map-explorer-mount-vault > span:last-child {
+  right: calc(100% + 10px);
+  left: auto;
+  top: 45%;
+  bottom: auto;
+  transform: translateY(-50%);
+}
 
 @keyframes map-guide-bob {
   0%, 100% { transform: translateY(0); }
@@ -739,6 +760,12 @@ button { cursor: pointer; }
     bottom: calc(100% + 7px);
     padding: 7px 10px;
     font-size: 16px;
+  }
+  .journey-place .map-explorer-money-meadow > span:last-child,
+  .path-intro .map-explorer-money-meadow > span:last-child,
+  .journey-place .map-explorer-mount-vault > span:last-child,
+  .path-intro .map-explorer-mount-vault > span:last-child {
+    bottom: auto;
   }
 }
 

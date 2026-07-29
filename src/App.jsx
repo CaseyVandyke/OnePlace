@@ -297,6 +297,37 @@ function JourneyIntro({ onContinue, onSkip }) {
       document.body.style.overflow = bodyOverflow;
     };
   }, []);
+  useEffect(() => {
+    const panel = contentRef.current;
+    if (!panel) return;
+    let previousY = 0;
+    const maxScroll = () => Math.max(0, panel.scrollHeight - panel.clientHeight);
+    const handleTouchStart = (event) => {
+      previousY = event.touches[0]?.clientY ?? 0;
+      const maximum = maxScroll();
+      if (maximum <= 0) return;
+      if (panel.scrollTop <= 0) panel.scrollTop = 1;
+      else if (panel.scrollTop >= maximum) panel.scrollTop = maximum - 1;
+    };
+    const handleTouchMove = (event) => {
+      const currentY = event.touches[0]?.clientY ?? previousY;
+      const movingTowardTop = currentY > previousY;
+      const movingTowardBottom = currentY < previousY;
+      const maximum = maxScroll();
+      const atTop = panel.scrollTop <= 1;
+      const atBottom = panel.scrollTop >= maximum - 1;
+      if (maximum <= 0 || (atTop && movingTowardTop) || (atBottom && movingTowardBottom)) {
+        event.preventDefault();
+      }
+      previousY = currentY;
+    };
+    panel.addEventListener("touchstart", handleTouchStart, { passive: true });
+    panel.addEventListener("touchmove", handleTouchMove, { passive: false });
+    return () => {
+      panel.removeEventListener("touchstart", handleTouchStart);
+      panel.removeEventListener("touchmove", handleTouchMove);
+    };
+  }, []);
   useLayoutEffect(() => {
     if (!contentRef.current) return;
     contentRef.current.scrollTop = 0;

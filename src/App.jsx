@@ -609,6 +609,27 @@ export default function App() {
   const [screen, setScreen] = useState("welcome");
   const [points, setPoints] = useState(0);
   const [explorer, setExplorer] = useState(explorers[0]);
+  useEffect(() => {
+    const previousRestoration = window.history.scrollRestoration;
+    window.history.scrollRestoration = "manual";
+    let touchStartY = 0;
+    const handleTouchStart = (event) => {
+      touchStartY = event.touches[0]?.clientY ?? 0;
+    };
+    const handleTouchMove = (event) => {
+      const currentY = event.touches[0]?.clientY ?? touchStartY;
+      if (window.scrollY <= 0 && currentY > touchStartY) {
+        event.preventDefault();
+      }
+    };
+    document.addEventListener("touchstart", handleTouchStart, { passive: true });
+    document.addEventListener("touchmove", handleTouchMove, { passive: false });
+    return () => {
+      window.history.scrollRestoration = previousRestoration;
+      document.removeEventListener("touchstart", handleTouchStart);
+      document.removeEventListener("touchmove", handleTouchMove);
+    };
+  }, []);
   useScrollToTop(screen);
   if (screen === "welcome") return <Welcome onStart={() => setScreen("intro")} onPreview={() => setScreen("app")} />;
   if (screen === "intro") return <JourneyIntro onSkip={() => setScreen("avatar")} onContinue={() => setScreen("avatar")} />;

@@ -16,8 +16,8 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: auto; }
-body { margin: 0; min-width: 320px; min-height: 100vh; background: var(--paper); }
+html { scroll-behavior: auto; overscroll-behavior-y: none; }
+body { margin: 0; min-width: 320px; min-height: 100vh; overscroll-behavior-y: none; background: var(--paper); }
 button, input, select { font: inherit; }
 button { color: inherit; }
 button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid rgba(72, 100, 170, .25); outline-offset: 3px; }

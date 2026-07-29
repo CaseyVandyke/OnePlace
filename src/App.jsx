@@ -44,6 +44,15 @@ function Logo({ light = false }) {
   );
 }
 
+function useScrollToTop(value) {
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [value]);
+}
+
 const explorers = [
   { id: "ruby", name: "Ruby", description: "Warm & brave", skin: "#8f563f", hair: "#35251f", coat: "#df5e59" },
   { id: "milo", name: "Milo", description: "Calm & steady", skin: "#d29a72", hair: "#5b3929", coat: "#4775a5" },
@@ -335,6 +344,7 @@ function SetupJourney({ onComplete, onExit, explorer }) {
   const [reward, setReward] = useState(null);
   const question = questions[current];
   const answer = answers[current];
+  useScrollToTop(current);
   const completedChapters = new Set(questions.slice(0, current).map((q) => q.chapter)).size;
   const canContinue = useMemo(() => {
     if (!answer) return false;
@@ -476,7 +486,7 @@ function MessagesPage() {
 function MainApp({ onRestart, explorer }) {
   const [active, setActive] = useState("My path");
   const [resume, setResume] = useState(false);
-  useEffect(() => { window.scrollTo(0, 0); }, [active]);
+  useScrollToTop(active);
   return (
     <main className="main-app">
       <AppHeader active={active} setActive={setActive} onJourney={() => setResume(true)} explorer={explorer} />
@@ -499,6 +509,7 @@ export default function App() {
   const [screen, setScreen] = useState("welcome");
   const [points, setPoints] = useState(0);
   const [explorer, setExplorer] = useState(explorers[0]);
+  useScrollToTop(screen);
   if (screen === "welcome") return <Welcome onStart={() => setScreen("avatar")} onPreview={() => setScreen("app")} />;
   if (screen === "avatar") return <AvatarPicker onBack={() => setScreen("welcome")} onChoose={(value) => { setExplorer(value); setScreen("journey"); }} />;
   if (screen === "journey") return <SetupJourney explorer={explorer} onExit={() => setScreen("welcome")} onComplete={(value) => { setPoints(value); setScreen("complete"); }} />;

@@ -141,7 +141,7 @@ const questions = [
     title: "Which protections do you already have?",
     copy: "Select anything that applies. We’ll create a short task for each one.",
     type: "multi",
-    options: ["Life insurance", "Health insurance", "Long-term care", "Advance directive", "Power of attorney"],
+    options: ["Life insurance", "Disability insurance", "Health insurance", "Long-term care", "Advance directive", "Power of attorney"],
     reward: 20,
   },
   {
@@ -150,6 +150,14 @@ const questions = [
     title: "Who should be your first trusted person?",
     copy: "They won’t see anything until you explicitly choose what to share.",
     type: "person",
+    reward: 25,
+  },
+  {
+    chapter: 4,
+    eyebrow: "Kindred Grove · Possessions & keepsakes",
+    title: "Is there something special you want someone to receive?",
+    copy: "Start with one meaningful possession. You can build a complete “who gets what” list later.",
+    type: "possessions",
     reward: 25,
   },
   {
@@ -425,6 +433,27 @@ function QuestionBody({ question, answer, setAnswer, uploaded, setUploaded }) {
       <div className="access-note"><Icon name="eye" /><span><strong>No access yet</strong><small>You’ll choose specific items and timing later.</small></span></div>
     </div>;
   }
+  if (question.type === "possessions") {
+    const items = Array.isArray(answer) && answer.length ? answer : [{ item: "", recipient: "", location: "", note: "" }];
+    const updateItem = (index, field, nextValue) => {
+      setAnswer(items.map((entry, itemIndex) => itemIndex === index ? { ...entry, [field]: nextValue } : entry));
+    };
+    const addItem = () => setAnswer([...items, { item: "", recipient: "", location: "", note: "" }]);
+    const removeItem = (index) => setAnswer(items.filter((_, itemIndex) => itemIndex !== index));
+    return <div className="possession-answer">
+      {items.map((entry, index) => <section className="possession-entry" key={index}>
+        <header><span><Icon name="gift" size={18} /></span><strong>Possession {index + 1}</strong>{items.length > 1 && <button onClick={() => removeItem(index)}>Remove</button>}</header>
+        <div>
+          <label>What is it?<input value={entry.item} onChange={(event) => updateItem(index, "item", event.target.value)} placeholder="Grandmother’s ring" /></label>
+          <label>Who should receive it?<input value={entry.recipient} onChange={(event) => updateItem(index, "recipient", event.target.value)} placeholder="Emma Morgan" /></label>
+          <label>Where is it kept?<input value={entry.location} onChange={(event) => updateItem(index, "location", event.target.value)} placeholder="Jewelry box in the bedroom" /></label>
+          <label>Personal note <span>Optional</span><textarea value={entry.note} onChange={(event) => updateItem(index, "note", event.target.value)} placeholder="Why this belongs with them…" /></label>
+        </div>
+      </section>)}
+      <button className="add-possession" onClick={addItem}><Icon name="plus" /> Add another possession</button>
+      <p className="possession-legal-note"><Icon name="file" size={17} /> Personal wishes are helpful, but legally significant gifts should also be included in an estate plan.</p>
+    </div>;
+  }
   if (question.type === "voice") {
     return <div className="voice-answer">
       <div className={`voice-orb ${answer ? "recorded" : ""}`}><button onClick={() => setAnswer(answer ? "" : "recorded")}><Icon name={answer ? "check" : "mic"} size={27} /></button><i /><i /></div>
@@ -448,7 +477,11 @@ function SetupJourney({ onComplete, onExit, explorer }) {
   const completedChapters = new Set(questions.slice(0, current).map((q) => q.chapter)).size;
   const canContinue = useMemo(() => {
     if (!answer) return false;
-    if (Array.isArray(answer)) return answer.length > 0;
+    if (Array.isArray(answer)) {
+      if (!answer.length) return false;
+      if (typeof answer[0] === "object") return answer.some((entry) => Object.values(entry).some(Boolean));
+      return true;
+    }
     if (typeof answer === "object") return Object.values(answer).some(Boolean);
     return String(answer).trim().length > 0;
   }, [answer]);
@@ -526,7 +559,7 @@ function AppHeader({ active, setActive, onJourney, explorer }) {
 const pathStops = [
   { chapter: "The essentials", title: "Make your legal papers easy to find", copy: "Will, identification, powers of attorney", icon: "file", state: "complete", count: "3 of 3" },
   { chapter: "Money map", title: "Leave a clear trail—not a treasure hunt", copy: "Banking, investments, debts and bills", icon: "bank", state: "current", count: "2 of 6" },
-  { chapter: "Protection", title: "Connect the policies that protect your family", copy: "Insurance, medical and care wishes", icon: "shield", state: "", count: "1 of 5" },
+  { chapter: "Protection", title: "Connect the policies that protect your family", copy: "Life, disability, medical and care wishes", icon: "shield", state: "", count: "1 of 6" },
   { chapter: "Digital keys", title: "Show them how to reach your digital life", copy: "Devices, accounts and recovery access", icon: "key", state: "", count: "0 of 4" },
   { chapter: "Only you", title: "Leave the stories no document can tell", copy: "Voice notes, letters and personal wishes", icon: "heart", state: "", count: "1 of 5" },
 ];
@@ -564,15 +597,49 @@ function PathHome({ onContinue, explorer }) {
   );
 }
 
-function ThingsPage({ onContinue }) {
+function ThingsPage({ onContinue, onPossessions }) {
   const rooms = [
     ["file", "Paper Port", "3 items", "Your important papers are in good order", "red"],
     ["bank", "Money Meadow", "2 items", "Four steps will make the trail clear", "purple"],
-    ["shield", "Safety Harbor", "1 item", "Add your life insurance next", "blue"],
+    ["shield", "Safety Harbor", "1 item", "Add life or disability insurance next", "blue"],
     ["key", "Mount Vault", "Not started", "Vault codes, devices and digital access", "iris"],
     ["heart", "Memory Lake", "1 message", "Stories and wishes in your own words", "pink"],
+    ["gift", "Possessions & keepsakes", "2 wishes", "Meaningful belongings and who should receive them", "plum"],
   ];
-  return <div className="collection-page"><header><p>MY THINGS</p><h1>Every part of your life,<br />given a proper place.</h1><span>Seven items are safely organized in this concept.</span></header><div className="room-shelf">{rooms.map(([icon, name, count, copy, color], i) => <button className={`room-block room-${color}`} key={name}><span className="room-number">0{i + 1}</span><span className="room-icon"><Icon name={icon} /></span><small>{count}</small><strong>{name}</strong><p>{copy}</p><i><Icon name="arrow" /></i></button>)}</div><button className="floating-add" onClick={onContinue}><Icon name="plus" /> Add something</button></div>;
+  return <div className="collection-page"><header><p>MY THINGS</p><h1>Every part of your life,<br />given a proper place.</h1><span>Seven items are safely organized in this concept.</span></header><div className="room-shelf">{rooms.map(([icon, name, count, copy, color], i) => <button className={`room-block room-${color}`} onClick={name === "Possessions & keepsakes" ? onPossessions : undefined} key={name}><span className="room-number">0{i + 1}</span><span className="room-icon"><Icon name={icon} /></span><small>{count}</small><strong>{name}</strong><p>{copy}</p><i><Icon name="arrow" /></i></button>)}</div><button className="floating-add" onClick={onContinue}><Icon name="plus" /> Add something</button></div>;
+}
+
+function PossessionsPage({ onBack }) {
+  const [items, setItems] = useState([
+    { id: 1, item: "Grandmother’s ring", recipient: "Emma", location: "Jewelry box", note: "Tell her the story of our first family reunion." },
+    { id: 2, item: "Dad’s woodworking tools", recipient: "Jack", location: "Garage cabinet", note: "Keep the small hand plane in the family." },
+  ]);
+  const updateItem = (id, field, value) => setItems(items.map((item) => item.id === id ? { ...item, [field]: value } : item));
+  const addItem = () => setItems([...items, { id: Date.now(), item: "", recipient: "", location: "", note: "" }]);
+  const removeItem = (id) => setItems(items.filter((item) => item.id !== id));
+  return (
+    <div className="possessions-page">
+      <button className="possessions-back" onClick={onBack}><Icon name="back" /> Back to My Things</button>
+      <header>
+        <div><p>POSSESSIONS & KEEPSAKES</p><h1>Who gets what,<br />made clear.</h1><span>Record the belongings that matter and the people you want to receive them.</span></div>
+        <aside><Icon name="gift" size={30} /><strong>{items.length} wishes</strong><span>Saved in this concept</span></aside>
+      </header>
+      <section className="keepsake-list" aria-label="Possessions and recipients">
+        {items.map((entry, index) => <article className="keepsake-card" key={entry.id}>
+          <div className="keepsake-number"><span>{String(index + 1).padStart(2, "0")}</span><Icon name="gift" /></div>
+          <div className="keepsake-fields">
+            <label>Possession<input value={entry.item} onChange={(event) => updateItem(entry.id, "item", event.target.value)} placeholder="What would you like to leave?" /></label>
+            <label>Who should receive it?<input value={entry.recipient} onChange={(event) => updateItem(entry.id, "recipient", event.target.value)} placeholder="Name or relationship" /></label>
+            <label>Where is it kept?<input value={entry.location} onChange={(event) => updateItem(entry.id, "location", event.target.value)} placeholder="Help them find it" /></label>
+            <label className="keepsake-note">Personal note <span>Optional</span><textarea value={entry.note} onChange={(event) => updateItem(entry.id, "note", event.target.value)} placeholder="Share the story or meaning behind it…" /></label>
+          </div>
+          <button className="remove-keepsake" onClick={() => removeItem(entry.id)} aria-label={`Remove possession ${index + 1}`}><Icon name="close" /> Remove</button>
+        </article>)}
+      </section>
+      <button className="add-keepsake" onClick={addItem}><Icon name="plus" /> Add another possession</button>
+      <div className="keepsake-guidance"><Icon name="file" /><p><strong>A helpful list, not a legal substitute.</strong><span>For valuable or legally significant gifts, include the same wishes in your will or trust and review them with an estate professional.</span></p></div>
+    </div>
+  );
 }
 
 function PeoplePage() {
@@ -589,9 +656,10 @@ function MainApp({ onRestart, explorer }) {
   useScrollToTop(active);
   return (
     <main className="main-app">
-      <AppHeader active={active} setActive={setActive} onJourney={() => setResume(true)} explorer={explorer} />
+      <AppHeader active={active === "Possessions" ? "My things" : active} setActive={setActive} onJourney={() => setResume(true)} explorer={explorer} />
       {active === "My path" && <PathHome onContinue={() => setResume(true)} explorer={explorer} />}
-      {active === "My things" && <ThingsPage onContinue={() => setResume(true)} />}
+      {active === "My things" && <ThingsPage onContinue={() => setResume(true)} onPossessions={() => setActive("Possessions")} />}
+      {active === "Possessions" && <PossessionsPage onBack={() => setActive("My things")} />}
       {active === "My people" && <PeoplePage />}
       {active === "Messages" && <MessagesPage />}
       <footer className="app-footer"><Logo /><p>Everything that matters, ready for the people who matter.</p><button onClick={onRestart}><Icon name="logout" size={15} /> Replay first-time experience</button></footer>

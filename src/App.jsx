@@ -22,6 +22,7 @@ const paths = {
   home: "M3 11 12 3l9 8M5 10v11h14V10M9 21v-7h6v7",
   gift: "M20 12v10H4V12M2 7h20v5H2V7Zm10 15V7m0 0H7.5A2.5 2.5 0 1 1 10 4.5L12 7Zm0 0h4.5A2.5 2.5 0 1 0 14 4.5L12 7Z",
   eye: "M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Zm10 3a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z",
+  camera: "M14.5 4 16 6h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3l1.5-2h5ZM12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z",
   mail: "M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm-2 3 10 7L22 7",
   plus: "M12 5v14M5 12h14",
   logout: "M10 17l5-5-5-5m5 5H3m10-9h7a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1h-7",
@@ -609,14 +610,69 @@ function ThingsPage({ onContinue, onPossessions }) {
   return <div className="collection-page"><header><p>MY THINGS</p><h1>Every part of your life,<br />given a proper place.</h1><span>Seven items are safely organized in this concept.</span></header><div className="room-shelf">{rooms.map(([icon, name, count, copy, color], i) => <button className={`room-block room-${color}`} onClick={name === "Possessions & keepsakes" ? onPossessions : undefined} key={name}><span className="room-number">0{i + 1}</span><span className="room-icon"><Icon name={icon} /></span><small>{count}</small><strong>{name}</strong><p>{copy}</p><i><Icon name="arrow" /></i></button>)}</div><button className="floating-add" onClick={onContinue}><Icon name="plus" /> Add something</button></div>;
 }
 
+function KeepsakePhoto({ entry, index, onChange }) {
+  const photoRef = useRef(null);
+  const choosePhoto = () => photoRef.current?.click();
+  const addPhoto = (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.addEventListener("load", () => {
+      onChange("photo", reader.result);
+      onChange("photoName", file.name);
+    });
+    reader.readAsDataURL(file);
+    event.target.value = "";
+  };
+  const removePhoto = () => {
+    onChange("photo", "");
+    onChange("photoName", "");
+  };
+  const itemName = entry.item.trim() || `possession ${index + 1}`;
+
+  return (
+    <div className={`keepsake-photo ${entry.photo ? "has-photo" : ""}`}>
+      <input
+        ref={photoRef}
+        className="keepsake-photo-input"
+        type="file"
+        accept="image/*"
+        capture="environment"
+        onChange={addPhoto}
+        aria-label={`Take or add a photo of ${itemName}`}
+      />
+      {entry.photo ? (
+        <>
+          <img src={entry.photo} alt={`Preview of ${itemName}`} />
+          <div className="keepsake-photo-copy">
+            <span><Icon name="check" size={17} /> Photo added</span>
+            <strong>{entry.photoName || "Keepsake photo"}</strong>
+            <small>Kept only in this browser session.</small>
+          </div>
+          <div className="keepsake-photo-actions">
+            <button onClick={choosePhoto}><Icon name="camera" size={18} /> Change photo</button>
+            <button className="remove-photo" onClick={removePhoto}>Remove photo</button>
+          </div>
+        </>
+      ) : (
+        <button className="add-keepsake-photo" onClick={choosePhoto}>
+          <span><Icon name="camera" size={24} /></span>
+          <span><strong>Take or add a photo</strong><small>Use your camera or choose an existing picture. The photo stays in this browser session.</small></span>
+          <Icon name="plus" size={20} />
+        </button>
+      )}
+    </div>
+  );
+}
+
 function PossessionsPage({ onBack }) {
   const [items, setItems] = useState([
-    { id: 1, item: "Grandmother’s ring", recipient: "Emma", location: "Jewelry box", note: "Tell her the story of our first family reunion." },
-    { id: 2, item: "Dad’s woodworking tools", recipient: "Jack", location: "Garage cabinet", note: "Keep the small hand plane in the family." },
+    { id: 1, item: "Grandmother’s ring", recipient: "Emma", location: "Jewelry box", note: "Tell her the story of our first family reunion.", photo: "", photoName: "" },
+    { id: 2, item: "Dad’s woodworking tools", recipient: "Jack", location: "Garage cabinet", note: "Keep the small hand plane in the family.", photo: "", photoName: "" },
   ]);
-  const updateItem = (id, field, value) => setItems(items.map((item) => item.id === id ? { ...item, [field]: value } : item));
-  const addItem = () => setItems([...items, { id: Date.now(), item: "", recipient: "", location: "", note: "" }]);
-  const removeItem = (id) => setItems(items.filter((item) => item.id !== id));
+  const updateItem = (id, field, value) => setItems((currentItems) => currentItems.map((item) => item.id === id ? { ...item, [field]: value } : item));
+  const addItem = () => setItems((currentItems) => [...currentItems, { id: Date.now(), item: "", recipient: "", location: "", note: "", photo: "", photoName: "" }]);
+  const removeItem = (id) => setItems((currentItems) => currentItems.filter((item) => item.id !== id));
   return (
     <div className="possessions-page">
       <button className="possessions-back" onClick={onBack}><Icon name="back" /> Back to My Things</button>
@@ -632,6 +688,7 @@ function PossessionsPage({ onBack }) {
             <label>Who should receive it?<input value={entry.recipient} onChange={(event) => updateItem(entry.id, "recipient", event.target.value)} placeholder="Name or relationship" /></label>
             <label>Where is it kept?<input value={entry.location} onChange={(event) => updateItem(entry.id, "location", event.target.value)} placeholder="Help them find it" /></label>
             <label className="keepsake-note">Personal note <span>Optional</span><textarea value={entry.note} onChange={(event) => updateItem(entry.id, "note", event.target.value)} placeholder="Share the story or meaning behind it…" /></label>
+            <KeepsakePhoto entry={entry} index={index} onChange={(field, value) => updateItem(entry.id, field, value)} />
           </div>
           <button className="remove-keepsake" onClick={() => removeItem(entry.id)} aria-label={`Remove possession ${index + 1}`}><Icon name="close" /> Remove</button>
         </article>)}

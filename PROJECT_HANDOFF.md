@@ -157,6 +157,9 @@ Possessions are included in two places:
    location, and optional personal note.
 2. **My Things → Possessions & keepsakes** opens a dedicated editable list with
    add, edit, and remove controls.
+3. Each keepsake can include a photo taken with a phone camera or chosen from
+   the device. Photo previews remain only in the current browser session and
+   reset with the rest of the prototype state.
 
 The page includes a reminder that personal wishes are useful but important gifts
 should also appear in a will or trust and be reviewed with an estate

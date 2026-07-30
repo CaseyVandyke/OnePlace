@@ -435,11 +435,14 @@ function QuestionBody({ question, answer, setAnswer, uploaded, setUploaded }) {
     </div>;
   }
   if (question.type === "possessions") {
-    const items = Array.isArray(answer) && answer.length ? answer : [{ item: "", recipient: "", location: "", note: "" }];
+    const items = Array.isArray(answer) && answer.length ? answer : [{ item: "", recipient: "", location: "", note: "", photo: "", photoName: "" }];
     const updateItem = (index, field, nextValue) => {
       setAnswer(items.map((entry, itemIndex) => itemIndex === index ? { ...entry, [field]: nextValue } : entry));
     };
-    const addItem = () => setAnswer([...items, { item: "", recipient: "", location: "", note: "" }]);
+    const updateItemFields = (index, changes) => {
+      setAnswer(items.map((entry, itemIndex) => itemIndex === index ? { ...entry, ...changes } : entry));
+    };
+    const addItem = () => setAnswer([...items, { item: "", recipient: "", location: "", note: "", photo: "", photoName: "" }]);
     const removeItem = (index) => setAnswer(items.filter((_, itemIndex) => itemIndex !== index));
     return <div className="possession-answer">
       {items.map((entry, index) => <section className="possession-entry" key={index}>
@@ -449,6 +452,7 @@ function QuestionBody({ question, answer, setAnswer, uploaded, setUploaded }) {
           <label>Who should receive it?<input value={entry.recipient} onChange={(event) => updateItem(index, "recipient", event.target.value)} placeholder="Emma Morgan" /></label>
           <label>Where is it kept?<input value={entry.location} onChange={(event) => updateItem(index, "location", event.target.value)} placeholder="Jewelry box in the bedroom" /></label>
           <label>Personal note <span>Optional</span><textarea value={entry.note} onChange={(event) => updateItem(index, "note", event.target.value)} placeholder="Why this belongs with them…" /></label>
+          <KeepsakePhoto entry={entry} index={index} onChange={(changes) => updateItemFields(index, changes)} />
         </div>
       </section>)}
       <button className="add-possession" onClick={addItem}><Icon name="plus" /> Add another possession</button>
@@ -618,15 +622,13 @@ function KeepsakePhoto({ entry, index, onChange }) {
     if (!file) return;
     const reader = new FileReader();
     reader.addEventListener("load", () => {
-      onChange("photo", reader.result);
-      onChange("photoName", file.name);
+      onChange({ photo: reader.result, photoName: file.name });
     });
     reader.readAsDataURL(file);
     event.target.value = "";
   };
   const removePhoto = () => {
-    onChange("photo", "");
-    onChange("photoName", "");
+    onChange({ photo: "", photoName: "" });
   };
   const itemName = entry.item.trim() || `possession ${index + 1}`;
 
@@ -688,7 +690,7 @@ function PossessionsPage({ onBack }) {
             <label>Who should receive it?<input value={entry.recipient} onChange={(event) => updateItem(entry.id, "recipient", event.target.value)} placeholder="Name or relationship" /></label>
             <label>Where is it kept?<input value={entry.location} onChange={(event) => updateItem(entry.id, "location", event.target.value)} placeholder="Help them find it" /></label>
             <label className="keepsake-note">Personal note <span>Optional</span><textarea value={entry.note} onChange={(event) => updateItem(entry.id, "note", event.target.value)} placeholder="Share the story or meaning behind it…" /></label>
-            <KeepsakePhoto entry={entry} index={index} onChange={(field, value) => updateItem(entry.id, field, value)} />
+            <KeepsakePhoto entry={entry} index={index} onChange={(changes) => setItems((currentItems) => currentItems.map((item) => item.id === entry.id ? { ...item, ...changes } : item))} />
           </div>
           <button className="remove-keepsake" onClick={() => removeItem(entry.id)} aria-label={`Remove possession ${index + 1}`}><Icon name="close" /> Remove</button>
         </article>)}

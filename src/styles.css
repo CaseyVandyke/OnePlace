@@ -1070,7 +1070,7 @@ button { cursor: pointer; }
 .keepsake-fields textarea { width: 100%; min-height: 52px; border: 1px solid #d9d1d2; border-radius: 11px; padding: 12px 14px; color: var(--ink); background: #fff; font-size: 16px; line-height: 1.45; }
 .possession-entry textarea,
 .keepsake-fields textarea { min-height: 92px; resize: vertical; }
-.possession-entry label:last-child { grid-column: 1 / -1; }
+.possession-entry label:last-of-type { grid-column: 1 / -1; }
 .add-possession,
 .add-keepsake { min-height: 52px; display: inline-flex; align-items: center; justify-content: center; gap: 9px; border: 1px solid var(--purple); border-radius: 99px; color: var(--purple); background: #fff; padding: 11px 18px; font-size: 16px; font-weight: 800; }
 .possession-legal-note { display: flex; align-items: flex-start; gap: 9px; margin: 0; border-radius: 12px; padding: 13px 15px; color: #55515d; background: #f1edf1; font-size: 15px; line-height: 1.55; }
@@ -1128,7 +1128,7 @@ button { cursor: pointer; }
 
 @media (max-width: 780px) {
   .possession-entry > div { grid-template-columns: 1fr; padding: 15px; }
-  .possession-entry label:last-child { grid-column: auto; }
+  .possession-entry label:last-of-type { grid-column: auto; }
   .possession-entry label,
   .keepsake-fields label { font-size: 17px; }
   .possession-entry label > span,

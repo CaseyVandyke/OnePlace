@@ -6,6 +6,13 @@ OnePlace is a polished product concept for organizing essential documents,
 accounts, personal wishes, trusted-person access, and legacy messages. This
 repository contains fictional demonstration data only.
 
+## Continue the project
+
+Read [PROJECT_HANDOFF.md](PROJECT_HANDOFF.md) before continuing development in
+a new account or coding conversation. It records the product decisions, current
+flow, mobile accessibility requirements, security boundaries, and recommended
+next steps.
+
 ## Run locally
 
 ```sh

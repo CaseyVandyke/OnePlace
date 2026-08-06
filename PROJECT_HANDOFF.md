@@ -91,7 +91,9 @@ guide. There is no character-selection or naming step; after the short
 introduction, the user moves directly into guided setup. The puppy appears on
 the welcome map, travels between destinations, celebrates progress, and remains
 present in the main app. Short visual bark bubbles appear occasionally near the
-puppy and are disabled when the user prefers reduced motion.
+puppy. A completed step or new destination triggers one contextual phrase, then
+the puppy returns to simple “Woof!” and “Arf!” bubbles until the next action.
+The bubbles are disabled when the user prefers reduced motion.
 
 ### 4. Guided setup
 

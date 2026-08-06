@@ -193,7 +193,23 @@ const puppyBarks = [
   "Arf! Story time!",
 ];
 
-function WorldMap({ chapter = 0, compact = false, preview = false }) {
+const simpleBarks = ["Woof!", "Arf!"];
+
+function PuppyBark({ cue, cueKey }) {
+  const [message, setMessage] = useState(cue);
+  useEffect(() => {
+    let simpleBark = 0;
+    setMessage(cue);
+    const interval = window.setInterval(() => {
+      setMessage(simpleBarks[simpleBark % simpleBarks.length]);
+      simpleBark += 1;
+    }, 9000);
+    return () => window.clearInterval(interval);
+  }, [cue, cueKey]);
+  return <span className="puppy-bark" aria-hidden="true">{message}</span>;
+}
+
+function WorldMap({ chapter = 0, compact = false, preview = false, barkKey = chapter }) {
   const position = mapStops[Math.min(chapter, 5)];
   return (
     <div className={`world-map ${compact ? "map-compact" : ""} ${preview ? "map-preview" : ""}`}>
@@ -217,8 +233,8 @@ function WorldMap({ chapter = 0, compact = false, preview = false }) {
             {stop.name === "Mount Vault" && <small>Codes & digital keys</small>}
           </div>
         ))}
-        {!preview && <div className={`map-explorer map-explorer-${position.className}`} style={{ left: `${position.x}%`, top: `${position.y}%`, "--bark-delay": `${(chapter % 3) * 1.2}s` }}><span className="map-explorer-character"><PuppyGuide size={compact ? 42 : 54} /></span><span className="puppy-bark" aria-hidden="true">{puppyBarks[Math.min(chapter, puppyBarks.length - 1)]}</span><span>You are here</span></div>}
-        {preview && <div className="map-preview-guide" style={{ left: `${mapStops[0].x}%`, top: `${mapStops[0].y}%` }}><PuppyGuide size={54} /><span className="puppy-bark" aria-hidden="true">Woof! Let’s go!</span><span className="map-guide-label">Your golden guide</span></div>}
+        {!preview && <div className={`map-explorer map-explorer-${position.className}`} style={{ left: `${position.x}%`, top: `${position.y}%`, "--bark-delay": `${(chapter % 3) * 1.2}s` }}><span className="map-explorer-character"><PuppyGuide size={compact ? 42 : 54} /></span><PuppyBark key={`bark-${barkKey}`} cue={puppyBarks[Math.min(chapter, puppyBarks.length - 1)]} cueKey={barkKey} /><span>You are here</span></div>}
+        {preview && <div className="map-preview-guide" style={{ left: `${mapStops[0].x}%`, top: `${mapStops[0].y}%` }}><PuppyGuide size={54} /><PuppyBark cue="Woof! Let’s go!" cueKey={barkKey} /><span className="map-guide-label">Your golden guide</span></div>}
         {preview && <div className="map-preview-note"><Icon name="spark" size={13} /> Your family map begins here</div>}
       </div>
     </div>
@@ -301,7 +317,7 @@ function JourneyIntro({ onContinue, onSkip }) {
         <div className="journey-intro-content">
           <div className="journey-intro-art">
             <span><Icon name={item.icon} size={38} /></span>
-            {slide === 1 && <div className="intro-puppy"><PuppyGuide size={82} /><span className="puppy-bark" aria-hidden="true">Woof! I’m ready!</span></div>}
+            {slide === 1 && <div className="intro-puppy"><PuppyGuide size={82} /><PuppyBark cue="Woof! I’m ready!" cueKey={slide} /></div>}
             <i /><i /><i />
           </div>
           <div>
@@ -497,7 +513,7 @@ function SetupJourney({ onComplete, onExit }) {
       <section className="journey-layout">
         <aside className="journey-place">
           <div className="journey-place-copy"><span>YOUR PLACE</span><strong>{Math.round((current / questions.length) * 100)}% lit</strong></div>
-          <WorldMap chapter={question.chapter} compact />
+          <WorldMap chapter={question.chapter} barkKey={current} compact />
           <div className="next-unlock"><span><Icon name={chapters[question.chapter].icon} size={17} /></span><div><small>NOW BUILDING</small><strong>{chapters[question.chapter].name}</strong></div></div>
         </aside>
         <article className="question-stage" key={current}>

@@ -199,7 +199,6 @@ function PuppyBark({ cue, cueKey }) {
   const [message, setMessage] = useState(cue);
   useEffect(() => {
     let simpleBark = 0;
-    setMessage(cue);
     const interval = window.setInterval(() => {
       setMessage(simpleBarks[simpleBark % simpleBarks.length]);
       simpleBark += 1;
@@ -375,7 +374,7 @@ function QuestionBody({ question, answer, setAnswer, uploaded, setUploaded }) {
       <button className={answer === option ? "selected" : ""} onClick={() => setAnswer(option)} key={option}><span>{answer === option && <Icon name="check" size={15} />}</span>{option}</button>)}</div>;
   }
   if (question.type === "name") {
-    return <div className="name-answer"><label>Your place’s name<input autoFocus value={answer || ""} onChange={(e) => setAnswer(e.target.value)} placeholder="The Morgan family’s OnePlace" /></label><div className="name-preview"><span className="brand-door mini"><i /></span><p>Welcome to</p><strong>{answer || "your OnePlace"}</strong></div></div>;
+    return <div className="name-answer"><label>Your place’s name<input value={answer || ""} onChange={(e) => setAnswer(e.target.value)} placeholder="The Morgan family’s OnePlace" /></label><div className="name-preview"><span className="brand-door mini"><i /></span><p>Welcome to</p><strong>{answer || "your OnePlace"}</strong></div></div>;
   }
   if (question.type === "upload") {
     return <div className="upload-answer">
@@ -483,7 +482,6 @@ function SetupJourney({ onComplete, onExit }) {
   const question = questions[current];
   const answer = answers[current];
   useScrollToTop(current);
-  const completedChapters = new Set(questions.slice(0, current).map((q) => q.chapter)).size;
   const canContinue = useMemo(() => {
     if (!answer) return false;
     if (Array.isArray(answer)) {
@@ -733,7 +731,39 @@ function MainApp({ onRestart }) {
 
 function MiniQuest({ onClose }) {
   const [done, setDone] = useState(false);
-  return <div className="quest-overlay" onMouseDown={(e) => e.target === e.currentTarget && onClose()}><div className="mini-quest"><button className="quest-close" onClick={onClose}><Icon name="close" /></button>{done ? <div className="mini-done"><span><Icon name="spark" size={27} /></span><p>+20 GLOW</p><h2>Another light is on.</h2><p>Your family will know exactly where to begin.</p><button className="continue-button" onClick={onClose}>Back to my path <Icon name="arrow" /></button></div> : <><p className="question-eyebrow">TODAY’S 3-MINUTE STEP</p><h2>Where is your retirement account held?</h2><p>You can add more detail later. The institution is enough for today.</p><div className="quick-options">{["Fidelity", "Vanguard", "Charles Schwab", "Another institution"].map((x) => <button onClick={() => setDone(true)} key={x}><span>{x.slice(0, 2).toUpperCase()}</span><strong>{x}</strong><Icon name="arrow" /></button>)}</div><button className="skip-question" onClick={onClose}>Not today</button></>}</div></div>;
+  return (
+    <div className="quest-overlay" role="dialog" aria-modal="true" aria-labelledby="mini-quest-title">
+      <button className="quest-backdrop" type="button" onClick={onClose} aria-label="Close quick step" />
+      <div className="mini-quest">
+        <button className="quest-close" type="button" onClick={onClose} aria-label="Close quick step"><Icon name="close" /></button>
+        {done ? (
+          <div className="mini-done">
+            <span><Icon name="spark" size={27} /></span>
+            <p>+20 GLOW</p>
+            <h2 id="mini-quest-title">Another light is on.</h2>
+            <p>Your family will know exactly where to begin.</p>
+            <button className="continue-button" onClick={onClose}>Back to my path <Icon name="arrow" /></button>
+          </div>
+        ) : (
+          <>
+            <p className="question-eyebrow">TODAY’S 3-MINUTE STEP</p>
+            <h2 id="mini-quest-title">Where is your retirement account held?</h2>
+            <p>You can add more detail later. The institution is enough for today.</p>
+            <div className="quick-options">
+              {["Fidelity", "Vanguard", "Charles Schwab", "Another institution"].map((option) => (
+                <button onClick={() => setDone(true)} key={option}>
+                  <span>{option.slice(0, 2).toUpperCase()}</span>
+                  <strong>{option}</strong>
+                  <Icon name="arrow" />
+                </button>
+              ))}
+            </div>
+            <button className="skip-question" onClick={onClose}>Not today</button>
+          </>
+        )}
+      </div>
+    </div>
+  );
 }
 
 export default function App() {

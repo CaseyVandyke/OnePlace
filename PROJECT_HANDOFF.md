@@ -1,6 +1,6 @@
 # OnePlace Project Handoff
 
-Last updated: July 29, 2026  
+Last updated: August 5, 2026
 Repository: https://github.com/CaseyVandyke/OnePlace  
 Live prototype: https://caseyvandyke.github.io/OnePlace/  
 Current handoff baseline: commit `a8166f9`
@@ -46,8 +46,8 @@ current prototype.
 - The experience should feel like a family journey rather than a recovery app,
   enterprise dashboard, or checklist of death-related chores.
 - Gamification is meaningful rather than childish: users earn **Glow**, light
-  locations on a map, complete small steps, and move a chosen guide between
-  destinations.
+  locations on a map, complete small steps, and travel with a friendly puppy
+  guide between destinations.
 - The primary audience includes older adults. Readability is a product
   requirement, not a finishing detail.
 
@@ -84,11 +84,12 @@ The landing page introduces the value proposition and offers:
 A short, multi-screen introduction explains how the journey works before the
 user begins. Mobile page changes must return to the top.
 
-### 3. Character picker
+### 3. Puppy guide
 
-The user chooses a guide first and can optionally name it. Character selection
-and naming were deliberately separated conceptually so the interaction does not
-feel like renaming a preexisting named character.
+A single friendly puppy is built into the journey as the user’s guide. There is
+no character-selection or naming step; after the short introduction, the user
+moves directly into guided setup. The puppy appears on the welcome map, travels
+between destinations, celebrates progress, and remains present in the main app.
 
 ### 4. Guided setup
 
@@ -128,7 +129,7 @@ The prototype main app includes:
 - **Memory Lake** — stories, notes, and recordings
 - **Mount Vault** — passwords, vault codes, devices, and digital keys
 
-The guide visibly moves between stops. The movement was intentionally slowed so
+The puppy guide visibly moves between stops. The movement was intentionally slowed so
 the user can see it after the page returns to the top. The current location has
 a pulsing treatment and a large “You are here” badge.
 

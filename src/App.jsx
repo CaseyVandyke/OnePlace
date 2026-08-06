@@ -55,23 +55,25 @@ function useScrollToTop(value) {
   }, [value]);
 }
 
-const explorers = [
-  { id: "coral", name: "Your guide", description: "Warm & brave", style: "Coral coat", skin: "#8f563f", hair: "#35251f", coat: "#df5e59" },
-  { id: "blue", name: "Your guide", description: "Calm & steady", style: "Blue coat", skin: "#d29a72", hair: "#5b3929", coat: "#4775a5" },
-  { id: "violet", name: "Your guide", description: "Bright & curious", style: "Violet coat", skin: "#6d4032", hair: "#1f1b24", coat: "#7758a5" },
-  { id: "rose", name: "Your guide", description: "Kind & hopeful", style: "Rose coat", skin: "#e0ad88", hair: "#b36942", coat: "#bd526e" },
-];
-
-function Explorer({ explorer = explorers[0], size = 54 }) {
+function PuppyGuide({ size = 54 }) {
   return (
-    <span className="explorer" style={{ "--size": `${size}px`, "--skin": explorer.skin, "--hair": explorer.hair, "--coat": explorer.coat }}>
-      <i className="explorer-hair" />
-      <i className="explorer-head"><b /><b /></i>
-      <i className="explorer-body" />
-      <i className="explorer-pack" />
-      <i className="explorer-leg leg-left" />
-      <i className="explorer-leg leg-right" />
-    </span>
+    <svg className="puppy-guide" width={size} height={size * 1.16} viewBox="0 0 100 116" aria-hidden="true">
+      <path className="puppy-tail" d="M76 79c17 1 20-13 13-20" />
+      <rect className="puppy-pack" x="14" y="60" width="29" height="31" rx="11" />
+      <path className="puppy-body" d="M28 58c5-8 38-8 44 0 6 9 5 34-1 42-7 9-35 9-42 0-6-8-7-33-1-42Z" />
+      <path className="puppy-leg" d="M31 89v18c0 5 9 5 10 0l2-18M69 89v18c0 5-9 5-10 0l-2-18" />
+      <path className="puppy-ear" d="M29 19C13 20 11 38 24 48l13-17Z" />
+      <path className="puppy-ear" d="M71 19c16 1 18 19 5 29L63 31Z" />
+      <ellipse className="puppy-head" cx="50" cy="38" rx="29" ry="28" />
+      <path className="puppy-blaze" d="M50 11c-8 8-9 18-4 26l8 1c5-9 4-19-4-27Z" />
+      <circle className="puppy-eye" cx="39" cy="36" r="3.4" />
+      <circle className="puppy-eye" cx="61" cy="36" r="3.4" />
+      <ellipse className="puppy-muzzle" cx="50" cy="49" rx="13" ry="10" />
+      <path className="puppy-nose" d="M45 46c0-4 10-4 10 0 0 3-3 5-5 5s-5-2-5-5Z" />
+      <path className="puppy-smile" d="M50 51c-1 5-7 6-9 3m9-3c1 5 7 6 9 3" />
+      <path className="puppy-collar" d="M28 61c13 7 31 7 44 0" />
+      <circle className="puppy-tag" cx="50" cy="68" r="5" />
+    </svg>
   );
 }
 
@@ -181,7 +183,7 @@ const mapStops = [
   { name: "Mount Vault", icon: "key", x: 79, y: 14, className: "mount-vault" },
 ];
 
-function WorldMap({ chapter = 0, explorer = explorers[0], compact = false, preview = false }) {
+function WorldMap({ chapter = 0, compact = false, preview = false }) {
   const position = mapStops[Math.min(chapter, 5)];
   return (
     <div className={`world-map ${compact ? "map-compact" : ""} ${preview ? "map-preview" : ""}`}>
@@ -205,35 +207,11 @@ function WorldMap({ chapter = 0, explorer = explorers[0], compact = false, previ
             {stop.name === "Mount Vault" && <small>Codes & digital keys</small>}
           </div>
         ))}
-        {!preview && <div className={`map-explorer map-explorer-${position.className}`} style={{ left: `${position.x}%`, top: `${position.y}%` }}><span className="map-explorer-character"><Explorer explorer={explorer} size={compact ? 42 : 54} /></span><span>You are here</span></div>}
+        {!preview && <div className={`map-explorer map-explorer-${position.className}`} style={{ left: `${position.x}%`, top: `${position.y}%` }}><span className="map-explorer-character"><PuppyGuide size={compact ? 42 : 54} /></span><span>You are here</span></div>}
+        {preview && <div className="map-preview-guide" style={{ left: `${mapStops[0].x}%`, top: `${mapStops[0].y}%` }}><PuppyGuide size={54} /><span>Your puppy guide</span></div>}
         {preview && <div className="map-preview-note"><Icon name="spark" size={13} /> Your family map begins here</div>}
       </div>
     </div>
-  );
-}
-
-function AvatarPicker({ onChoose, onBack }) {
-  const [selected, setSelected] = useState(explorers[0]);
-  const [guideName, setGuideName] = useState("");
-  const chosenGuide = { ...selected, name: guideName.trim() || selected.name };
-  const continueLabel = guideName.trim() ? `Travel with ${guideName.trim()}` : "Continue with this guide";
-  return (
-    <main className="avatar-screen">
-      <header><Logo /><button onClick={onBack}><Icon name="back" size={17} /> Back</button></header>
-      <section>
-        <div className="avatar-copy">
-          <p className="question-eyebrow">BEFORE WE SET OUT</p>
-          <h1>Pick your character.</h1>
-          <p>Choose the explorer that feels right. They’ll celebrate each completed task and travel with you around your family map.</p>
-          <div className="explorer-options">
-            {explorers.map((item) => <button className={selected.id === item.id ? "selected" : ""} onClick={() => setSelected(item)} key={item.id}><Explorer explorer={item} size={64} /><strong>{item.description}</strong><span>{item.style}</span><i>{selected.id === item.id && <Icon name="check" size={13} />}</i></button>)}
-          </div>
-          <label className="guide-name">Name your character <span>Optional</span><input value={guideName} maxLength="24" onChange={(event) => setGuideName(event.target.value)} placeholder="Type any name, or leave this blank" /></label>
-          <button className="continue-button avatar-continue" onClick={() => onChoose(chosenGuide)}>{continueLabel} <Icon name="arrow" /></button>
-        </div>
-        <div className="avatar-map"><WorldMap chapter={0} explorer={chosenGuide} compact /><div><Explorer explorer={chosenGuide} size={76} /><p><strong>{chosenGuide.name} is ready.</strong><span>First stop: Basecamp</span></p></div></div>
-      </section>
-    </main>
   );
 }
 
@@ -279,8 +257,8 @@ const journeyIntroSlides = [
   {
     eyebrow: "HOW THE JOURNEY WORKS · 2 OF 3",
     icon: "spark",
-    title: "Your guide lights the way.",
-    copy: "Choose a character to travel across your family map. Every finished task earns Glow and brings another important place to life.",
+    title: "Your puppy lights the way.",
+    copy: "A friendly puppy will travel across your family map with you. Every finished task earns Glow and brings another important place to life.",
     note: "Discover new places, then light them by making progress.",
   },
   {
@@ -313,7 +291,7 @@ function JourneyIntro({ onContinue, onSkip }) {
         <div className="journey-intro-content">
           <div className="journey-intro-art">
             <span><Icon name={item.icon} size={38} /></span>
-            {slide === 1 && <Explorer explorer={explorers[0]} size={82} />}
+            {slide === 1 && <PuppyGuide size={82} />}
             <i /><i /><i />
           </div>
           <div>
@@ -330,7 +308,7 @@ function JourneyIntro({ onContinue, onSkip }) {
           <div>
             <button className="back-button" disabled={slide === 0} onClick={() => setSlide((value) => value - 1)}><Icon name="back" size={18} /> Back</button>
             <button className="continue-button" onClick={() => isLast ? onContinue() : setSlide((value) => value + 1)}>
-              {isLast ? "Choose my character" : "Next"} <Icon name="arrow" size={18} />
+              {isLast ? "Start my journey" : "Next"} <Icon name="arrow" size={18} />
             </button>
           </div>
         </footer>
@@ -470,7 +448,7 @@ function QuestionBody({ question, answer, setAnswer, uploaded, setUploaded }) {
   return null;
 }
 
-function SetupJourney({ onComplete, onExit, explorer }) {
+function SetupJourney({ onComplete, onExit }) {
   const [current, setCurrent] = useState(0);
   const [answers, setAnswers] = useState({});
   const [points, setPoints] = useState(0);
@@ -509,7 +487,7 @@ function SetupJourney({ onComplete, onExit, explorer }) {
       <section className="journey-layout">
         <aside className="journey-place">
           <div className="journey-place-copy"><span>YOUR PLACE</span><strong>{Math.round((current / questions.length) * 100)}% lit</strong></div>
-          <WorldMap chapter={question.chapter} explorer={explorer} compact />
+          <WorldMap chapter={question.chapter} compact />
           <div className="next-unlock"><span><Icon name={chapters[question.chapter].icon} size={17} /></span><div><small>NOW BUILDING</small><strong>{chapters[question.chapter].name}</strong></div></div>
         </aside>
         <article className="question-stage" key={current}>
@@ -530,13 +508,13 @@ function SetupJourney({ onComplete, onExit, explorer }) {
   );
 }
 
-function Complete({ points, onEnter, explorer }) {
+function Complete({ points, onEnter }) {
   return (
     <main className="complete-screen">
       <div className="confetti">{Array.from({ length: 18 }).map((_, i) => <i key={i} />)}</div>
       <Logo light />
       <section>
-        <div className="complete-art"><WorldMap chapter={5} explorer={explorer} compact /></div>
+        <div className="complete-art"><WorldMap chapter={5} compact /></div>
         <div className="complete-copy">
           <span className="hello-pill"><Icon name="spark" size={15} /> First path complete</span>
           <h1>Look what you’ve<br />already made.</h1>
@@ -549,14 +527,14 @@ function Complete({ points, onEnter, explorer }) {
   );
 }
 
-function AppHeader({ active, setActive, onJourney, explorer }) {
+function AppHeader({ active, setActive, onJourney }) {
   const [menu, setMenu] = useState(false);
   const items = ["My path", "My things", "My people", "Messages"];
   return (
     <header className="app-header">
       <Logo />
       <nav className={menu ? "open" : ""}>{items.map((item) => <button className={active === item ? "active" : ""} onClick={() => { setActive(item); setMenu(false); }} key={item}>{item}</button>)}</nav>
-      <div className="app-header-actions"><span><Icon name="spark" size={15} /> 95 glow</span><button onClick={onJourney}>Continue my path</button><div className="app-avatar"><Explorer explorer={explorer} size={32} /></div><button className="mobile-menu" onClick={() => setMenu(!menu)}><Icon name={menu ? "close" : "menu"} /></button></div>
+      <div className="app-header-actions"><span><Icon name="spark" size={15} /> 95 glow</span><button onClick={onJourney}>Continue my path</button><div className="app-avatar" role="img" aria-label="Your puppy guide"><PuppyGuide size={34} /></div><button className="mobile-menu" onClick={() => setMenu(!menu)}><Icon name={menu ? "close" : "menu"} /></button></div>
     </header>
   );
 }
@@ -569,12 +547,12 @@ const pathStops = [
   { chapter: "Only you", title: "Leave the stories no document can tell", copy: "Voice notes, letters and personal wishes", icon: "heart", state: "", count: "1 of 5" },
 ];
 
-function PathHome({ onContinue, explorer }) {
+function PathHome({ onContinue }) {
   return (
     <div className="path-page">
       <section className="path-intro">
         <div><span className="hello-pill"><i /> Wednesday’s small win</span><h1>Your place is<br /><em>42% glowing.</em></h1><p>One thoughtful answer today will make the path clearer for your family tomorrow.</p><button className="continue-button" onClick={onContinue}>Take today’s 3-minute step <Icon name="arrow" /></button></div>
-        <WorldMap chapter={2} explorer={explorer} compact />
+        <WorldMap chapter={2} compact />
       </section>
       <section className="today-quest">
         <div className="quest-number"><span>+20</span><small>GLOW</small></div>
@@ -709,14 +687,14 @@ function MessagesPage() {
   return <div className="messages-page"><header><p>MESSAGES</p><h1>Leave more than instructions.</h1><span>Your voice, your stories, your way of saying what matters.</span></header><section className="message-stage"><div className="record-disc"><button><Icon name="play" size={30} /></button><i /><i /></div><div><small>FOR MY FAMILY · 0:14</small><h2>“There are a few things I hope you’ll always remember...”</h2><div className="big-wave">{Array.from({ length: 38 }).map((_, i) => <i key={i} style={{ height: `${7 + ((i * 11) % 29)}px` }} />)}</div><button><Icon name="mic" /> Record another message</button></div></section><section className="message-prompts"><p>NOT SURE WHAT TO SAY?</p><div>{["Tell the story behind something you treasure.", "Share a family tradition you hope continues.", "Say what you’re most proud of.", "Leave advice for a future milestone."].map((prompt, i) => <button key={prompt}><span>0{i + 1}</span><strong>{prompt}</strong><Icon name="arrow" /></button>)}</div></section></div>;
 }
 
-function MainApp({ onRestart, explorer }) {
+function MainApp({ onRestart }) {
   const [active, setActive] = useState("My path");
   const [resume, setResume] = useState(false);
   useScrollToTop(active);
   return (
     <main className="main-app">
-      <AppHeader active={active === "Possessions" ? "My things" : active} setActive={setActive} onJourney={() => setResume(true)} explorer={explorer} />
-      {active === "My path" && <PathHome onContinue={() => setResume(true)} explorer={explorer} />}
+      <AppHeader active={active === "Possessions" ? "My things" : active} setActive={setActive} onJourney={() => setResume(true)} />
+      {active === "My path" && <PathHome onContinue={() => setResume(true)} />}
       {active === "My things" && <ThingsPage onContinue={() => setResume(true)} onPossessions={() => setActive("Possessions")} />}
       {active === "Possessions" && <PossessionsPage onBack={() => setActive("My things")} />}
       {active === "My people" && <PeoplePage />}
@@ -735,7 +713,6 @@ function MiniQuest({ onClose }) {
 export default function App() {
   const [screen, setScreen] = useState("welcome");
   const [points, setPoints] = useState(0);
-  const [explorer, setExplorer] = useState(explorers[0]);
   useEffect(() => {
     const previousRestoration = window.history.scrollRestoration;
     window.history.scrollRestoration = "manual";
@@ -759,9 +736,8 @@ export default function App() {
   }, []);
   useScrollToTop(screen);
   if (screen === "welcome") return <Welcome onStart={() => setScreen("intro")} onPreview={() => setScreen("app")} />;
-  if (screen === "intro") return <JourneyIntro onSkip={() => setScreen("avatar")} onContinue={() => setScreen("avatar")} />;
-  if (screen === "avatar") return <AvatarPicker onBack={() => setScreen("intro")} onChoose={(value) => { setExplorer(value); setScreen("journey"); }} />;
-  if (screen === "journey") return <SetupJourney explorer={explorer} onExit={() => setScreen("welcome")} onComplete={(value) => { setPoints(value); setScreen("complete"); }} />;
-  if (screen === "complete") return <Complete explorer={explorer} points={points} onEnter={() => setScreen("app")} />;
-  return <MainApp explorer={explorer} onRestart={() => setScreen("welcome")} />;
+  if (screen === "intro") return <JourneyIntro onSkip={() => setScreen("journey")} onContinue={() => setScreen("journey")} />;
+  if (screen === "journey") return <SetupJourney onExit={() => setScreen("welcome")} onComplete={(value) => { setPoints(value); setScreen("complete"); }} />;
+  if (screen === "complete") return <Complete points={points} onEnter={() => setScreen("app")} />;
+  return <MainApp onRestart={() => setScreen("welcome")} />;
 }

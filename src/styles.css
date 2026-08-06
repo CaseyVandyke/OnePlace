@@ -58,16 +58,17 @@ button { cursor: pointer; }
 
 /* Puppy guide and family map */
 .puppy-guide { display: block; overflow: visible; filter: drop-shadow(0 5px 5px rgba(24,20,28,.24)); }
-.puppy-tail { fill: none; stroke: #9a5b38; stroke-width: 10; stroke-linecap: round; }
+.puppy-tail { fill: #dca24b; stroke: #9f6828; stroke-width: 3; stroke-linejoin: round; }
 .puppy-pack { fill: #4775a5; stroke: #2f557d; stroke-width: 3; }
-.puppy-body { fill: #b96f45; stroke: #7b472f; stroke-width: 3; }
-.puppy-leg { fill: none; stroke: #8f563f; stroke-width: 11; stroke-linecap: round; stroke-linejoin: round; }
-.puppy-ear { fill: #6b3d2e; stroke: #4d2b22; stroke-width: 3; stroke-linejoin: round; }
-.puppy-head { fill: #ca8458; stroke: #7b472f; stroke-width: 3; }
-.puppy-blaze { fill: #f2d4b7; }
+.puppy-body { fill: #dfa64d; stroke: #9f6828; stroke-width: 3; }
+.puppy-chest { fill: #f3d28f; opacity: .9; }
+.puppy-leg { fill: none; stroke: #d89a40; stroke-width: 11; stroke-linecap: round; stroke-linejoin: round; }
+.puppy-ear { fill: #c98632; stroke: #8d5924; stroke-width: 3; stroke-linejoin: round; }
+.puppy-head { fill: #e5ae55; stroke: #9f6828; stroke-width: 3; }
+.puppy-blaze { fill: #f2cb7e; }
 .puppy-eye, .puppy-nose { fill: #29212a; }
-.puppy-muzzle { fill: #efd0af; }
-.puppy-smile { fill: none; stroke: #57382f; stroke-width: 2.4; stroke-linecap: round; }
+.puppy-muzzle { fill: #f5ddb0; }
+.puppy-smile { fill: none; stroke: #684629; stroke-width: 2.4; stroke-linecap: round; }
 .puppy-collar { fill: none; stroke: var(--red); stroke-width: 6; stroke-linecap: round; }
 .puppy-tag { fill: var(--purple); stroke: #fff1d7; stroke-width: 2; }
 .world-map { position: relative; width: min(650px,100%); aspect-ratio: 1.22; justify-self: center; filter: drop-shadow(0 28px 45px rgba(5,3,15,.28)); }

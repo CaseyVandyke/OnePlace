@@ -58,12 +58,13 @@ function useScrollToTop(value) {
 function PuppyGuide({ size = 54 }) {
   return (
     <svg className="puppy-guide" width={size} height={size * 1.16} viewBox="0 0 100 116" aria-hidden="true">
-      <path className="puppy-tail" d="M76 79c17 1 20-13 13-20" />
+      <path className="puppy-tail" d="M73 82c11 3 21-3 22-13 1-8-3-14-10-17 3 8 0 14-7 17-6 2-9 7-5 13Z" />
       <rect className="puppy-pack" x="14" y="60" width="29" height="31" rx="11" />
       <path className="puppy-body" d="M28 58c5-8 38-8 44 0 6 9 5 34-1 42-7 9-35 9-42 0-6-8-7-33-1-42Z" />
+      <path className="puppy-chest" d="M39 62c5 5 17 5 22 0 1 13-2 28-11 36-9-8-12-23-11-36Z" />
       <path className="puppy-leg" d="M31 89v18c0 5 9 5 10 0l2-18M69 89v18c0 5-9 5-10 0l-2-18" />
-      <path className="puppy-ear" d="M29 19C13 20 11 38 24 48l13-17Z" />
-      <path className="puppy-ear" d="M71 19c16 1 18 19 5 29L63 31Z" />
+      <path className="puppy-ear" d="M30 18C14 18 9 35 17 49c3 5 8 8 13 9l8-28Z" />
+      <path className="puppy-ear" d="M70 18c16 0 21 17 13 31-3 5-8 8-13 9l-8-28Z" />
       <ellipse className="puppy-head" cx="50" cy="38" rx="29" ry="28" />
       <path className="puppy-blaze" d="M50 11c-8 8-9 18-4 26l8 1c5-9 4-19-4-27Z" />
       <circle className="puppy-eye" cx="39" cy="36" r="3.4" />
@@ -208,7 +209,7 @@ function WorldMap({ chapter = 0, compact = false, preview = false }) {
           </div>
         ))}
         {!preview && <div className={`map-explorer map-explorer-${position.className}`} style={{ left: `${position.x}%`, top: `${position.y}%` }}><span className="map-explorer-character"><PuppyGuide size={compact ? 42 : 54} /></span><span>You are here</span></div>}
-        {preview && <div className="map-preview-guide" style={{ left: `${mapStops[0].x}%`, top: `${mapStops[0].y}%` }}><PuppyGuide size={54} /><span>Your puppy guide</span></div>}
+        {preview && <div className="map-preview-guide" style={{ left: `${mapStops[0].x}%`, top: `${mapStops[0].y}%` }}><PuppyGuide size={54} /><span>Your golden guide</span></div>}
         {preview && <div className="map-preview-note"><Icon name="spark" size={13} /> Your family map begins here</div>}
       </div>
     </div>
@@ -257,8 +258,8 @@ const journeyIntroSlides = [
   {
     eyebrow: "HOW THE JOURNEY WORKS · 2 OF 3",
     icon: "spark",
-    title: "Your puppy lights the way.",
-    copy: "A friendly puppy will travel across your family map with you. Every finished task earns Glow and brings another important place to life.",
+    title: "Your golden guide lights the way.",
+    copy: "A friendly golden retriever puppy will travel across your family map with you. Every finished task earns Glow and brings another important place to life.",
     note: "Discover new places, then light them by making progress.",
   },
   {

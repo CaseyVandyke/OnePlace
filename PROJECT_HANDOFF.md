@@ -46,8 +46,8 @@ current prototype.
 - The experience should feel like a family journey rather than a recovery app,
   enterprise dashboard, or checklist of death-related chores.
 - Gamification is meaningful rather than childish: users earn **Glow**, light
-  locations on a map, complete small steps, and travel with a friendly puppy
-  guide between destinations.
+  locations on a map, complete small steps, and travel with a friendly golden
+  retriever puppy guide between destinations.
 - The primary audience includes older adults. Readability is a product
   requirement, not a finishing detail.
 
@@ -86,10 +86,11 @@ user begins. Mobile page changes must return to the top.
 
 ### 3. Puppy guide
 
-A single friendly puppy is built into the journey as the user’s guide. There is
-no character-selection or naming step; after the short introduction, the user
-moves directly into guided setup. The puppy appears on the welcome map, travels
-between destinations, celebrates progress, and remains present in the main app.
+A single friendly golden retriever puppy is built into the journey as the user’s
+guide. There is no character-selection or naming step; after the short
+introduction, the user moves directly into guided setup. The puppy appears on
+the welcome map, travels between destinations, celebrates progress, and remains
+present in the main app.
 
 ### 4. Guided setup
 

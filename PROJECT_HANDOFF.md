@@ -90,7 +90,8 @@ A single friendly golden retriever puppy is built into the journey as the userâ€
 guide. There is no character-selection or naming step; after the short
 introduction, the user moves directly into guided setup. The puppy appears on
 the welcome map, travels between destinations, celebrates progress, and remains
-present in the main app.
+present in the main app. Short visual bark bubbles appear occasionally near the
+puppy and are disabled when the user prefers reduced motion.
 
 ### 4. Guided setup
 

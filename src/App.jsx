@@ -184,6 +184,15 @@ const mapStops = [
   { name: "Mount Vault", icon: "key", x: 79, y: 14, className: "mount-vault" },
 ];
 
+const puppyBarks = [
+  "Woof! Let’s go!",
+  "Arf! This way!",
+  "Woof! Nice work!",
+  "Yip! Keep going!",
+  "Woof! Friends ahead!",
+  "Arf! Story time!",
+];
+
 function WorldMap({ chapter = 0, compact = false, preview = false }) {
   const position = mapStops[Math.min(chapter, 5)];
   return (
@@ -208,8 +217,8 @@ function WorldMap({ chapter = 0, compact = false, preview = false }) {
             {stop.name === "Mount Vault" && <small>Codes & digital keys</small>}
           </div>
         ))}
-        {!preview && <div className={`map-explorer map-explorer-${position.className}`} style={{ left: `${position.x}%`, top: `${position.y}%` }}><span className="map-explorer-character"><PuppyGuide size={compact ? 42 : 54} /></span><span>You are here</span></div>}
-        {preview && <div className="map-preview-guide" style={{ left: `${mapStops[0].x}%`, top: `${mapStops[0].y}%` }}><PuppyGuide size={54} /><span>Your golden guide</span></div>}
+        {!preview && <div className={`map-explorer map-explorer-${position.className}`} style={{ left: `${position.x}%`, top: `${position.y}%`, "--bark-delay": `${(chapter % 3) * 1.2}s` }}><span className="map-explorer-character"><PuppyGuide size={compact ? 42 : 54} /></span><span className="puppy-bark" aria-hidden="true">{puppyBarks[Math.min(chapter, puppyBarks.length - 1)]}</span><span>You are here</span></div>}
+        {preview && <div className="map-preview-guide" style={{ left: `${mapStops[0].x}%`, top: `${mapStops[0].y}%` }}><PuppyGuide size={54} /><span className="puppy-bark" aria-hidden="true">Woof! Let’s go!</span><span className="map-guide-label">Your golden guide</span></div>}
         {preview && <div className="map-preview-note"><Icon name="spark" size={13} /> Your family map begins here</div>}
       </div>
     </div>
@@ -292,7 +301,7 @@ function JourneyIntro({ onContinue, onSkip }) {
         <div className="journey-intro-content">
           <div className="journey-intro-art">
             <span><Icon name={item.icon} size={38} /></span>
-            {slide === 1 && <PuppyGuide size={82} />}
+            {slide === 1 && <div className="intro-puppy"><PuppyGuide size={82} /><span className="puppy-bark" aria-hidden="true">Woof! I’m ready!</span></div>}
             <i /><i /><i />
           </div>
           <div>

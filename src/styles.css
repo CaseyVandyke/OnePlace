@@ -82,7 +82,7 @@ button { cursor: pointer; }
 .map-stop { position: absolute; z-index: 5; transform: translate(-50%,-50%); display: flex; flex-direction: column; align-items: center; min-width: 75px; color: #a49cab; transition: filter .4s,opacity .4s; }.map-stop > span { width: 30px; height: 30px; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.14); border-radius: 50%; background: #373245; box-shadow: 0 4px 12px rgba(10,8,18,.25); }.map-stop strong { margin-top: 4px; padding: 2px 5px; border-radius: 4px; background: rgba(30,27,44,.7); white-space: nowrap; font: 500 7px "DM Mono"; letter-spacing: .02em; }.map-stop small { color: #8c8292; white-space: nowrap; margin-top: 2px; font-size: 5px; }.map-stop.unlocked { color: #fff; }.map-stop.unlocked > span { border-color: rgba(255,194,188,.58); color: #fff; background: linear-gradient(145deg,#c95c68,#725793); box-shadow: 0 0 0 5px rgba(220,100,111,.08),0 7px 15px rgba(10,8,18,.3); }.map-stop.locked { opacity: .5; filter: grayscale(1); }
 .map-explorer { position: absolute; z-index: 9; transform: translate(-50%,-93%); transition: left .65s cubic-bezier(.2,.8,.2,1),top .65s cubic-bezier(.2,.8,.2,1); }.map-explorer::after { content: ""; position: absolute; width: 28px; height: 8px; left: 50%; bottom: 0; transform: translateX(-50%); border-radius: 50%; background: rgba(0,0,0,.22); filter: blur(2px); }.map-explorer > span:last-child { position: absolute; left: 50%; bottom: -11px; transform: translateX(-50%); padding: 2px 5px; border-radius: 4px; color: #fff; background: var(--red); white-space: nowrap; font: 500 5px "DM Mono"; }
 .map-preview-guide { position: absolute; z-index: 9; transform: translate(-50%,-90%); }
-.map-preview-guide > span { position: absolute; left: 50%; bottom: calc(100% + 3px); transform: translateX(-18%); border-radius: 7px; padding: 7px 10px; color: #fff; background: var(--red); box-shadow: 0 5px 16px rgba(15,11,25,.34); white-space: nowrap; font-size: 16px; font-weight: 700; }
+.map-preview-guide > .map-guide-label { position: absolute; left: 50%; bottom: calc(100% + 3px); transform: translateX(-18%); border-radius: 7px; padding: 7px 10px; color: #fff; background: var(--red); box-shadow: 0 5px 16px rgba(15,11,25,.34); white-space: nowrap; font-size: 16px; font-weight: 700; }
 .map-preview-note { position: absolute; z-index: 8; left: 50%; bottom: -44px; transform: translateX(-50%); display: flex; align-items: center; gap: 5px; border: 1px solid rgba(255,255,255,.12); border-radius: 99px; padding: 7px 10px; color: #e7dbe4; background: rgba(29,27,49,.94); font-size: 7px; white-space: nowrap; }.map-preview { margin-bottom: 52px; }.map-compact { width: min(570px,100%); }
 
 /* The living place illustration */
@@ -658,6 +658,59 @@ button { cursor: pointer; }
 .map-preview-guide .puppy-guide {
   animation: map-guide-bob 2.6s ease-in-out infinite;
 }
+.puppy-bark {
+  position: absolute;
+  z-index: 12;
+  left: calc(100% + 10px);
+  top: -12px;
+  min-width: max-content;
+  padding: 8px 11px;
+  border: 2px solid #d8cfd4;
+  border-radius: 13px 13px 13px 4px;
+  color: var(--ink);
+  background: #fffdf8;
+  box-shadow: 0 8px 22px rgba(15,11,25,.22);
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.2;
+  opacity: 0;
+  transform: translate(-5px,5px) scale(.9);
+  transform-origin: bottom left;
+  animation: puppy-bark-bubble 9s var(--bark-delay, 0s) ease-in-out infinite;
+}
+.puppy-bark::after {
+  content: "";
+  position: absolute;
+  left: -7px;
+  bottom: 7px;
+  width: 11px;
+  height: 11px;
+  border-bottom: 2px solid #d8cfd4;
+  border-left: 2px solid #d8cfd4;
+  background: #fffdf8;
+  transform: rotate(45deg);
+}
+.map-explorer-kindred-grove .puppy-bark,
+.map-explorer-safety-harbor .puppy-bark {
+  right: calc(100% + 10px);
+  left: auto;
+  border-radius: 13px 13px 4px;
+  transform-origin: bottom right;
+}
+.map-explorer-kindred-grove .puppy-bark::after,
+.map-explorer-safety-harbor .puppy-bark::after {
+  right: -7px;
+  left: auto;
+  border-right: 2px solid #d8cfd4;
+  border-left: 0;
+  transform: rotate(-45deg);
+}
+.intro-puppy {
+  position: absolute;
+  right: 15%;
+  bottom: 10%;
+}
+.intro-puppy .puppy-bark { --bark-delay: .7s; }
 .map-explorer-character::after {
   content: "";
   position: absolute;
@@ -715,6 +768,15 @@ button { cursor: pointer; }
 @keyframes map-guide-pulse {
   0% { opacity: .9; transform: translateX(-50%) scale(.7); }
   75%, 100% { opacity: 0; transform: translateX(-50%) scale(1.45); }
+}
+
+@keyframes puppy-bark-bubble {
+  0%, 12%, 38%, 100% { opacity: 0; transform: translate(-5px,5px) scale(.9); }
+  17%, 32% { opacity: 1; transform: translate(0,0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .puppy-bark { display: none; animation: none; }
 }
 
 @media (max-width: 780px) {
@@ -849,11 +911,6 @@ button { cursor: pointer; }
   color: #fff;
   background: linear-gradient(145deg, var(--red), var(--purple) 56%, var(--blue));
   box-shadow: 0 16px 38px rgba(101,68,128,.25);
-}
-.journey-intro-art > .puppy-guide {
-  position: absolute;
-  right: 15%;
-  bottom: 10%;
 }
 .journey-intro-art > i {
   position: absolute;

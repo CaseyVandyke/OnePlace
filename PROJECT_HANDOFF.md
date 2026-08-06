@@ -196,6 +196,8 @@ remove the `history.scrollRestoration`, overscroll, touch-boundary, or
 
 - React 19
 - Vite 8
+- Vitest 4 with React Testing Library
+- ESLint 9 with React, Hooks, and accessibility checks
 - Plain JSX and one main stylesheet
 - No router
 - No backend
@@ -228,6 +230,8 @@ npm run dev
 Production verification:
 
 ```sh
+npm run lint
+npm test
 npm run build
 git diff --check
 ```

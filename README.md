@@ -23,6 +23,8 @@ npm run dev
 ## Production build
 
 ```sh
+npm run lint
+npm test
 npm run build
 npm run preview
 ```

@@ -23,6 +23,21 @@ Object.defineProperty(window, "scrollTo", {
   value: vi.fn(),
 });
 
+Object.defineProperties(window.HTMLDialogElement.prototype, {
+  showModal: {
+    configurable: true,
+    value() {
+      this.open = true;
+    },
+  },
+  close: {
+    configurable: true,
+    value() {
+      this.open = false;
+    },
+  },
+});
+
 const storage = new Map();
 Object.defineProperty(window, "localStorage", {
   configurable: true,

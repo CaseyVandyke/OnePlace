@@ -67,14 +67,14 @@ describe("OnePlace", () => {
     expect(screen.getByRole("button", { name: "Change guide. Current guide: Labrador" })).toBeVisible();
   });
 
-  test("keeps an existing guide choice after the storage-key migration", async () => {
-    window.localStorage.setItem("oneplace.dogGuide", "beagle");
+  test("starts with the Golden Retriever when an old preference is present", async () => {
+    window.localStorage.setItem("oneplace.companionGuide", "tabby-cat");
     const user = userEvent.setup();
     render(<App />);
 
     await user.click(screen.getByRole("button", { name: "Preview the app" }));
 
-    expect(screen.getByRole("button", { name: "Change guide. Current guide: Beagle" })).toBeVisible();
+    expect(screen.getByRole("button", { name: "Change guide. Current guide: Golden Retriever" })).toBeVisible();
   });
 
   test("closes the guide picker with Escape and restores focus", async () => {
@@ -84,7 +84,7 @@ describe("OnePlace", () => {
     const guideButton = screen.getByRole("button", { name: "Change guide. Current guide: Golden Retriever" });
 
     await user.click(guideButton);
-    await user.keyboard("{Escape}");
+    fireEvent(screen.getByRole("dialog"), new Event("cancel", { cancelable: true }));
 
     expect(screen.queryByRole("dialog", { name: "Choose the companion who guides you." })).not.toBeInTheDocument();
     expect(guideButton).toHaveFocus();

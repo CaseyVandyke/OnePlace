@@ -201,11 +201,13 @@ companion picker, and native Safari rubber-banding is expected behavior. Retain
 but do not add global touch interception to suppress native scrolling. Retest
 screen transitions and modal scrolling on a physical iPhone after layout changes.
 
-The mobile companion picker deliberately uses the full panel as its only scroll
-surface. Its header, cards, and actions move together in normal document order.
-Do not restore a separately scrolling card list: at its bottom boundary, Safari
-chained the remaining gesture into the locked page behind the modal and caused an
-abrupt viewport jump. CSS containment belongs on the single panel boundary.
+The companion picker uses the native HTML `dialog` element. Safari manages its
+top-layer placement, modality, focus containment, and Escape behavior; the app
+does not lock `body`, make `#root` inert, or implement a custom focus trap. On
+mobile, the dialog is the only scroll surface and its header, cards, and actions
+move together in normal document order. Do not restore the custom fixed overlay
+or a separately scrolling card list: both produced abrupt viewport jumps at the
+bottom boundary on iPhone Safari.
 
 ## Current technical implementation
 

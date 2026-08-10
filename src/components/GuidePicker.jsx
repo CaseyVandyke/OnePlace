@@ -1,85 +1,45 @@
 import { useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
 import { companionGuides } from "../data/companionGuides.js";
 import CompanionGuide from "./CompanionGuide.jsx";
 import "./GuidePicker.css";
 
-const focusableSelector = [
-  "button:not([disabled])",
-  "input:not([disabled])",
-  "[href]",
-  "[tabindex]:not([tabindex='-1'])",
-].join(",");
-
 export default function GuidePicker({ selectedGuideId, onSelect, onClose, returnFocusRef }) {
   const [draftGuideId, setDraftGuideId] = useState(selectedGuideId);
-  const panelRef = useRef(null);
+  const dialogRef = useRef(null);
   const selectedGuide = companionGuides.find(({ id }) => id === draftGuideId) ?? companionGuides[0];
 
   useEffect(() => {
-    const previousOverflow = document.body.style.overflow;
+    const dialog = dialogRef.current;
     const returnFocusTarget = returnFocusRef?.current;
-    const appRoot = document.getElementById("root");
-    const rootWasInert = appRoot?.inert ?? false;
-    const previousAriaHidden = appRoot?.getAttribute("aria-hidden");
-    document.body.style.overflow = "hidden";
-    if (appRoot) {
-      appRoot.inert = true;
-      appRoot.setAttribute("aria-hidden", "true");
-    }
-    panelRef.current?.focus({ preventScroll: true });
+    dialog.showModal();
 
-    const handleKeyDown = (event) => {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        onClose();
-        return;
-      }
-
-      if (event.key !== "Tab") return;
-      const focusable = [...panelRef.current.querySelectorAll(focusableSelector)];
-      if (!focusable.length) return;
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
     return () => {
-      document.body.style.overflow = previousOverflow;
-      document.removeEventListener("keydown", handleKeyDown);
-      if (appRoot) {
-        appRoot.inert = rootWasInert;
-        if (previousAriaHidden === null) appRoot.removeAttribute("aria-hidden");
-        else appRoot.setAttribute("aria-hidden", previousAriaHidden);
-      }
+      if (dialog.open) dialog.close();
       returnFocusTarget?.focus({ preventScroll: true });
     };
-  }, [onClose, returnFocusRef]);
+  }, [returnFocusRef]);
 
   const confirmSelection = () => {
     onSelect(draftGuideId);
     onClose();
   };
 
-  return createPortal(
-    <div className="guide-picker-overlay">
-      <button className="guide-picker-backdrop" type="button" onClick={onClose} aria-label="Close guide picker" />
+  return (
+    <dialog
+      ref={dialogRef}
+      className="guide-picker-dialog"
+      aria-labelledby="guide-picker-title"
+      aria-describedby="guide-picker-description"
+      onCancel={(event) => {
+        event.preventDefault();
+        onClose();
+      }}
+      onPointerDown={(event) => {
+        if (event.target === event.currentTarget) onClose();
+      }}
+    >
       <section
-        ref={panelRef}
         className="guide-picker-panel"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="guide-picker-title"
-        aria-describedby="guide-picker-description"
-        tabIndex="-1"
       >
         <header>
           <div>
@@ -117,7 +77,6 @@ export default function GuidePicker({ selectedGuideId, onSelect, onClose, return
           <button className="continue-button" type="button" onClick={confirmSelection}>Travel with {selectedGuide.name}</button>
         </footer>
       </section>
-    </div>,
-    document.body,
+    </dialog>
   );
 }

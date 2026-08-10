@@ -209,6 +209,16 @@ calculations, fixed page containers, overflow locks, overscroll suppression,
 touch interception, or height-based mobile variants. Minimum heights remain
 appropriate for accessible buttons and form controls only.
 
+On August 10, 2026, physical-iPhone Web Inspector measurements identified the
+remaining bottom shake. While Safari collapsed its browser chrome, the visual
+viewport grew from 660px to 767px and the short page's document height changed
+from 1186px to 1220px. No application `scrollTo` call occurred. The 34px document
+change came from `env(safe-area-inset-bottom)` being used as in-flow bottom
+padding on Welcome, Introduction, and Questions. Those three mobile surfaces now
+use fixed content padding so their document boundary remains stable throughout
+the native Safari toolbar transition. Do not restore a dynamic safe-area inset
+to those scroll boundaries without retesting on a physical iPhone.
+
 The companion picker uses the native HTML `dialog` element for modality, focus
 containment, and Escape behavior. Its panel also uses content height; do not add
 custom full-screen height calculations, a fixed overlay, or a separate scrolling

@@ -460,7 +460,7 @@ button { cursor: pointer; }
   .welcome-layout .map-compass { display: none; }
   .welcome-layout .map-stop:not(.current) strong,
   .welcome-layout .map-stop:not(.current) small { display: none; }
-  .welcome-footer { position: static; margin: 0; padding: 20px 22px calc(20px + env(safe-area-inset-bottom)); }
+  .welcome-footer { position: static; margin: 0; padding: 20px 22px 34px; }
   .welcome-footer > span:first-child { display: none; }
   .welcome-footer > span:last-child { font-size: 13px; }
   .welcome-footer > div { order: -1; }
@@ -491,7 +491,7 @@ button { cursor: pointer; }
   .journey-place .map-explorer > span:last-child { display: none; }
   .journey-place .map-explorer .companion-guide { transform: scale(.82); transform-origin: bottom center; }
 
-  .question-stage { width: 100%; margin: 0; padding: 38px 20px calc(56px + env(safe-area-inset-bottom)); }
+  .question-stage { width: 100%; margin: 0; padding: 38px 20px 56px; }
   .question-counter { grid-template-columns: auto minmax(44px,1fr) auto; gap: 10px; margin-bottom: 38px; font-size: 12px; line-height: 1.4; }
   .question-counter small { max-width: 78px; text-align: right; }
   .question-eyebrow { font-size: 14px; line-height: 1.5; }
@@ -976,7 +976,7 @@ button { cursor: pointer; }
     align-items: stretch;
     flex-direction: column;
     gap: 12px;
-    padding: 14px 20px calc(16px + env(safe-area-inset-bottom));
+    padding: 14px 20px 34px;
   }
   .intro-dots {
     justify-content: center;

@@ -1,4 +1,4 @@
-import { act, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, test, vi } from "vitest";
 import App from "./App.jsx";
@@ -31,7 +31,7 @@ describe("OnePlace", () => {
     expect(screen.queryByText(/pick your character/i)).not.toBeInTheDocument();
   });
 
-  test("offers an optional dog guide choice and remembers it", async () => {
+  test("offers an optional companion choice and remembers it", async () => {
     const user = userEvent.setup();
     const view = render(<App />);
 
@@ -39,22 +39,23 @@ describe("OnePlace", () => {
     await user.click(screen.getByRole("button", { name: "Next" }));
     expect(screen.getByRole("heading", { name: "Your Golden Retriever guide lights the way." })).toBeVisible();
 
-    await user.click(screen.getByRole("button", { name: /Choose another dog/i }));
-    expect(screen.getByRole("dialog", { name: "Choose the dog who guides you." })).toBeVisible();
-    expect(screen.getAllByRole("radio")).toHaveLength(4);
-    await user.click(screen.getByRole("radio", { name: /Beagle.*Curious & Cheerful/i }));
-    await user.click(screen.getByRole("button", { name: "Travel with Beagle" }));
+    await user.click(screen.getByRole("button", { name: /Choose another companion/i }));
+    expect(screen.getByRole("dialog", { name: "Choose the companion who guides you." })).toBeVisible();
+    expect(screen.getAllByRole("radio")).toHaveLength(5);
+    await user.click(screen.getByRole("radio", { name: /Tabby Cat.*Calm & Curious/i }));
+    await user.click(screen.getByRole("button", { name: "Travel with Tabby Cat" }));
 
-    expect(screen.getByRole("heading", { name: "Your Beagle guide lights the way." })).toBeVisible();
+    expect(screen.getByRole("heading", { name: "Your Tabby Cat guide lights the way." })).toBeVisible();
+    expect(screen.getByText("Meow! I’m ready!")).toBeInTheDocument();
 
     view.unmount();
     render(<App />);
     await user.click(screen.getByRole("button", { name: "Build my OnePlace" }));
     await user.click(screen.getByRole("button", { name: "Next" }));
-    expect(screen.getByRole("heading", { name: "Your Beagle guide lights the way." })).toBeVisible();
+    expect(screen.getByRole("heading", { name: "Your Tabby Cat guide lights the way." })).toBeVisible();
   });
 
-  test("lets a user change their dog guide from the main app", async () => {
+  test("lets a user change their companion guide from the main app", async () => {
     const user = userEvent.setup();
     render(<App />);
 
@@ -66,6 +67,16 @@ describe("OnePlace", () => {
     expect(screen.getByRole("button", { name: "Change guide. Current guide: Labrador" })).toBeVisible();
   });
 
+  test("keeps an existing guide choice after the storage-key migration", async () => {
+    window.localStorage.setItem("oneplace.dogGuide", "beagle");
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(screen.getByRole("button", { name: "Preview the app" }));
+
+    expect(screen.getByRole("button", { name: "Change guide. Current guide: Beagle" })).toBeVisible();
+  });
+
   test("closes the guide picker with Escape and restores focus", async () => {
     const user = userEvent.setup();
     render(<App />);
@@ -75,8 +86,20 @@ describe("OnePlace", () => {
     await user.click(guideButton);
     await user.keyboard("{Escape}");
 
-    expect(screen.queryByRole("dialog", { name: "Choose the dog who guides you." })).not.toBeInTheDocument();
+    expect(screen.queryByRole("dialog", { name: "Choose the companion who guides you." })).not.toBeInTheDocument();
     expect(guideButton).toHaveFocus();
+  });
+
+  test("does not cancel native touch scrolling inside the guide picker", async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    await user.click(screen.getByRole("button", { name: "Preview the app" }));
+    await user.click(screen.getByRole("button", { name: "Change guide. Current guide: Golden Retriever" }));
+    const guideOptions = screen.getByRole("group", { name: "Available companion guides" });
+
+    fireEvent.touchStart(guideOptions, { touches: [{ clientY: 120 }] });
+
+    expect(fireEvent.touchMove(guideOptions, { touches: [{ clientY: 180 }] })).toBe(true);
   });
 
   test("requires an answer before continuing the first setup question", async () => {
@@ -102,7 +125,7 @@ describe("OnePlace", () => {
     expect(screen.getByText("Question 2 of 10")).toBeVisible();
   });
 
-  test("settles contextual puppy reactions into simple barks", () => {
+  test("settles contextual guide reactions into simple sounds", () => {
     vi.useFakeTimers();
     render(<App />);
 

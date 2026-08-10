@@ -15,7 +15,7 @@
 }
 
 .choose-guide-button:hover { border-color: var(--purple); background: #f8f2fa; }
-.choose-guide-button .puppy-guide { align-self: end; }
+.choose-guide-button .companion-guide { align-self: end; }
 .choose-guide-button span { min-width: 0; }
 .choose-guide-button strong,
 .choose-guide-button small { display: block; }
@@ -111,6 +111,7 @@
 
 .guide-options label:hover { border-color: #a68cbd; transform: translateY(-1px); }
 .guide-options label.selected { border-color: var(--purple); background: #f3ecf6; box-shadow: 0 0 0 3px rgba(120,87,168,.1); }
+.guide-options label:last-child:nth-child(odd) { width: calc(50% - 7px); grid-column: 1 / -1; justify-self: center; }
 .guide-options label:focus-within { outline: 3px solid rgba(72,100,170,.25); outline-offset: 3px; }
 .guide-options input { position: absolute; width: 1px; height: 1px; opacity: 0; }
 .guide-option-art {
@@ -123,7 +124,7 @@
   background: radial-gradient(circle at 40% 28%, #fff8ed, #e9e1ee 68%, #dce6ee);
 }
 
-.guide-option-art .puppy-guide { transform: translateY(8px); }
+.guide-option-art .companion-guide { transform: translateY(8px); }
 .guide-option-copy strong,
 .guide-option-copy b,
 .guide-option-copy small { display: block; }
@@ -168,6 +169,7 @@
   .guide-picker-panel h2 { font-size: clamp(34px,9vw,44px); }
   .guide-options { grid-template-columns: 1fr; padding: 18px 20px; touch-action: pan-y; }
   .guide-options label { min-height: 136px; }
+  .guide-options label:last-child:nth-child(odd) { width: 100%; grid-column: auto; }
   .guide-picker-panel > footer { padding: 14px 20px calc(14px + env(safe-area-inset-bottom)); }
 }
 

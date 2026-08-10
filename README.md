@@ -6,9 +6,9 @@ OnePlace is a polished product concept for organizing essential documents,
 accounts, personal wishes, trusted-person access, and legacy messages. This
 repository contains fictional demonstration data only.
 
-The guided journey includes an optional choice of four dog companions, with a
-golden retriever selected by default. The guide preference stays in the current
-browser and can be changed later.
+The guided journey includes an optional choice of five animal companions—four
+dogs and a tabby cat—with a golden retriever selected by default. The guide
+preference stays in the current browser and can be changed later.
 
 ## Continue the project
 

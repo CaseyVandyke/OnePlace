@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { dogGuides } from "../data/dogGuides.js";
-import DogGuide from "./DogGuide.jsx";
+import { companionGuides } from "../data/companionGuides.js";
+import CompanionGuide from "./CompanionGuide.jsx";
 import "./GuidePicker.css";
 
 const focusableSelector = [
@@ -14,7 +14,7 @@ const focusableSelector = [
 export default function GuidePicker({ selectedGuideId, onSelect, onClose, returnFocusRef }) {
   const [draftGuideId, setDraftGuideId] = useState(selectedGuideId);
   const panelRef = useRef(null);
-  const selectedGuide = dogGuides.find(({ id }) => id === draftGuideId) ?? dogGuides[0];
+  const selectedGuide = companionGuides.find(({ id }) => id === draftGuideId) ?? companionGuides[0];
 
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
@@ -84,26 +84,26 @@ export default function GuidePicker({ selectedGuideId, onSelect, onClose, return
         <header>
           <div>
             <p className="question-eyebrow">YOUR TRAVELING COMPANION</p>
-            <h2 id="guide-picker-title">Choose the dog who guides you.</h2>
+            <h2 id="guide-picker-title">Choose the companion who guides you.</h2>
             <p id="guide-picker-description">This is optional. You can change your guide anytime.</p>
           </div>
           <button className="guide-picker-close" type="button" onClick={onClose} aria-label="Close guide picker">×</button>
         </header>
 
         <fieldset className="guide-options">
-          <legend className="sr-only">Available dog guides</legend>
-          {dogGuides.map((guide) => (
+          <legend className="sr-only">Available companion guides</legend>
+          {companionGuides.map((guide) => (
             <label className={guide.id === draftGuideId ? "selected" : ""} key={guide.id}>
               <input
                 type="radio"
-                name="dog-guide"
+                name="companion-guide"
                 value={guide.id}
                 checked={guide.id === draftGuideId}
                 onChange={() => setDraftGuideId(guide.id)}
               />
-              <span className="guide-option-art"><DogGuide guideId={guide.id} size={76} /></span>
+              <span className="guide-option-art"><CompanionGuide guideId={guide.id} size={76} /></span>
               <span className="guide-option-copy">
-                <strong>{guide.breed}</strong>
+                <strong>{guide.name}</strong>
                 <b>{guide.title}</b>
                 <small>{guide.description}</small>
               </span>
@@ -114,7 +114,7 @@ export default function GuidePicker({ selectedGuideId, onSelect, onClose, return
 
         <footer>
           <button className="guide-picker-cancel" type="button" onClick={onClose}>Keep my current guide</button>
-          <button className="continue-button" type="button" onClick={confirmSelection}>Travel with {selectedGuide.breed}</button>
+          <button className="continue-button" type="button" onClick={confirmSelection}>Travel with {selectedGuide.name}</button>
         </footer>
       </section>
     </div>,

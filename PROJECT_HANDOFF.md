@@ -46,8 +46,8 @@ current prototype.
 - The experience should feel like a family journey rather than a recovery app,
   enterprise dashboard, or checklist of death-related chores.
 - Gamification is meaningful rather than childish: users earn **Glow**, light
-  locations on a map, complete small steps, and travel with a friendly dog
-  guide between destinations.
+  locations on a map, complete small steps, and travel with a friendly animal
+  companion between destinations.
 - The primary audience includes older adults. Readability is a product
   requirement, not a finishing detail.
 
@@ -84,22 +84,23 @@ The landing page introduces the value proposition and offers:
 A short, multi-screen introduction explains how the journey works before the
 user begins. Mobile page changes must return to the top.
 
-### 3. Puppy guide
+### 3. Companion guide
 
-A friendly dog is built into the journey as the user’s guide. The golden
-retriever remains the default, while the guide introduction offers an optional
-choice of Golden Retriever, Labrador, Beagle, or Mixed-Breed Pup. Each guide has
-distinct SVG artwork and a warm companion style. There is no required selection
-or naming step; users can ignore the choice and move directly into guided setup,
-then change their guide later from the main app header. The preference is stored
-locally in the browser with a validated golden-retriever fallback.
+A friendly animal companion is built into the journey as the user’s guide. The
+golden retriever remains the default, while the guide introduction offers an
+optional choice of Golden Retriever, Labrador, Beagle, Mixed-Breed Pup, or Tabby
+Cat. Each guide has distinct SVG artwork and a warm companion style. There is no
+required selection or naming step; users can ignore the choice and move directly
+into guided setup, then change their guide later from the main app header. The
+preference is stored locally in the browser with a validated golden-retriever
+fallback and migration from the original dog-guide storage key.
 
-The selected puppy appears on the welcome map, travels between destinations,
-celebrates progress, and remains present in the main app. Short visual bark
-bubbles appear occasionally near the puppy. A completed step or new destination
-triggers one contextual phrase, then the puppy returns to simple “Woof!” and
-“Arf!” bubbles until the next action. The bubbles are disabled when the user
-prefers reduced motion.
+The selected companion appears on the welcome map, travels between destinations,
+celebrates progress, and remains present in the main app. Short visual sound
+bubbles appear occasionally nearby. Dogs use “Woof!” and “Arf!” while the cat
+uses “Meow!” and “Purr!” A completed step or new destination triggers one
+contextual phrase, then the companion returns to simple sounds until the next
+action. The bubbles are disabled when the user prefers reduced motion.
 
 ### 4. Guided setup
 
@@ -185,18 +186,20 @@ Several iterations addressed iPhone Safari behavior:
 
 - Page/question changes reset scroll to the top.
 - Smooth scrolling was removed because it fought Safari.
-- Global overscroll prevention and a top-boundary touch guard were added to
-  prevent pull-to-refresh behavior that looked like violent page shaking.
+- Global overscroll prevention and a top-boundary touch guard were briefly added
+  to suppress movement that looked like violent page shaking.
 - The journey explanation received special mobile scrolling fixes.
 - The map was resized and repositioned to prevent location labels and the
   “You are here” badge from clipping.
 - Map text, question counters, and supporting copy received senior-first size
   increases.
 
-The most recent pull-to-refresh fix is in commit `27b8b21`. It should still be
-retested on a physical iPhone after future layout changes. Do not casually
-remove the `history.scrollRestoration`, overscroll, touch-boundary, or
-`useScrollToTop` logic without reproducing the original issue first.
+On August 9, 2026, the global overscroll rule and document-wide touch guard from
+commit `27b8b21` were removed. They blocked legitimate scrolling inside the
+companion picker, and native Safari rubber-banding is expected behavior. Retain
+`history.scrollRestoration` and `useScrollToTop` for intentional screen changes,
+but do not add global touch interception to suppress native scrolling. Retest
+screen transitions and modal scrolling on a physical iPhone after layout changes.
 
 ## Current technical implementation
 
@@ -204,21 +207,21 @@ remove the `history.scrollRestoration`, overscroll, touch-boundary, or
 - Vite 8
 - Vitest 4 with React Testing Library
 - ESLint 9 with React, Hooks, and accessibility checks
-- Plain JSX and one main stylesheet
+- Plain JSX with shared and component-level CSS
 - No router
 - No backend
 - No database
 - No authentication
 - No external institution APIs
 - State is local React state and resets after refresh, except for the
-  non-sensitive dog-guide preference stored in `localStorage`
+  non-sensitive companion-guide preference stored in `localStorage`
 
 Important files:
 
 - `src/App.jsx` — application data, screens, components, and interactions
-- `src/components/` — reusable dog artwork and the accessible guide picker
-- `src/data/dogGuides.js` — guide choices and companion copy
-- `src/hooks/useDogGuide.js` — validated local guide preference
+- `src/components/` — reusable companion artwork and the accessible guide picker
+- `src/data/companionGuides.js` — guide choices, companion copy, and sounds
+- `src/hooks/useCompanionGuide.js` — validated local guide preference
 - `src/styles.css` — shared visual, responsive, accessibility, and animation rules
 - `vite.config.js` — Vite configuration with relative asset base
 - `.github/workflows/deploy-pages.yml` — GitHub Pages deployment

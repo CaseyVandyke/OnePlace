@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import DogGuide from "./components/DogGuide.jsx";
+import CompanionGuide from "./components/CompanionGuide.jsx";
 import GuidePicker from "./components/GuidePicker.jsx";
-import useDogGuide from "./hooks/useDogGuide.js";
+import { getCompanionVoice } from "./data/companionGuides.js";
+import useCompanionGuide from "./hooks/useCompanionGuide.js";
 
 const paths = {
   arrow: "M5 12h14m-6-6 6 6-6 6",
@@ -164,32 +165,22 @@ const mapStops = [
   { name: "Mount Vault", icon: "key", x: 79, y: 14, className: "mount-vault" },
 ];
 
-const puppyBarks = [
-  "Woof! Let’s go!",
-  "Arf! This way!",
-  "Woof! Nice work!",
-  "Yip! Keep going!",
-  "Woof! Friends ahead!",
-  "Arf! Story time!",
-];
-
-const simpleBarks = ["Woof!", "Arf!"];
-
-function PuppyBark({ cue, cueKey }) {
+function GuideBubble({ cue, simpleMessages, reactionKey }) {
   const [message, setMessage] = useState(cue);
   useEffect(() => {
-    let simpleBark = 0;
+    let simpleMessage = 0;
     const interval = window.setInterval(() => {
-      setMessage(simpleBarks[simpleBark % simpleBarks.length]);
-      simpleBark += 1;
+      setMessage(simpleMessages[simpleMessage % simpleMessages.length]);
+      simpleMessage += 1;
     }, 9000);
     return () => window.clearInterval(interval);
-  }, [cue, cueKey]);
-  return <span className="puppy-bark" aria-hidden="true">{message}</span>;
+  }, [cue, reactionKey, simpleMessages]);
+  return <span className="guide-bubble" aria-hidden="true">{message}</span>;
 }
 
-function WorldMap({ guide, chapter = 0, compact = false, preview = false, barkKey = chapter }) {
+function WorldMap({ guide, chapter = 0, compact = false, preview = false, reactionKey = chapter }) {
   const position = mapStops[Math.min(chapter, 5)];
+  const voice = getCompanionVoice(guide);
   return (
     <div className={`world-map ${compact ? "map-compact" : ""} ${preview ? "map-preview" : ""}`}>
       <div className="map-paper">
@@ -213,17 +204,17 @@ function WorldMap({ guide, chapter = 0, compact = false, preview = false, barkKe
           </div>
         ))}
         {!preview && (
-          <div className={`map-explorer map-explorer-${position.className}`} style={{ left: `${position.x}%`, top: `${position.y}%`, "--bark-delay": `${(chapter % 3) * 1.2}s` }}>
-            <span className="map-explorer-character"><DogGuide guideId={guide.id} size={compact ? 42 : 54} /></span>
-            <PuppyBark key={`bark-${barkKey}`} cue={puppyBarks[Math.min(chapter, puppyBarks.length - 1)]} cueKey={barkKey} />
+          <div className={`map-explorer map-explorer-${position.className}`} style={{ left: `${position.x}%`, top: `${position.y}%`, "--bubble-delay": `${(chapter % 3) * 1.2}s` }}>
+            <span className="map-explorer-character"><CompanionGuide guideId={guide.id} size={compact ? 42 : 54} /></span>
+            <GuideBubble key={`reaction-${guide.id}-${reactionKey}`} cue={voice.cues[Math.min(chapter, voice.cues.length - 1)]} simpleMessages={voice.simple} reactionKey={reactionKey} />
             <span>You are here</span>
           </div>
         )}
         {preview && (
           <div className="map-preview-guide" style={{ left: `${mapStops[0].x}%`, top: `${mapStops[0].y}%` }}>
-            <DogGuide guideId={guide.id} size={54} />
-            <PuppyBark cue="Woof! Let’s go!" cueKey={barkKey} />
-            <span className="map-guide-label">Your {guide.breed}</span>
+            <CompanionGuide guideId={guide.id} size={54} />
+            <GuideBubble key={`preview-reaction-${guide.id}`} cue={voice.cues[0]} simpleMessages={voice.simple} reactionKey={reactionKey} />
+            <span className="map-guide-label">Your {guide.name}</span>
           </div>
         )}
         {preview && <div className="map-preview-note"><Icon name="spark" size={13} /> Your family map begins here</div>}
@@ -293,9 +284,10 @@ function JourneyIntro({ guide, onSelectGuide, onContinue, onSkip }) {
   const guidePickerButtonRef = useRef(null);
   const item = journeyIntroSlides[slide];
   const isLast = slide === journeyIntroSlides.length - 1;
-  const title = slide === 1 ? `Your ${guide.breed} guide lights the way.` : item.title;
+  const voice = getCompanionVoice(guide);
+  const title = slide === 1 ? `Your ${guide.name} guide lights the way.` : item.title;
   const copy = slide === 1
-    ? `A friendly ${guide.breed.toLowerCase()} will travel across your family map with you. Every finished task earns Glow and brings another important place to life.`
+    ? `A friendly ${guide.name.toLowerCase()} will travel across your family map with you. Every finished task earns Glow and brings another important place to life.`
     : item.copy;
   useEffect(() => {
     const htmlOverflow = document.documentElement.style.overflow;
@@ -314,7 +306,7 @@ function JourneyIntro({ guide, onSelectGuide, onContinue, onSkip }) {
         <div className="journey-intro-content">
           <div className="journey-intro-art">
             <span><Icon name={item.icon} size={38} /></span>
-            {slide === 1 && <div className="intro-puppy"><DogGuide guideId={guide.id} size={82} /><PuppyBark cue="Woof! I’m ready!" cueKey={slide} /></div>}
+            {slide === 1 && <div className="intro-companion"><CompanionGuide guideId={guide.id} size={82} /><GuideBubble key={`intro-reaction-${guide.id}`} cue={voice.ready} simpleMessages={voice.simple} reactionKey={slide} /></div>}
             <i /><i /><i />
           </div>
           <div>
@@ -324,8 +316,8 @@ function JourneyIntro({ guide, onSelectGuide, onContinue, onSkip }) {
             <aside><Icon name={slide === 2 ? "lock" : "heart"} size={20} /> {item.note}</aside>
             {slide === 1 && (
               <button ref={guidePickerButtonRef} className="choose-guide-button" type="button" onClick={() => setGuidePickerOpen(true)}>
-                <DogGuide guideId={guide.id} size={36} />
-                <span><strong>Choose another dog</strong><small>Optional · Current guide: {guide.breed}</small></span>
+                <CompanionGuide guideId={guide.id} size={36} />
+                <span><strong>Choose another companion</strong><small>Optional · Current guide: {guide.name}</small></span>
                 <Icon name="arrow" size={18} />
               </button>
             )}
@@ -524,7 +516,7 @@ function SetupJourney({ guide, onComplete, onExit }) {
       <section className="journey-layout">
         <aside className="journey-place">
           <div className="journey-place-copy"><span>YOUR PLACE</span><strong>{Math.round((current / questions.length) * 100)}% lit</strong></div>
-          <WorldMap guide={guide} chapter={question.chapter} barkKey={current} compact />
+          <WorldMap guide={guide} chapter={question.chapter} reactionKey={current} compact />
           <div className="next-unlock"><span><Icon name={chapters[question.chapter].icon} size={17} /></span><div><small>NOW BUILDING</small><strong>{chapters[question.chapter].name}</strong></div></div>
         </aside>
         <article className="question-stage" key={current}>
@@ -574,8 +566,8 @@ function AppHeader({ guide, guideButtonRef, active, setActive, onJourney, onChan
       <div className="app-header-actions">
         <span><Icon name="spark" size={15} /> 95 glow</span>
         <button onClick={onJourney}>Continue my path</button>
-        <button ref={guideButtonRef} className="app-avatar" type="button" onClick={onChangeGuide} aria-label={`Change guide. Current guide: ${guide.breed}`}>
-          <DogGuide guideId={guide.id} size={36} />
+        <button ref={guideButtonRef} className="app-avatar" type="button" onClick={onChangeGuide} aria-label={`Change guide. Current guide: ${guide.name}`}>
+          <CompanionGuide guideId={guide.id} size={36} />
         </button>
         <button className="mobile-menu" onClick={() => setMenu(!menu)}><Icon name={menu ? "close" : "menu"} /></button>
       </div>
@@ -806,26 +798,12 @@ function MiniQuest({ onClose }) {
 export default function App() {
   const [screen, setScreen] = useState("welcome");
   const [points, setPoints] = useState(0);
-  const [guide, selectGuide] = useDogGuide();
+  const [guide, selectGuide] = useCompanionGuide();
   useEffect(() => {
     const previousRestoration = window.history.scrollRestoration;
     window.history.scrollRestoration = "manual";
-    let touchStartY = 0;
-    const handleTouchStart = (event) => {
-      touchStartY = event.touches[0]?.clientY ?? 0;
-    };
-    const handleTouchMove = (event) => {
-      const currentY = event.touches[0]?.clientY ?? touchStartY;
-      if (window.scrollY <= 0 && currentY > touchStartY) {
-        event.preventDefault();
-      }
-    };
-    document.addEventListener("touchstart", handleTouchStart, { passive: true });
-    document.addEventListener("touchmove", handleTouchMove, { passive: false });
     return () => {
       window.history.scrollRestoration = previousRestoration;
-      document.removeEventListener("touchstart", handleTouchStart);
-      document.removeEventListener("touchmove", handleTouchMove);
     };
   }, []);
   useScrollToTop(screen);

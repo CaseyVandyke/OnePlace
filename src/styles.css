@@ -17,7 +17,7 @@
 
 * { box-sizing: border-box; }
 html { scroll-behavior: auto; }
-body { margin: 0; min-width: 320px; min-height: 100vh; background: var(--paper); }
+body { margin: 0; min-width: 320px; background: var(--paper); }
 button, input, select, textarea { font: inherit; }
 button { color: inherit; }
 button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid rgba(72, 100, 170, .25); outline-offset: 3px; }
@@ -441,7 +441,7 @@ button { cursor: pointer; }
   html, body, #root { width: 100%; max-width: 100%; overflow-x: clip; }
   button, input, select { touch-action: manipulation; }
 
-  .journey-screen { min-height: 0; }
+  .journey-screen { min-height: 0; background: #ffd6d6; }
 
   .welcome-screen { min-height: 100svh; overflow: visible; }
   .welcome-nav { height: 76px; padding: 0 22px; }
@@ -957,6 +957,7 @@ button { cursor: pointer; }
   .journey-intro-card {
     min-height: 0;
     border-radius: 0;
+    background: #ffd6d6;
   }
   .journey-intro-card > header {
     min-height: 68px;

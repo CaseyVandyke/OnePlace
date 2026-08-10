@@ -947,18 +947,14 @@ button { cursor: pointer; }
 
 @media (max-width: 780px) {
   .journey-intro-screen {
-    position: fixed;
+    position: relative;
     width: 100%;
-    height: 100svh;
-    max-height: 100svh;
-    min-height: 0;
-    overflow: hidden;
-    overscroll-behavior: none;
+    min-height: 100vh;
+    overflow: visible;
     padding: 0;
   }
   .journey-intro-card {
-    height: 100%;
-    min-height: 0;
+    min-height: 100vh;
     border-radius: 0;
   }
   .journey-intro-card > header {
@@ -968,15 +964,10 @@ button { cursor: pointer; }
   .journey-intro-card > header .brand { font-size: 22px; }
   .journey-intro-card > header button { font-size: 16px; }
   .journey-intro-content {
-    min-height: 0;
     grid-template-columns: 1fr;
     gap: 0;
     align-content: start;
-    overflow: hidden;
-    overflow-anchor: none;
-    overscroll-behavior-y: none;
-    scroll-behavior: auto;
-    touch-action: none;
+    overflow: visible;
     padding: 28px 20px 20px;
   }
   .journey-intro-art {

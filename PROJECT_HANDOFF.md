@@ -214,6 +214,11 @@ native browser control. Do not add JavaScript overflow locks around this screen;
 the old lock made the same companion picker behave differently here than it did
 when opened from the main-app preview.
 
+On mobile, the introduction is a normal document page rather than a fixed
+`100svh` viewport. Its content may grow beyond the screen and uses native page
+scrolling. Do not restore `touch-action: none`, overscroll suppression, or hidden
+overflow on the introduction content.
+
 ## Current technical implementation
 
 - React 19

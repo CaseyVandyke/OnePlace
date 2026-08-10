@@ -222,9 +222,11 @@ overflow on the introduction content.
 The mobile introduction and question journey do not use viewport-height
 minimums. Their natural content height defines the document boundary so Safari
 does not have to recalculate a `100vh` edge while its browser chrome changes.
-Their bottom spacing is also fixed rather than calculated from
-`safe-area-inset-bottom`; keep at least 34px beneath intro actions and 56px
-beneath question content so controls remain clear of the home indicator.
+
+On mobile, horizontal root overflow uses `clip`, not `hidden`. Setting
+`overflow-x: hidden` on `html`, `body`, and `#root` can turn those elements into
+additional vertical scroll containers. Keep the root document as the single
+vertical scrolling surface.
 
 ## Current technical implementation
 

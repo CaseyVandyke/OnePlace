@@ -438,7 +438,7 @@ button { cursor: pointer; }
 
 /* Mobile-first experience */
 @media (max-width: 780px) {
-  html, body, #root { width: 100%; max-width: 100%; overflow-x: hidden; }
+  html, body, #root { width: 100%; max-width: 100%; overflow-x: clip; }
   button, input, select { touch-action: manipulation; }
 
   .journey-screen { min-height: 0; }
@@ -493,7 +493,7 @@ button { cursor: pointer; }
   .journey-place .map-explorer > span:last-child { display: none; }
   .journey-place .map-explorer .companion-guide { transform: scale(.82); transform-origin: bottom center; }
 
-  .question-stage { width: 100%; margin: 0; padding: 38px 20px 56px; }
+  .question-stage { width: 100%; margin: 0; padding: 38px 20px calc(56px + env(safe-area-inset-bottom)); }
   .question-counter { grid-template-columns: auto minmax(44px,1fr) auto; gap: 10px; margin-bottom: 38px; font-size: 12px; line-height: 1.4; }
   .question-counter small { max-width: 78px; text-align: right; }
   .question-eyebrow { font-size: 14px; line-height: 1.5; }
@@ -993,7 +993,7 @@ button { cursor: pointer; }
     align-items: stretch;
     flex-direction: column;
     gap: 12px;
-    padding: 14px 20px 34px;
+    padding: 14px 20px calc(16px + env(safe-area-inset-bottom));
   }
   .intro-dots {
     justify-content: center;

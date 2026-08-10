@@ -201,6 +201,12 @@ companion picker, and native Safari rubber-banding is expected behavior. Retain
 but do not add global touch interception to suppress native scrolling. Retest
 screen transitions and modal scrolling on a physical iPhone after layout changes.
 
+The mobile companion picker deliberately uses the full panel as its only scroll
+surface. Its header, cards, and actions move together in normal document order.
+Do not restore a separately scrolling card list: at its bottom boundary, Safari
+chained the remaining gesture into the locked page behind the modal and caused an
+abrupt viewport jump. CSS containment belongs on the single panel boundary.
+
 ## Current technical implementation
 
 - React 19

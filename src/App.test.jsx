@@ -21,6 +21,8 @@ describe("OnePlace", () => {
     await user.click(screen.getByRole("button", { name: "Build my OnePlace" }));
 
     expect(screen.getByRole("heading", { name: "One small step at a time." })).toBeVisible();
+    expect(document.documentElement.style.overflow).not.toBe("hidden");
+    expect(document.body.style.overflow).not.toBe("hidden");
   });
 
   test("starts setup without a character-selection screen", async () => {

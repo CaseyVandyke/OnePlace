@@ -209,6 +209,11 @@ move together in normal document order. Do not restore the custom fixed overlay
 or a separately scrolling card list: both produced abrupt viewport jumps at the
 bottom boundary on iPhone Safari.
 
+The pre-journey introduction also leaves `html` and `body` scrolling under
+native browser control. Do not add JavaScript overflow locks around this screen;
+the old lock made the same companion picker behave differently here than it did
+when opened from the main-app preview.
+
 ## Current technical implementation
 
 - React 19

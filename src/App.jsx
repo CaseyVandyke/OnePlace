@@ -289,16 +289,6 @@ function JourneyIntro({ guide, onSelectGuide, onContinue, onSkip }) {
   const copy = slide === 1
     ? `A friendly ${guide.name.toLowerCase()} will travel across your family map with you. Every finished task earns Glow and brings another important place to life.`
     : item.copy;
-  useEffect(() => {
-    const htmlOverflow = document.documentElement.style.overflow;
-    const bodyOverflow = document.body.style.overflow;
-    document.documentElement.style.overflow = "hidden";
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.documentElement.style.overflow = htmlOverflow;
-      document.body.style.overflow = bodyOverflow;
-    };
-  }, []);
   return (
     <main className="journey-intro-screen" role="dialog" aria-modal="true" aria-labelledby="journey-intro-title">
       <section className="journey-intro-card">

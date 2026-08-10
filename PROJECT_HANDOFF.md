@@ -219,6 +219,10 @@ On mobile, the introduction is a normal document page rather than a fixed
 scrolling. Do not restore `touch-action: none`, overscroll suppression, or hidden
 overflow on the introduction content.
 
+The mobile introduction and question journey do not use viewport-height
+minimums. Their natural content height defines the document boundary so Safari
+does not have to recalculate a `100vh` edge while its browser chrome changes.
+
 ## Current technical implementation
 
 - React 19

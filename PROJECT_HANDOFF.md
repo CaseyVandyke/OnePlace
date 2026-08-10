@@ -1,6 +1,6 @@
 # OnePlace Project Handoff
 
-Last updated: August 5, 2026
+Last updated: August 9, 2026
 Repository: https://github.com/CaseyVandyke/OnePlace  
 Live prototype: https://caseyvandyke.github.io/OnePlace/  
 Current handoff baseline: commit `a8166f9`
@@ -46,8 +46,8 @@ current prototype.
 - The experience should feel like a family journey rather than a recovery app,
   enterprise dashboard, or checklist of death-related chores.
 - Gamification is meaningful rather than childish: users earn **Glow**, light
-  locations on a map, complete small steps, and travel with a friendly golden
-  retriever puppy guide between destinations.
+  locations on a map, complete small steps, and travel with a friendly dog
+  guide between destinations.
 - The primary audience includes older adults. Readability is a product
   requirement, not a finishing detail.
 
@@ -86,14 +86,20 @@ user begins. Mobile page changes must return to the top.
 
 ### 3. Puppy guide
 
-A single friendly golden retriever puppy is built into the journey as the user’s
-guide. There is no character-selection or naming step; after the short
-introduction, the user moves directly into guided setup. The puppy appears on
-the welcome map, travels between destinations, celebrates progress, and remains
-present in the main app. Short visual bark bubbles appear occasionally near the
-puppy. A completed step or new destination triggers one contextual phrase, then
-the puppy returns to simple “Woof!” and “Arf!” bubbles until the next action.
-The bubbles are disabled when the user prefers reduced motion.
+A friendly dog is built into the journey as the user’s guide. The golden
+retriever remains the default, while the guide introduction offers an optional
+choice of Golden Retriever, Labrador, Beagle, or Mixed-Breed Pup. Each guide has
+distinct SVG artwork and a warm companion style. There is no required selection
+or naming step; users can ignore the choice and move directly into guided setup,
+then change their guide later from the main app header. The preference is stored
+locally in the browser with a validated golden-retriever fallback.
+
+The selected puppy appears on the welcome map, travels between destinations,
+celebrates progress, and remains present in the main app. Short visual bark
+bubbles appear occasionally near the puppy. A completed step or new destination
+triggers one contextual phrase, then the puppy returns to simple “Woof!” and
+“Arf!” bubbles until the next action. The bubbles are disabled when the user
+prefers reduced motion.
 
 ### 4. Guided setup
 
@@ -204,12 +210,16 @@ remove the `history.scrollRestoration`, overscroll, touch-boundary, or
 - No database
 - No authentication
 - No external institution APIs
-- State is local React state and resets after refresh
+- State is local React state and resets after refresh, except for the
+  non-sensitive dog-guide preference stored in `localStorage`
 
 Important files:
 
 - `src/App.jsx` — application data, screens, components, and interactions
-- `src/styles.css` — all visual, responsive, accessibility, and animation rules
+- `src/components/` — reusable dog artwork and the accessible guide picker
+- `src/data/dogGuides.js` — guide choices and companion copy
+- `src/hooks/useDogGuide.js` — validated local guide preference
+- `src/styles.css` — shared visual, responsive, accessibility, and animation rules
 - `vite.config.js` — Vite configuration with relative asset base
 - `.github/workflows/deploy-pages.yml` — GitHub Pages deployment
 - `README.md` — short public project overview

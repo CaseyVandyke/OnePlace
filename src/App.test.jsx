@@ -31,6 +31,54 @@ describe("OnePlace", () => {
     expect(screen.queryByText(/pick your character/i)).not.toBeInTheDocument();
   });
 
+  test("offers an optional dog guide choice and remembers it", async () => {
+    const user = userEvent.setup();
+    const view = render(<App />);
+
+    await user.click(screen.getByRole("button", { name: "Build my OnePlace" }));
+    await user.click(screen.getByRole("button", { name: "Next" }));
+    expect(screen.getByRole("heading", { name: "Your Golden Retriever guide lights the way." })).toBeVisible();
+
+    await user.click(screen.getByRole("button", { name: /Choose another dog/i }));
+    expect(screen.getByRole("dialog", { name: "Choose the dog who guides you." })).toBeVisible();
+    expect(screen.getAllByRole("radio")).toHaveLength(4);
+    await user.click(screen.getByRole("radio", { name: /Beagle.*Curious & Cheerful/i }));
+    await user.click(screen.getByRole("button", { name: "Travel with Beagle" }));
+
+    expect(screen.getByRole("heading", { name: "Your Beagle guide lights the way." })).toBeVisible();
+
+    view.unmount();
+    render(<App />);
+    await user.click(screen.getByRole("button", { name: "Build my OnePlace" }));
+    await user.click(screen.getByRole("button", { name: "Next" }));
+    expect(screen.getByRole("heading", { name: "Your Beagle guide lights the way." })).toBeVisible();
+  });
+
+  test("lets a user change their dog guide from the main app", async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(screen.getByRole("button", { name: "Preview the app" }));
+    await user.click(screen.getByRole("button", { name: "Change guide. Current guide: Golden Retriever" }));
+    await user.click(screen.getByRole("radio", { name: /Labrador.*Friendly & Steady/i }));
+    await user.click(screen.getByRole("button", { name: "Travel with Labrador" }));
+
+    expect(screen.getByRole("button", { name: "Change guide. Current guide: Labrador" })).toBeVisible();
+  });
+
+  test("closes the guide picker with Escape and restores focus", async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    await user.click(screen.getByRole("button", { name: "Preview the app" }));
+    const guideButton = screen.getByRole("button", { name: "Change guide. Current guide: Golden Retriever" });
+
+    await user.click(guideButton);
+    await user.keyboard("{Escape}");
+
+    expect(screen.queryByRole("dialog", { name: "Choose the dog who guides you." })).not.toBeInTheDocument();
+    expect(guideButton).toHaveFocus();
+  });
+
   test("requires an answer before continuing the first setup question", async () => {
     const user = userEvent.setup();
     await beginSetup(user);

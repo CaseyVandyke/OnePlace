@@ -5,6 +5,11 @@ export default defineConfig({
   plugins: [react()],
   test: {
     environment: "jsdom",
+    environmentOptions: {
+      jsdom: {
+        url: "https://oneplace.test/",
+      },
+    },
     setupFiles: ["./src/test/setup.js"],
   },
 });

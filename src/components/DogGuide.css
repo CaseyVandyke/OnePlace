@@ -1,0 +1,64 @@
+.puppy-guide {
+  --dog-coat: #dfa64d;
+  --dog-head: #e5ae55;
+  --dog-ear: #c98632;
+  --dog-tail: #dca24b;
+  --dog-chest: #f3d28f;
+  --dog-muzzle: #f5ddb0;
+  --dog-blaze: #f2cb7e;
+  --dog-outline: #9f6828;
+  display: block;
+  overflow: visible;
+  filter: drop-shadow(0 5px 5px rgba(24,20,28,.24));
+}
+
+.dog-guide-labrador {
+  --dog-coat: #805236;
+  --dog-head: #8d5c3c;
+  --dog-ear: #65402e;
+  --dog-tail: #75482f;
+  --dog-chest: #a87b5d;
+  --dog-muzzle: #b98a68;
+  --dog-outline: #4b3025;
+}
+
+.dog-guide-beagle {
+  --dog-coat: #f0dfbd;
+  --dog-head: #bd7338;
+  --dog-ear: #7d4328;
+  --dog-tail: #bd7338;
+  --dog-chest: #fff4d9;
+  --dog-muzzle: #fff0d1;
+  --dog-blaze: #fff3d6;
+  --dog-outline: #744229;
+}
+
+.dog-guide-mixed-breed {
+  --dog-coat: #c7b7aa;
+  --dog-head: #d4c3b4;
+  --dog-ear: #785f58;
+  --dog-tail: #92776b;
+  --dog-chest: #f0dfcf;
+  --dog-muzzle: #ead8c8;
+  --dog-blaze: #f0ded0;
+  --dog-outline: #68534e;
+}
+
+.puppy-tail { fill: var(--dog-tail); stroke: var(--dog-outline); stroke-width: 3; stroke-linejoin: round; }
+.puppy-pack { fill: #4775a5; stroke: #2f557d; stroke-width: 3; }
+.puppy-body { fill: var(--dog-coat); stroke: var(--dog-outline); stroke-width: 3; }
+.puppy-chest { fill: var(--dog-chest); opacity: .9; }
+.puppy-leg { fill: none; stroke: var(--dog-coat); stroke-width: 11; stroke-linecap: round; stroke-linejoin: round; }
+.puppy-ear { fill: var(--dog-ear); stroke: var(--dog-outline); stroke-width: 3; stroke-linejoin: round; }
+.puppy-head { fill: var(--dog-head); stroke: var(--dog-outline); stroke-width: 3; }
+.puppy-blaze { fill: var(--dog-blaze); }
+.puppy-eye,
+.puppy-nose { fill: #29212a; }
+.puppy-muzzle { fill: var(--dog-muzzle); }
+.puppy-smile { fill: none; stroke: #684629; stroke-width: 2.4; stroke-linecap: round; }
+.puppy-collar { fill: none; stroke: var(--red); stroke-width: 6; stroke-linecap: round; }
+.puppy-tag { fill: var(--purple); stroke: #fff1d7; stroke-width: 2; }
+.dog-saddle { fill: #403735; opacity: .95; }
+.dog-body-patch { fill: #79645d; }
+.dog-face-patch { fill: #8a6d63; }
+.dog-tail-tip { fill: #fff3d6; }

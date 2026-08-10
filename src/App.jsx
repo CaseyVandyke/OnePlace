@@ -225,7 +225,7 @@ function WorldMap({ guide, chapter = 0, compact = false, preview = false, reacti
 
 function Welcome({ guide, onStart, onPreview }) {
   return (
-    <main className="welcome-screen">
+    <section className="welcome-screen">
       <header className="welcome-nav">
         <Logo light />
         <div><span><Icon name="lock" size={14} /> Private concept demo</span><button onClick={onPreview}>Preview the app</button></div>
@@ -250,7 +250,7 @@ function Welcome({ guide, onStart, onPreview }) {
         <div><i className="active" /><i /><i /><i /></div>
         <span>No real information is stored.</span>
       </footer>
-    </main>
+    </section>
   );
 }
 
@@ -290,7 +290,7 @@ function JourneyIntro({ guide, onSelectGuide, onContinue, onSkip }) {
     ? `A friendly ${guide.name.toLowerCase()} will travel across your family map with you. Every finished task earns Glow and brings another important place to life.`
     : item.copy;
   return (
-    <main className="journey-intro-screen" aria-labelledby="journey-intro-title">
+    <section className="journey-intro-screen" aria-labelledby="journey-intro-title">
       <section className="journey-intro-card">
         <header><Logo /><button onClick={onSkip}>Skip introduction</button></header>
         <div className="journey-intro-content">
@@ -333,7 +333,7 @@ function JourneyIntro({ guide, onSelectGuide, onContinue, onSkip }) {
           returnFocusRef={guidePickerButtonRef}
         />
       )}
-    </main>
+    </section>
   );
 }
 
@@ -501,7 +501,7 @@ function SetupJourney({ guide, onComplete, onExit }) {
   };
 
   return (
-    <main className="journey-screen">
+    <section className="journey-screen">
       <JourneyHeader current={current} points={points} onExit={onExit} />
       <section className="journey-layout">
         <aside className="journey-place">
@@ -523,13 +523,13 @@ function SetupJourney({ guide, onComplete, onExit }) {
         </article>
       </section>
       {reward && <div className="reward-pop"><span><Icon name="spark" size={24} /></span><strong>+{reward} glow</strong><small>Your OnePlace just got brighter</small></div>}
-    </main>
+    </section>
   );
 }
 
 function Complete({ guide, points, onEnter }) {
   return (
-    <main className="complete-screen">
+    <section className="complete-screen">
       <div className="confetti">{Array.from({ length: 18 }).map((_, i) => <i key={i} />)}</div>
       <Logo light />
       <section>
@@ -542,7 +542,7 @@ function Complete({ guide, points, onEnter }) {
           <button className="journey-button" onClick={onEnter}>Enter my OnePlace <Icon name="arrow" /></button>
         </div>
       </section>
-    </main>
+    </section>
   );
 }
 
@@ -720,7 +720,7 @@ function MainApp({ guide, onSelectGuide, onRestart }) {
   const guideButtonRef = useRef(null);
   useScrollToTop(active);
   return (
-    <main className="main-app">
+    <section className="main-app">
       <AppHeader
         guide={guide}
         guideButtonRef={guideButtonRef}
@@ -744,7 +744,7 @@ function MainApp({ guide, onSelectGuide, onRestart }) {
           returnFocusRef={guideButtonRef}
         />
       )}
-    </main>
+    </section>
   );
 }
 
@@ -797,9 +797,19 @@ export default function App() {
     };
   }, []);
   useScrollToTop(screen);
-  if (screen === "welcome") return <Welcome guide={guide} onStart={() => setScreen("intro")} onPreview={() => setScreen("app")} />;
-  if (screen === "intro") return <JourneyIntro guide={guide} onSelectGuide={selectGuide} onSkip={() => setScreen("journey")} onContinue={() => setScreen("journey")} />;
-  if (screen === "journey") return <SetupJourney guide={guide} onExit={() => setScreen("welcome")} onComplete={(value) => { setPoints(value); setScreen("complete"); }} />;
-  if (screen === "complete") return <Complete guide={guide} points={points} onEnter={() => setScreen("app")} />;
-  return <MainApp guide={guide} onSelectGuide={selectGuide} onRestart={() => setScreen("welcome")} />;
+
+  let content;
+  if (screen === "welcome") {
+    content = <Welcome guide={guide} onStart={() => setScreen("intro")} onPreview={() => setScreen("app")} />;
+  } else if (screen === "intro") {
+    content = <JourneyIntro guide={guide} onSelectGuide={selectGuide} onSkip={() => setScreen("journey")} onContinue={() => setScreen("journey")} />;
+  } else if (screen === "journey") {
+    content = <SetupJourney guide={guide} onExit={() => setScreen("welcome")} onComplete={(value) => { setPoints(value); setScreen("complete"); }} />;
+  } else if (screen === "complete") {
+    content = <Complete guide={guide} points={points} onEnter={() => setScreen("app")} />;
+  } else {
+    content = <MainApp guide={guide} onSelectGuide={selectGuide} onRestart={() => setScreen("welcome")} />;
+  }
+
+  return <main className="app-shell">{content}</main>;
 }

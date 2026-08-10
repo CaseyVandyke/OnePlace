@@ -201,11 +201,13 @@ companion picker, and native Safari rubber-banding is expected behavior. Retain
 but do not add global touch interception to suppress native scrolling. Retest
 screen transitions and modal scrolling on a physical iPhone after layout changes.
 
-The welcome screen, pre-journey introduction, and question journey use normal
-document flow. Their height comes from their content. Do not add viewport-height
+One persistent `.app-shell` `<main>` wraps Welcome, Introduction, Questions,
+Completion, and Preview. Individual screens are content sections inside that
+shell; they do not replace the outer page layout. The shell uses normal document
+flow, and screen height comes from content. Do not add viewport-height
 calculations, fixed page containers, overflow locks, overscroll suppression,
-touch interception, or height-based mobile variants to these screens. Minimum
-heights remain appropriate for accessible buttons and form controls only.
+touch interception, or height-based mobile variants. Minimum heights remain
+appropriate for accessible buttons and form controls only.
 
 The companion picker uses the native HTML `dialog` element for modality, focus
 containment, and Escape behavior. Its panel also uses content height; do not add

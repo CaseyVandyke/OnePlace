@@ -17,10 +17,12 @@ describe("OnePlace", () => {
   test("opens the journey introduction from the welcome screen", async () => {
     const user = userEvent.setup();
     render(<App />);
+    const appShell = screen.getByRole("main");
 
     await user.click(screen.getByRole("button", { name: "Build my OnePlace" }));
 
     expect(screen.getByRole("heading", { name: "One small step at a time." })).toBeVisible();
+    expect(screen.getByRole("main")).toBe(appShell);
     expect(document.documentElement.style.overflow).not.toBe("hidden");
     expect(document.body.style.overflow).not.toBe("hidden");
   });

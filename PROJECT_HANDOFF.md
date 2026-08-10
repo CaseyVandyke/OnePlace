@@ -236,6 +236,9 @@ Important files:
 - `src/views/` — welcome, onboarding journey, completion, and preview app pages
 - `src/components/` — reusable UI, dialogs, map, keepsake photo, and companion
   artwork
+- `src/components/question-body.jsx` — a small question-type dispatcher; each
+  answer type is an independently testable controlled component using `value`
+  and `onChange`
 - `src/constants/` — static screen content, configuration, companion choices,
   copy, and sounds
 - `src/hooks/` — reusable scrolling and validated local guide preference behavior

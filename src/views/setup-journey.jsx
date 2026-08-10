@@ -95,10 +95,10 @@ const SetupJourneyView = ({ guide, onComplete, onExit }) => {
 					<p className='question-copy'>{question.copy}</p>
 					<QuestionBody
 						question={question}
-						answer={answer}
-						setAnswer={updateAnswer}
-						uploaded={uploaded}
-						setUploaded={setUploaded}
+						value={answer}
+						onChange={updateAnswer}
+						uploadedFileName={uploaded}
+						onUploadedFileNameChange={setUploaded}
 					/>
 					<div className='question-actions'>
 						<button className='back-button' disabled={current === 0} onClick={() => setCurrent((value) => Math.max(0, value - 1))}><Icon name='back' size={18} /> Back</button>

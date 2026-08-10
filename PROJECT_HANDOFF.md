@@ -3,7 +3,7 @@
 Last updated: August 9, 2026
 Repository: https://github.com/CaseyVandyke/OnePlace  
 Live prototype: https://caseyvandyke.github.io/OnePlace/  
-Current handoff baseline: commit `a8166f9`
+Architecture refactor baseline: commit `93956c3`
 
 ## Read this first
 
@@ -118,7 +118,7 @@ The setup uses a map and a series of questions. It currently includes:
 10. Leaving a personal voice message
 
 The rendered question count is data-driven. Treat the `questions` array in
-`src/App.jsx` as authoritative.
+`src/constants/journey.js` as authoritative.
 
 ### 5. Completion and main app
 
@@ -232,17 +232,24 @@ vertical scroll containers.
 
 Important files:
 
-- `src/App.jsx` — application data, screens, components, and interactions
-- `src/components/` — reusable companion artwork and the accessible guide picker
-- `src/data/companionGuides.js` — guide choices, companion copy, and sounds
-- `src/hooks/useCompanionGuide.js` — validated local guide preference
-- `src/styles.css` — shared visual, responsive, accessibility, and animation rules
+- `src/app.jsx` — top-level application state and screen orchestration only
+- `src/views/` — welcome, onboarding journey, completion, and preview app pages
+- `src/components/` — reusable UI, dialogs, map, keepsake photo, and companion
+  artwork
+- `src/constants/` — static screen content, configuration, companion choices,
+  copy, and sounds
+- `src/hooks/` — reusable scrolling and validated local guide preference behavior
+- `src/styles/index.css` — shared visual, responsive, accessibility, and animation
+  rules
+- `src/styles/components/` — component-specific styles
 - `vite.config.js` — Vite configuration with relative asset base
 - `.github/workflows/deploy-pages.yml` — GitHub Pages deployment
 - `README.md` — short public project overview
 
-The app is intentionally compact for concept iteration. Before building a real
-product, split screens and data models into maintainable modules.
+The source structure follows the conventions used by the local Sparrow React
+repositories: lowercase kebab-case filenames, separate views and components,
+static configuration in constants, reusable hooks, props destructured in the
+component signature, and component exports at the bottom of each module.
 
 ## Local development
 
@@ -273,8 +280,8 @@ git push origin main
 
 The existing local repository and GitHub repository remain available even when
 the OpenAI account changes. A new coding conversation should start by reading
-this file, `README.md`, `src/App.jsx`, and the relevant sections of
-`src/styles.css`.
+this file, `README.md`, `src/app.jsx`, and the relevant sections of
+`src/styles/index.css`.
 
 ## Security and legal boundary
 
@@ -336,7 +343,7 @@ Copy this into the new account:
 
 > Continue development of the OnePlace React prototype located at
 > `/Users/caseyvandyke/oneplace`. First read `PROJECT_HANDOFF.md`, `README.md`,
-> `src/App.jsx`, and the relevant parts of `src/styles.css`. Preserve the
+> `src/app.jsx`, and the relevant parts of `src/styles/index.css`. Preserve the
 > senior-first mobile accessibility requirements, the warm map-based journey,
 > and all existing Safari scroll protections. Check the Git working tree before
 > editing, make the requested change, run `npm run build` and

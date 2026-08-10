@@ -33,6 +33,15 @@ npm run build
 npm run preview
 ```
 
+## Source structure
+
+- `src/app.jsx` owns top-level screen state and routing between product areas.
+- `src/views/` contains the onboarding journey and preview application pages.
+- `src/components/` contains reusable UI shared across views.
+- `src/constants/` contains static product content and configuration.
+- `src/hooks/` contains reusable React behavior.
+- `src/styles/` contains shared and component-specific CSS.
+
 ## Publish with GitHub Pages
 
 1. Create a GitHub repository and push this project to its `main` branch.

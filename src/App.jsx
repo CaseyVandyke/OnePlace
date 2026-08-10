@@ -290,7 +290,7 @@ function JourneyIntro({ guide, onSelectGuide, onContinue, onSkip }) {
     ? `A friendly ${guide.name.toLowerCase()} will travel across your family map with you. Every finished task earns Glow and brings another important place to life.`
     : item.copy;
   return (
-    <main className="journey-intro-screen" role="dialog" aria-modal="true" aria-labelledby="journey-intro-title">
+    <main className="journey-intro-screen" aria-labelledby="journey-intro-title">
       <section className="journey-intro-card">
         <header><Logo /><button onClick={onSkip}>Skip introduction</button></header>
         <div className="journey-intro-content">

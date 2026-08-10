@@ -201,32 +201,17 @@ companion picker, and native Safari rubber-banding is expected behavior. Retain
 but do not add global touch interception to suppress native scrolling. Retest
 screen transitions and modal scrolling on a physical iPhone after layout changes.
 
-The companion picker uses the native HTML `dialog` element. Safari manages its
-top-layer placement, modality, focus containment, and Escape behavior; the app
-does not lock `body`, make `#root` inert, or implement a custom focus trap. On
-mobile, the dialog is the only scroll surface and its header, cards, and actions
-move together in normal document order. Do not restore the custom fixed overlay
-or a separately scrolling card list: both produced abrupt viewport jumps at the
-bottom boundary on iPhone Safari.
+The welcome screen, pre-journey introduction, and question journey use normal
+document flow. Their height comes from their content. Do not add viewport-height
+calculations, fixed page containers, overflow locks, overscroll suppression,
+touch interception, or height-based mobile variants to these screens. Minimum
+heights remain appropriate for accessible buttons and form controls only.
 
-The pre-journey introduction also leaves `html` and `body` scrolling under
-native browser control. Do not add JavaScript overflow locks around this screen;
-the old lock made the same companion picker behave differently here than it did
-when opened from the main-app preview.
-
-On mobile, the introduction is a normal document page rather than a fixed
-`100svh` viewport. Its content may grow beyond the screen and uses native page
-scrolling. Do not restore `touch-action: none`, overscroll suppression, or hidden
-overflow on the introduction content.
-
-The mobile introduction and question journey do not use viewport-height
-minimums. Their natural content height defines the document boundary so Safari
-does not have to recalculate a `100vh` edge while its browser chrome changes.
-
-On mobile, horizontal root overflow uses `clip`, not `hidden`. Setting
-`overflow-x: hidden` on `html`, `body`, and `#root` can turn those elements into
-additional vertical scroll containers. Keep the root document as the single
-vertical scrolling surface.
+The companion picker uses the native HTML `dialog` element for modality, focus
+containment, and Escape behavior. Its panel also uses content height; do not add
+custom full-screen height calculations, a fixed overlay, or a separate scrolling
+card list. Horizontal root overflow uses `clip` so it does not create additional
+vertical scroll containers.
 
 ## Current technical implementation
 

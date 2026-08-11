@@ -121,7 +121,7 @@ button { cursor: pointer; }
 .journey-place-copy { position: absolute; z-index: 4; left: 35px; top: 30px; }.journey-place-copy span, .journey-place-copy strong { display: block; }.journey-place-copy span { color: #858092; font: 500 8px "DM Mono"; letter-spacing: .14em; }.journey-place-copy strong { margin-top: 5px; font: 600 15px "Playfair Display"; }
 .place-compact { height: 450px; transform: scale(.82); }.place-compact .place-caption { display: none; }
 .next-unlock { position: absolute; z-index: 6; left: 35px; bottom: 28px; display: flex; align-items: center; gap: 10px; }.next-unlock > span { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; color: #f0b2b5; background: rgba(255,255,255,.08); }.next-unlock small, .next-unlock strong { display: block; }.next-unlock small { color: #777284; font: 500 7px "DM Mono"; letter-spacing: .1em; }.next-unlock strong { margin-top: 3px; font-size: 10px; }
-.question-stage { width: min(610px, calc(100% - 70px)); margin: auto; padding: 55px 0; animation: stage-in .35s ease; }
+.question-stage { width: min(610px, calc(100% - 70px)); margin: auto; padding: 55px 0; }
 .question-counter { display: grid; grid-template-columns: auto minmax(100px, 1fr) auto; gap: 12px; align-items: center; color: #8b858a; font: 500 8px "DM Mono"; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 54px; }
 .question-counter i { height: 3px; background: #e5dfda; border-radius: 4px; overflow: hidden; }.question-counter b { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--red), var(--purple), var(--blue)); transition: width .4s; }
 .question-eyebrow { color: var(--purple); font: 500 9px "DM Mono"; text-transform: uppercase; letter-spacing: .13em; margin-bottom: 14px; }
@@ -283,6 +283,8 @@ button { cursor: pointer; }
 @keyframes stage-in { from { opacity: 0; transform: translateY(10px); } }
 @keyframes reward-in { 0% { opacity: 0; transform: translate(-50%,-45%) scale(.8); } 25% { opacity: 1; transform: translate(-50%,-50%) scale(1.05); } 80% { opacity: 1; } 100% { opacity: 0; transform: translate(-50%,-55%); } }
 @keyframes confetti { from { top: -20px; transform: rotate(0deg); } to { top: 110%; transform: rotate(540deg); } }
+
+.screen-enter { animation: stage-in .35s ease; }
 
 @media (max-width: 1000px) {
   .chapter-track > div { width: 70px; }.chapter-track > div:not(:last-child)::after { width: 37px; left: 52px; }
@@ -838,7 +840,6 @@ button { cursor: pointer; }
   gap: 64px;
   align-items: center;
   padding: 48px 70px;
-  animation: stage-in .35s ease;
 }
 .journey-intro-content h1 {
   max-width: 560px;
@@ -937,10 +938,15 @@ button { cursor: pointer; }
 
 @media (max-width: 780px) {
   .journey-intro-screen {
+    width: 100%;
+    min-height: 100vh;
+    overflow: visible;
     padding: 0;
     background: var(--paper);
   }
   .journey-intro-card {
+    min-height: 100vh;
+    align-content: start;
     border-radius: 0;
     background: var(--paper);
   }

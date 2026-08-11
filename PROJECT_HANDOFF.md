@@ -204,10 +204,16 @@ screen transitions and modal scrolling on a physical iPhone after layout changes
 One persistent `.app-shell` `<main>` wraps Welcome, Introduction, Questions,
 Completion, and Preview. Individual screens are content sections inside that
 shell; they do not replace the outer page layout. The shell uses normal document
-flow, and screen height comes from content. Do not add viewport-height
-calculations, fixed page containers, overflow locks, overscroll suppression,
-touch interception, or height-based mobile variants. Minimum heights remain
-appropriate for accessible buttons and form controls only.
+flow, and screen height generally comes from content. The verified mobile
+Introduction is the deliberate exception: both `.journey-intro-screen` and
+`.journey-intro-card` use `min-height: 100vh` so Safari does not expose a gray
+canvas beneath a short slide. The card uses `align-content: start`, keeping its
+controls directly after the slide content while its cream background fills the
+remaining viewport. Do not change that to an `1fr` middle grid row, which pushes
+the controls below the visible viewport. Avoid viewport-height calculations,
+fixed page containers, overflow locks, overscroll suppression, touch
+interception, or additional height-based mobile variants elsewhere. Minimum
+heights remain appropriate for accessible buttons and form controls.
 
 On August 10, 2026, physical-iPhone Web Inspector measurements identified the
 remaining bottom shake. While Safari collapsed its browser chrome, the visual
@@ -218,6 +224,11 @@ padding on Welcome, Introduction, and Questions. Those three mobile surfaces now
 use fixed content padding so their document boundary remains stable throughout
 the native Safari toolbar transition. Do not restore a dynamic safe-area inset
 to those scroll boundaries without retesting on a physical iPhone.
+
+Introduction slides and question changes share the `.screen-enter` animation: a
+subtle 350ms fade and 10px upward entrance. The keyed Introduction content and
+keyed journey body replay it for each step, while persistent navigation remains
+stationary. The global reduced-motion rule continues to reduce this animation.
 
 The companion picker uses the native HTML `dialog` element for modality, focus
 containment, and Escape behavior. Its panel also uses content height; do not add

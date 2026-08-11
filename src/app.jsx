@@ -36,7 +36,7 @@ const App = () => {
 	if (screen === screens.WELCOME) {
 		content = <WelcomeView guide={guide} onStart={showIntroduction} onPreview={showApp} />;
 	} else if (screen === screens.INTRO) {
-		content = <JourneyIntroView guide={guide} onSelectGuide={selectGuide} onSkip={showJourney} onContinue={showJourney} />;
+		content = <JourneyIntroView guide={guide} onSelectGuide={selectGuide} onSkip={showJourney} onContinue={showJourney} onHome={showWelcome} />;
 	} else if (screen === screens.JOURNEY) {
 		content = <SetupJourneyView guide={guide} onExit={showWelcome} onComplete={completeJourney} />;
 	} else if (screen === screens.COMPLETE) {

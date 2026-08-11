@@ -18,6 +18,7 @@ describe('OnePlace', () => {
 		const user = userEvent.setup();
 		render(<App />);
 		const appShell = screen.getByRole('main');
+		expect(screen.getByText('oneplace')).toBeVisible();
 
 		await user.click(screen.getByRole('button', { name: 'Build my OnePlace' }));
 
@@ -25,6 +26,32 @@ describe('OnePlace', () => {
 		expect(screen.getByRole('main')).toBe(appShell);
 		expect(document.documentElement.style.overflow).not.toBe('hidden');
 		expect(document.body.style.overflow).not.toBe('hidden');
+	});
+
+	test('opens account actions from the welcome header', async() => {
+		const user = userEvent.setup();
+		render(<App />);
+
+		const menuButton = screen.getByRole('button', { name: 'Open account menu' });
+		await user.click(menuButton);
+
+		expect(menuButton).toHaveAttribute('aria-expanded', 'true');
+		const loginButton = screen.getByRole('button', { name: 'Log in' });
+		expect(loginButton).toBeVisible();
+		expect(screen.getByRole('button', { name: 'Create account' })).toBeVisible();
+
+		await user.click(loginButton);
+		expect(screen.getByRole('status')).toHaveTextContent('This is a prototype — login and account creation aren’t available yet.');
+	});
+
+	test('returns to the welcome screen from the introduction logo', async() => {
+		const user = userEvent.setup();
+		render(<App />);
+
+		await user.click(screen.getByRole('button', { name: 'Build my OnePlace' }));
+		await user.click(screen.getByRole('button', { name: 'Return to the Welcome screen' }));
+
+		expect(screen.getByRole('button', { name: 'Build my OnePlace' })).toBeVisible();
 	});
 
 	test('starts setup without a character-selection screen', async() => {
@@ -69,6 +96,27 @@ describe('OnePlace', () => {
 		await user.click(screen.getByRole('button', { name: 'Travel with Labrador' }));
 
 		expect(screen.getByRole('button', { name: 'Change guide. Current guide: Labrador' })).toBeVisible();
+	});
+
+	test('returns to the welcome screen from the main app logo', async() => {
+		const user = userEvent.setup();
+		render(<App />);
+
+		await user.click(screen.getByRole('button', { name: 'Preview the app' }));
+		await user.click(screen.getByRole('button', { name: 'Return to the Welcome screen' }));
+
+		expect(screen.getByRole('button', { name: 'Build my OnePlace' })).toBeVisible();
+	});
+
+	test('labels unavailable prototype actions when selected', async() => {
+		const user = userEvent.setup();
+		render(<App />);
+
+		await user.click(screen.getByRole('button', { name: 'Preview the app' }));
+		await user.click(screen.getByRole('button', { name: 'My people' }));
+		await user.click(screen.getByRole('button', { name: 'Invite someone' }));
+
+		expect(screen.getByRole('status')).toHaveTextContent('Preview only — this feature isn’t available in the prototype yet.');
 	});
 
 	test('starts with the Golden Retriever when an old preference is present', async() => {

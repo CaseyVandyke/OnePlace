@@ -26,19 +26,22 @@ const MainAppView = ({ guide, onSelectGuide, onRestart }) => {
 				guideButtonRef={guideButtonRef}
 				active={active === appViews.POSSESSIONS ? appViews.THINGS : active}
 				onNavigate={setActive}
+				onHome={onRestart}
 				onJourney={() => setResume(true)}
 				onChangeGuide={() => setGuidePickerOpen(true)}
 			/>
-			{active === appViews.PATH && <PathHomeView guide={guide} onContinue={() => setResume(true)} />}
-			{active === appViews.THINGS && (
-				<ThingsView
-					onContinue={() => setResume(true)}
-					onPossessions={() => setActive(appViews.POSSESSIONS)}
-				/>
-			)}
-			{active === appViews.POSSESSIONS && <PossessionsView onBack={() => setActive(appViews.THINGS)} />}
-			{active === appViews.PEOPLE && <PeopleView />}
-			{active === appViews.MESSAGES && <MessagesView />}
+			<div className='screen-enter' key={active}>
+				{active === appViews.PATH && <PathHomeView guide={guide} onContinue={() => setResume(true)} />}
+				{active === appViews.THINGS && (
+					<ThingsView
+						onContinue={() => setResume(true)}
+						onPossessions={() => setActive(appViews.POSSESSIONS)}
+					/>
+				)}
+				{active === appViews.POSSESSIONS && <PossessionsView onBack={() => setActive(appViews.THINGS)} />}
+				{active === appViews.PEOPLE && <PeopleView />}
+				{active === appViews.MESSAGES && <MessagesView />}
+			</div>
 			<footer className='app-footer'>
 				<Logo />
 				<p>Everything that matters, ready for the people who matter.</p>

@@ -7,7 +7,7 @@ import Logo from '../components/logo';
 import { getCompanionVoice } from '../constants/companion-guides';
 import { journeyIntroSlides } from '../constants/journey';
 
-const JourneyIntroView = ({ guide, onSelectGuide, onContinue, onSkip }) => {
+const JourneyIntroView = ({ guide, onSelectGuide, onContinue, onSkip, onHome }) => {
 	const [slide, setSlide] = useState(0);
 	const [guidePickerOpen, setGuidePickerOpen] = useState(false);
 	const guidePickerButtonRef = useRef(null);
@@ -22,7 +22,7 @@ const JourneyIntroView = ({ guide, onSelectGuide, onContinue, onSkip }) => {
 	return (
 		<section className='journey-intro-screen' aria-labelledby='journey-intro-title'>
 			<section className='journey-intro-card'>
-				<header><Logo /><button onClick={onSkip}>Skip introduction</button></header>
+				<header><Logo onClick={onHome} /><button onClick={onSkip}>Skip introduction</button></header>
 				<div className='journey-intro-content screen-enter' key={slide}>
 					<div className='journey-intro-art'>
 						<span><Icon name={item.icon} size={38} /></span>

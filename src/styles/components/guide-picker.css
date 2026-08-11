@@ -38,6 +38,10 @@
   background: rgba(20,17,32,.76);
 }
 
+.guide-picker-dialog[open]::backdrop {
+  animation: guide-picker-backdrop-in .35s ease;
+}
+
 .guide-picker-panel {
   position: relative;
   width: min(880px, 100%);
@@ -45,6 +49,14 @@
   border-radius: 26px;
   background: var(--paper);
   box-shadow: 0 30px 90px rgba(9,7,18,.45);
+}
+
+.guide-picker-dialog[open] .guide-picker-panel {
+  animation: stage-in .35s ease;
+}
+
+@keyframes guide-picker-backdrop-in {
+  from { opacity: 0; }
 }
 
 .guide-picker-panel > header {

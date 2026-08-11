@@ -10,7 +10,7 @@ const JourneyHeader = ({ current, points, onExit }) => {
 	const chapter = questions[current]?.chapter ?? 0;
 	return (
 		<header className='journey-header'>
-			<Logo />
+			<Logo onClick={onExit} />
 			<div className='chapter-track'>
 				{chapters.map((item, index) => (
 					<div className={`${index < chapter ? 'complete' : ''} ${index === chapter ? 'current' : ''}`} key={item.name}>

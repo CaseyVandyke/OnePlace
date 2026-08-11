@@ -1,4 +1,5 @@
 import Icon from '../components/icon';
+import PrototypeAction from '../components/prototype-action';
 import { messagePrompts } from '../constants/dashboard';
 
 const MessagesView = () => {
@@ -11,7 +12,7 @@ const MessagesView = () => {
 			</header>
 			<section className='message-stage'>
 				<div className='record-disc'>
-					<button><Icon name='play' size={30} /></button>
+					<PrototypeAction label='Play saved message'><Icon name='play' size={30} /></PrototypeAction>
 					<i />
 					<i />
 				</div>
@@ -23,18 +24,18 @@ const MessagesView = () => {
 							<i key={index} style={{ height: `${7 + ((index * 11) % 29)}px` }} />
 						))}
 					</div>
-					<button><Icon name='mic' /> Record another message</button>
+					<PrototypeAction><Icon name='mic' /> Record another message</PrototypeAction>
 				</div>
 			</section>
 			<section className='message-prompts'>
 				<p>NOT SURE WHAT TO SAY?</p>
 				<div>
 					{messagePrompts.map((prompt, index) => (
-						<button key={prompt}>
+						<PrototypeAction key={prompt}>
 							<span>0{index + 1}</span>
 							<strong>{prompt}</strong>
 							<Icon name='arrow' />
-						</button>
+						</PrototypeAction>
 					))}
 				</div>
 			</section>

@@ -1,4 +1,5 @@
 import Icon from '../components/icon';
+import PrototypeAction from '../components/prototype-action';
 
 const PeopleView = () => {
 	return (
@@ -24,7 +25,7 @@ const PeopleView = () => {
 				<div className='orbit-person person-three'>
 					<span>JM</span><strong>Jack</strong><small>5 items · when needed</small>
 				</div>
-				<button className='orbit-add'><Icon name='plus' /> Invite someone</button>
+				<PrototypeAction className='orbit-add'><Icon name='plus' /> Invite someone</PrototypeAction>
 			</section>
 			<div className='trust-note'>
 				<Icon name='shield' />
@@ -32,7 +33,7 @@ const PeopleView = () => {
 					<strong>You are always in control.</strong>
 					<p>Adding someone never gives them automatic access. Every item has its own sharing choice.</p>
 				</div>
-				<button>Review access</button>
+				<PrototypeAction>Review access</PrototypeAction>
 			</div>
 		</div>
 	);

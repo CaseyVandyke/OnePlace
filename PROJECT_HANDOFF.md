@@ -1,6 +1,6 @@
 # OnePlace Project Handoff
 
-Last updated: August 9, 2026
+Last updated: August 10, 2026
 Repository: https://github.com/CaseyVandyke/OnePlace  
 Live prototype: https://caseyvandyke.github.io/OnePlace/  
 Architecture refactor baseline: commit `93956c3`
@@ -178,6 +178,29 @@ The page includes a reminder that personal wishes are useful but important gifts
 should also appear in a will or trust and be reviewed with an estate
 professional.
 
+### Preview navigation and prototype actions
+
+- The Welcome and main-app headers remain visible with CSS `position: sticky`;
+  do not replace this with a fixed header or compensate with page padding.
+- On mobile, the main-app navigation and the Welcome account menu use a shared,
+  50px hamburger control whose lines morph into a close icon. Menu entrance and
+  icon motion respect `prefers-reduced-motion`.
+- Header OnePlace logos return to Welcome wherever leaving the current flow is
+  appropriate. The Welcome logo itself remains noninteractive because the user
+  is already home.
+- Login and account creation are still visual prototype actions. They display a
+  temporary notice instead of implying authentication exists. Other visibly
+  interactive but unavailable controls on My People and Messages use the same
+  notice pattern. Remove or replace `AccountActions` and `PrototypeAction` when
+  implementing real behavior.
+- Main-app destination changes, Welcome, Completion, Introduction slides, and
+  question changes use the shared `.screen-enter` treatment for consistent
+  page entrances. The companion picker panel uses the same entrance timing,
+  with a matching backdrop fade.
+- The desktop My People orbit remains intact. On mobile it becomes a normal-flow
+  list of trusted people and actions so cards do not overlap or create a fragile
+  scroll boundary.
+
 ## Mobile Safari history
 
 Mobile is expected to be the primary form factor.
@@ -220,10 +243,11 @@ remaining bottom shake. While Safari collapsed its browser chrome, the visual
 viewport grew from 660px to 767px and the short page's document height changed
 from 1186px to 1220px. No application `scrollTo` call occurred. The 34px document
 change came from `env(safe-area-inset-bottom)` being used as in-flow bottom
-padding on Welcome, Introduction, and Questions. Those three mobile surfaces now
-use fixed content padding so their document boundary remains stable throughout
-the native Safari toolbar transition. Do not restore a dynamic safe-area inset
-to those scroll boundaries without retesting on a physical iPhone.
+padding on Welcome, Introduction, Questions, and later the preview-app footer.
+Those mobile surfaces now use fixed content padding so their document boundary
+remains stable throughout the native Safari toolbar transition. Do not restore a
+dynamic safe-area inset to those scroll boundaries without retesting on a
+physical iPhone.
 
 Introduction slides and question changes share the `.screen-enter` animation: a
 subtle 350ms fade and 10px upward entrance. The keyed Introduction content and

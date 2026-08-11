@@ -9,7 +9,7 @@ const CompleteView = ({ guide, points, onEnter }) => {
 				{Array.from({ length: 18 }).map((_, index) => <i key={index} />)}
 			</div>
 			<Logo light />
-			<section>
+			<section className='screen-enter'>
 				<div className='complete-art'>
 					<WorldMap guide={guide} chapter={5} compact />
 				</div>

@@ -107,7 +107,7 @@
   padding: 14px;
   background: #fffdf9;
   cursor: pointer;
-  transition: border-color .2s, background .2s, transform .2s;
+  transition: border-color .22s ease, background-color .22s ease, box-shadow .22s ease, transform .2s ease;
 }
 
 .guide-options label:hover { border-color: #a68cbd; transform: translateY(-1px); }
@@ -143,9 +143,38 @@
   background: #fff;
   font-size: 17px;
   font-weight: 800;
+  transform: scale(.92);
+  transition: border-color .22s ease, background-color .22s ease, color .1s ease, transform .2s ease;
 }
 
-.guide-options label.selected .guide-option-check { border-color: var(--purple); color: #fff; background: var(--purple); }
+.guide-options label.selected .guide-option-check {
+  border-color: var(--purple);
+  color: #fff;
+  background: var(--purple);
+  transform: scale(1);
+  animation: guide-check-in .42s ease-out both;
+}
+
+@keyframes guide-check-in {
+  0%, 55% {
+    border-color: #cfc5cb;
+    color: transparent;
+    background: #fff;
+    transform: scale(.88);
+  }
+  78% {
+    border-color: var(--purple);
+    color: #fff;
+    background: var(--purple);
+    transform: scale(1.12);
+  }
+  100% {
+    border-color: var(--purple);
+    color: #fff;
+    background: var(--purple);
+    transform: scale(1);
+  }
+}
 .guide-picker-panel > footer {
   display: flex;
   justify-content: flex-end;

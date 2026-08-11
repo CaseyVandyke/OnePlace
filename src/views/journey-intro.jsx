@@ -23,7 +23,7 @@ const JourneyIntroView = ({ guide, onSelectGuide, onContinue, onSkip }) => {
 		<section className='journey-intro-screen' aria-labelledby='journey-intro-title'>
 			<section className='journey-intro-card'>
 				<header><Logo /><button onClick={onSkip}>Skip introduction</button></header>
-				<div className='journey-intro-content'>
+				<div className='journey-intro-content' key={slide}>
 					<div className='journey-intro-art'>
 						<span><Icon name={item.icon} size={38} /></span>
 						{slide === 1 && (

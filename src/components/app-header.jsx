@@ -14,7 +14,7 @@ const AppHeader = ({ guide, guideButtonRef, active, onNavigate, onJourney, onCha
 	};
 
 	return (
-		<header className='app-header'>
+		<header className='site-header app-header'>
 			<Logo onClick={onHome} />
 			<nav id='app-navigation' className={menu ? 'open' : ''}>
 				{appNavigationItems.map((item) => (

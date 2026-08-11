@@ -6,7 +6,7 @@ import WorldMap from '../components/world-map';
 const WelcomeView = ({ guide, onStart, onPreview }) => {
 	return (
 		<section className='welcome-screen'>
-			<header className='welcome-nav'>
+			<header className='site-header welcome-nav'>
 				<Logo light />
 				<div className='welcome-meta'>
 					<span><Icon name='lock' size={14} /> Private concept demo</span>

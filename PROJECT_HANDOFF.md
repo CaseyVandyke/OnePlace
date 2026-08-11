@@ -180,8 +180,9 @@ professional.
 
 ### Preview navigation and prototype actions
 
-- The Welcome and main-app headers remain visible with CSS `position: sticky`;
-  do not replace this with a fixed header or compensate with page padding.
+- Welcome, Introduction, guided Questions, and the main app share the
+  `.site-header` CSS class and remain visible with `position: sticky`; do not
+  replace this with fixed headers or compensate with page padding.
 - On mobile, the main-app navigation and the Welcome account menu use a shared,
   50px hamburger control whose lines morph into a close icon. Menu entrance and
   icon motion respect `prefers-reduced-motion`.
@@ -197,6 +198,9 @@ professional.
   question changes use the shared `.screen-enter` treatment for consistent
   page entrances. The companion picker panel uses the same entrance timing,
   with a matching backdrop fade.
+- The guided-question Glow badge uses a stable-size gradient treatment. When
+  Glow increases, the keyed badge briefly scales and settles without changing
+  header layout; reduced-motion preferences suppress that animation.
 - The desktop My People orbit remains intact. On mobile it becomes a normal-flow
   list of trusted people and actions so cards do not overlap or create a fragile
   scroll boundary.

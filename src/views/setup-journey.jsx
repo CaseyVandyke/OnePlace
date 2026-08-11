@@ -9,7 +9,7 @@ import useScrollToTop from '../hooks/scroll-to-top';
 const JourneyHeader = ({ current, points, onExit }) => {
 	const chapter = questions[current]?.chapter ?? 0;
 	return (
-		<header className='journey-header'>
+		<header className='site-header journey-header'>
 			<Logo onClick={onExit} />
 			<div className='chapter-track'>
 				{chapters.map((item, index) => (
@@ -19,7 +19,7 @@ const JourneyHeader = ({ current, points, onExit }) => {
 					</div>
 				))}
 			</div>
-			<div className='journey-points'>
+			<div className={`journey-points ${points > 0 ? 'glow-added' : ''}`} key={points}>
 				<Icon name='spark' size={16} />
 				<strong>{points}</strong>
 				<span>glow</span>

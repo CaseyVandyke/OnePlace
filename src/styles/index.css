@@ -304,10 +304,14 @@ button { cursor: pointer; }
 @keyframes prototype-notice-in { from { opacity: 0; transform: translate(-50%,10px); } }
 @keyframes header-menu-in { from { opacity: 0; transform: translateY(-7px) scale(.98); } }
 @keyframes glow-added { 0% { opacity: .72; transform: scale(.9); } 58% { opacity: 1; transform: scale(1.08); } 100% { transform: scale(1); } }
+@keyframes question-screen-in-even { from { opacity: 0; transform: translateY(10px); } }
+@keyframes question-screen-in-odd { from { opacity: 0; transform: translateY(10px); } }
 @keyframes reward-in { 0% { opacity: 0; transform: translate(-50%,-45%) scale(.8); } 25% { opacity: 1; transform: translate(-50%,-50%) scale(1.05); } 80% { opacity: 1; } 100% { opacity: 0; transform: translate(-50%,-55%); } }
 @keyframes confetti { from { top: -20px; transform: rotate(0deg); } to { top: 110%; transform: rotate(540deg); } }
 
 .screen-enter { animation: stage-in .35s ease; }
+.question-screen-enter-even { animation: question-screen-in-even .35s ease; }
+.question-screen-enter-odd { animation: question-screen-in-odd .35s ease; }
 
 @media (max-width: 1000px) {
   .chapter-track > div { width: 70px; }.chapter-track > div:not(:last-child)::after { width: 37px; left: 52px; }

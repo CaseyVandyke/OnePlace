@@ -72,7 +72,7 @@ const SetupJourneyView = ({ guide, onComplete, onExit }) => {
 	return (
 		<section className='journey-screen'>
 			<JourneyHeader current={current} points={points} onExit={onExit} />
-			<section className='journey-layout screen-enter' key={current}>
+			<section className={`journey-layout question-screen-enter-${current % 2 === 0 ? 'even' : 'odd'}`}>
 				<aside className='journey-place'>
 					<div className='journey-place-copy'>
 						<span>YOUR PLACE</span>
@@ -84,7 +84,7 @@ const SetupJourneyView = ({ guide, onComplete, onExit }) => {
 						<div><small>NOW BUILDING</small><strong>{chapters[question.chapter].name}</strong></div>
 					</div>
 				</aside>
-				<article className='question-stage'>
+				<article className='question-stage' key={current}>
 					<div className='question-counter'>
 						<span>Question {current + 1} of {questions.length}</span>
 						<i><b style={{ width: `${((current + 1) / questions.length) * 100}%` }} /></i>

@@ -253,10 +253,15 @@ remains stable throughout the native Safari toolbar transition. Do not restore a
 dynamic safe-area inset to those scroll boundaries without retesting on a
 physical iPhone.
 
-Introduction slides and question changes share the `.screen-enter` animation: a
-subtle 350ms fade and 10px upward entrance. The keyed Introduction content and
-keyed journey body replay it for each step, while persistent navigation remains
-stationary. The global reduced-motion rule continues to reduce this animation.
+Introduction slides and question changes share a subtle 350ms fade and 10px
+upward entrance. Introduction content remains keyed, but the guided-question
+layout must remain mounted so the companion can transition between map stops.
+Question changes alternate equivalent `question-screen-enter-even` and
+`question-screen-enter-odd` animation names to replay the entrance without
+replacing the map. Key only the question article, not `.journey-layout`; keying
+the whole layout makes the companion teleport to its destination. Persistent
+navigation remains stationary, and the global reduced-motion rule continues to
+reduce these animations.
 
 The companion picker uses the native HTML `dialog` element for modality, focus
 containment, and Escape behavior. Its panel also uses content height; do not add

@@ -177,6 +177,28 @@ describe('OnePlace', () => {
 		expect(screen.getByText('Question 2 of 10')).toBeVisible();
 	});
 
+	test('keeps the map guide mounted so it travels between chapter stops', async() => {
+		const user = userEvent.setup();
+		await beginSetup(user);
+		const guide = document.querySelector('.map-explorer');
+		const journeyLayout = document.querySelector('.journey-layout');
+		const startingLeft = guide.style.left;
+
+		await user.click(screen.getByRole('button', { name: 'My children' }));
+		await user.click(screen.getByRole('button', { name: 'Save & continue' }));
+		await screen.findByRole('heading', { name: 'What should your family call this place?' }, { timeout: 1500 });
+		expect(document.querySelector('.journey-layout')).toBe(journeyLayout);
+		expect(journeyLayout).toHaveClass('question-screen-enter-odd');
+		await user.type(screen.getByRole('textbox', { name: 'Your place’s name' }), 'Morgan family');
+		await user.click(screen.getByRole('button', { name: 'Save & continue' }));
+		await screen.findByRole('heading', { name: 'Do you have a will?' }, { timeout: 1500 });
+
+		const movedGuide = document.querySelector('.map-explorer');
+		expect(movedGuide).toBe(guide);
+		expect(movedGuide.style.left).not.toBe(startingLeft);
+		expect(journeyLayout).toHaveClass('question-screen-enter-even');
+	});
+
 	test('settles contextual guide reactions into simple sounds', () => {
 		vi.useFakeTimers();
 		render(<App />);

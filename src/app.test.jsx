@@ -75,6 +75,25 @@ describe('OnePlace', () => {
 		expect(screen.queryByText('You are here')).not.toBeInTheDocument();
 	});
 
+	test('starts a new welcome walkthrough at question one despite saved progress', async() => {
+		const user = userEvent.setup();
+		window.localStorage.setItem(journeyProgressStorageKey, JSON.stringify({
+			questionStatuses: {
+				0: 'answered',
+				1: 'answered',
+				2: 'answered',
+				3: 'answered',
+				4: 'answered'
+			},
+			completedQuickSteps: []
+		}));
+
+		await beginSetup(user);
+
+		expect(screen.getByText('Question 1 of 10')).toBeVisible();
+		expect(screen.getByRole('heading', { name: 'Who are you preparing this for?' })).toBeVisible();
+	});
+
 	test('introduces the illuminated path', async() => {
 		const user = userEvent.setup();
 		render(<App />);

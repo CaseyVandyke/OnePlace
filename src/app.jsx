@@ -34,7 +34,7 @@ const App = () => {
 	};
 	const showWelcome = () => showScreen(screens.WELCOME);
 	const showIntroduction = () => showScreen(screens.INTRO);
-	const showJourney = (questionIndex = journeyProgress.summary.nextQuestionIndex) => {
+	const showJourney = (questionIndex = 0) => {
 		setJourneyQuestion(questionIndex >= 0 ? questionIndex : 0);
 		showScreen(screens.JOURNEY);
 	};

@@ -1,6 +1,5 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import AppHeader from '../components/app-header';
-import GuidePicker from '../components/guide-picker';
 import Icon from '../components/icon';
 import Logo from '../components/logo';
 import MiniQuest from '../components/mini-quest';
@@ -12,26 +11,21 @@ import PeopleView from './people';
 import PossessionsView from './possessions';
 import ThingsView from './things';
 
-const MainAppView = ({ guide, onSelectGuide, onRestart }) => {
+const MainAppView = ({ onRestart }) => {
 	const [active, setActive] = useState(appViews.PATH);
 	const [resume, setResume] = useState(false);
-	const [guidePickerOpen, setGuidePickerOpen] = useState(false);
-	const guideButtonRef = useRef(null);
 	useScrollToTop(active);
 
 	return (
 		<section className='main-app'>
 			<AppHeader
-				guide={guide}
-				guideButtonRef={guideButtonRef}
 				active={active === appViews.POSSESSIONS ? appViews.THINGS : active}
 				onNavigate={setActive}
 				onHome={onRestart}
 				onJourney={() => setResume(true)}
-				onChangeGuide={() => setGuidePickerOpen(true)}
 			/>
 			<div className='screen-enter' key={active}>
-				{active === appViews.PATH && <PathHomeView guide={guide} onContinue={() => setResume(true)} />}
+				{active === appViews.PATH && <PathHomeView onContinue={() => setResume(true)} />}
 				{active === appViews.THINGS && (
 					<ThingsView
 						onContinue={() => setResume(true)}
@@ -48,14 +42,6 @@ const MainAppView = ({ guide, onSelectGuide, onRestart }) => {
 				<button onClick={onRestart}><Icon name='logout' size={15} /> Replay first-time experience</button>
 			</footer>
 			{resume && <MiniQuest onClose={() => setResume(false)} />}
-			{guidePickerOpen && (
-				<GuidePicker
-					selectedGuideId={guide.id}
-					onSelect={onSelectGuide}
-					onClose={() => setGuidePickerOpen(false)}
-					returnFocusRef={guideButtonRef}
-				/>
-			)}
 		</section>
 	);
 };

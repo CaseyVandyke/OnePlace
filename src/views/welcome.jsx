@@ -3,7 +3,7 @@ import Icon from '../components/icon';
 import Logo from '../components/logo';
 import WorldMap from '../components/world-map';
 
-const WelcomeView = ({ guide, onStart, onPreview }) => {
+const WelcomeView = ({ onStart, onPreview }) => {
 	return (
 		<section className='welcome-screen'>
 			<header className='site-header welcome-nav'>
@@ -28,7 +28,7 @@ const WelcomeView = ({ guide, onStart, onPreview }) => {
 						<span><Icon name='heart' /> Pause anytime</span>
 					</div>
 				</div>
-				<WorldMap guide={guide} chapter={0} preview />
+				<WorldMap chapter={0} preview />
 			</section>
 			<footer className='welcome-footer'>
 				<span>One question at a time.</span>

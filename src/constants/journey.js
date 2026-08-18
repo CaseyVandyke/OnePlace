@@ -115,8 +115,8 @@ export const journeyIntroSlides = [
 	{
 		eyebrow: 'HOW THE JOURNEY WORKS · 2 OF 3',
 		icon: 'spark',
-		title: 'Your guide lights the way.',
-		copy: 'A friendly dog will travel across your family map with you and celebrate each step forward.',
+		title: 'Your North Star lights the way.',
+		copy: 'A steady North Star travels across your family map with you. Every finished task earns Glow and brings another important place to life.',
 		note: 'Discover new places, then light them by making progress.'
 	},
 	{

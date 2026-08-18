@@ -46,8 +46,8 @@ current prototype.
 - The experience should feel like a family journey rather than a recovery app,
   enterprise dashboard, or checklist of death-related chores.
 - Gamification is meaningful rather than childish: users earn **Glow**, light
-  locations on a map, complete small steps, and travel with a friendly animal
-  companion between destinations.
+  locations on a map, complete small steps, and follow a North Star between
+  destinations.
 - The primary audience includes older adults. Readability is a product
   requirement, not a finishing detail.
 
@@ -84,23 +84,13 @@ The landing page introduces the value proposition and offers:
 A short, multi-screen introduction explains how the journey works before the
 user begins. Mobile page changes must return to the top.
 
-### 3. Companion guide
+### 3. North Star journey marker
 
-A friendly animal companion is built into the journey as the user’s guide. The
-golden retriever remains the default, while the guide introduction offers an
-optional choice of Golden Retriever, Labrador, Beagle, Mixed-Breed Pup, or Tabby
-Cat. Each guide has distinct SVG artwork and a warm companion style. There is no
-required selection or naming step; users can ignore the choice and move directly
-into guided setup, then change their guide later from the main app header. The
-preference is stored locally in the browser with a validated golden-retriever
-fallback and migration from the original dog-guide storage key.
-
-The selected companion appears on the welcome map, travels between destinations,
-celebrates progress, and remains present in the main app. Short visual sound
-bubbles appear occasionally nearby. Dogs use “Woof!” and “Arf!” while the cat
-uses “Meow!” and “Purr!” A completed step or new destination triggers one
-contextual phrase, then the companion returns to simple sounds until the next
-action. The bubbles are disabled when the user prefers reduced motion.
+A single North Star token guides the user through the journey. It appears in the
+introduction, on the welcome map, and in the main app header. On the map, the same
+mounted token travels between destinations as progress is made. The token keeps
+the journey warm and recognizable without asking users to choose, name, or manage
+a character. Its subtle glow and movement honor reduced-motion preferences.
 
 ### 4. Guided setup
 
@@ -196,8 +186,7 @@ professional.
   implementing real behavior.
 - Main-app destination changes, Welcome, Completion, Introduction slides, and
   question changes use the shared `.screen-enter` treatment for consistent
-  page entrances. The companion picker panel uses the same entrance timing,
-  with a matching backdrop fade.
+  page entrances.
 - The guided-question Glow badge uses a stable-size gradient treatment. When
   Glow increases, the keyed badge briefly scales and settles without changing
   header layout; reduced-motion preferences suppress that animation.
@@ -223,8 +212,8 @@ Several iterations addressed iPhone Safari behavior:
 
 On August 9, 2026, the global overscroll rule and document-wide touch guard from
 commit `27b8b21` were removed. They blocked legitimate scrolling inside the
-companion picker, and native Safari rubber-banding is expected behavior. Retain
-`history.scrollRestoration` and `useScrollToTop` for intentional screen changes,
+then-current companion picker, and native Safari rubber-banding is expected
+behavior. Retain `history.scrollRestoration` and `useScrollToTop` for intentional screen changes,
 but do not add global touch interception to suppress native scrolling. Retest
 screen transitions and modal scrolling on a physical iPhone after layout changes.
 
@@ -255,19 +244,13 @@ physical iPhone.
 
 Introduction slides and question changes share a subtle 350ms fade and 10px
 upward entrance. Introduction content remains keyed, but the guided-question
-layout must remain mounted so the companion can transition between map stops.
+layout must remain mounted so the North Star can transition between map stops.
 Question changes alternate equivalent `question-screen-enter-even` and
 `question-screen-enter-odd` animation names to replay the entrance without
 replacing the map. Key only the question article, not `.journey-layout`; keying
-the whole layout makes the companion teleport to its destination. Persistent
+the whole layout makes the North Star teleport to its destination. Persistent
 navigation remains stationary, and the global reduced-motion rule continues to
 reduce these animations.
-
-The companion picker uses the native HTML `dialog` element for modality, focus
-containment, and Escape behavior. Its panel also uses content height; do not add
-custom full-screen height calculations, a fixed overlay, or a separate scrolling
-card list. Horizontal root overflow uses `clip` so it does not create additional
-vertical scroll containers.
 
 ## Current technical implementation
 
@@ -281,21 +264,19 @@ vertical scroll containers.
 - No database
 - No authentication
 - No external institution APIs
-- State is local React state and resets after refresh, except for the
-  non-sensitive companion-guide preference stored in `localStorage`
+- State is local React state and resets after refresh
 
 Important files:
 
 - `src/app.jsx` — top-level application state and screen orchestration only
 - `src/views/` — welcome, onboarding journey, completion, and preview app pages
-- `src/components/` — reusable UI, dialogs, map, keepsake photo, and companion
+- `src/components/` — reusable UI, dialogs, map, keepsake photo, and North Star
   artwork
 - `src/components/question-body.jsx` — a small question-type dispatcher; each
   answer type is an independently testable controlled component using `value`
   and `onChange`
-- `src/constants/` — static screen content, configuration, companion choices,
-  copy, and sounds
-- `src/hooks/` — reusable scrolling and validated local guide preference behavior
+- `src/constants/` — static screen content, configuration, and copy
+- `src/hooks/` — reusable React behavior such as intentional scroll restoration
 - `src/styles/index.css` — shared visual, responsive, accessibility, and animation
   rules
 - `src/styles/components/` — component-specific styles

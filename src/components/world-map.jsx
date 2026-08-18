@@ -1,12 +1,9 @@
-import CompanionGuide from './companion-guide';
-import GuideBubble from './guide-bubble';
 import Icon from './icon';
-import { getCompanionVoice } from '../constants/companion-guides';
+import JourneyToken from './journey-token';
 import { mapStops } from '../constants/journey';
 
-const WorldMap = ({ guide, chapter = 0, compact = false, preview = false, reactionKey = chapter }) => {
+const WorldMap = ({ chapter = 0, compact = false, preview = false }) => {
 	const position = mapStops[Math.min(chapter, 5)];
-	const voice = getCompanionVoice(guide);
 
 	return (
 		<div className={`world-map ${compact ? 'map-compact' : ''} ${preview ? 'map-preview' : ''}`}>
@@ -35,17 +32,15 @@ const WorldMap = ({ guide, chapter = 0, compact = false, preview = false, reacti
 					</div>
 				))}
 				{!preview && (
-					<div className={`map-explorer map-explorer-${position.className}`} style={{ left: `${position.x}%`, top: `${position.y}%`, '--bubble-delay': `${(chapter % 3) * 1.2}s` }}>
-						<span className='map-explorer-character'><CompanionGuide guideId={guide.id} size={compact ? 42 : 54} /></span>
-						<GuideBubble key={`reaction-${guide.id}-${reactionKey}`} cue={voice.cues[Math.min(chapter, voice.cues.length - 1)]} simpleMessages={voice.simple} reactionKey={reactionKey} />
+					<div className={`map-explorer map-explorer-${position.className}`} style={{ left: `${position.x}%`, top: `${position.y}%` }}>
+						<span className='map-explorer-marker'><JourneyToken size={compact ? 42 : 54} /></span>
 						<span>You are here</span>
 					</div>
 				)}
 				{preview && (
-					<div className='map-preview-guide' style={{ left: `${mapStops[0].x}%`, top: `${mapStops[0].y}%` }}>
-						<CompanionGuide guideId={guide.id} size={54} />
-						<GuideBubble key={`preview-reaction-${guide.id}`} cue={voice.cues[0]} simpleMessages={voice.simple} reactionKey={reactionKey} />
-						<span className='map-guide-label'>Your {guide.name}</span>
+					<div className='map-preview-marker' style={{ left: `${mapStops[0].x}%`, top: `${mapStops[0].y}%` }}>
+						<JourneyToken size={54} />
+						<span className='map-marker-label'>Your North Star</span>
 					</div>
 				)}
 				{preview && <div className='map-preview-note'><Icon name='spark' size={13} /> Your family map begins here</div>}

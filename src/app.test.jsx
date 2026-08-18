@@ -1,6 +1,6 @@
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { afterEach, describe, expect, test, vi } from 'vitest';
+import { describe, expect, test } from 'vitest';
 import App from './app';
 
 async function beginSetup(user) {
@@ -8,10 +8,6 @@ async function beginSetup(user) {
 	await user.click(screen.getByRole('button', { name: 'Build my OnePlace' }));
 	await user.click(screen.getByRole('button', { name: 'Skip introduction' }));
 }
-
-afterEach(() => {
-	vi.useRealTimers();
-});
 
 describe('OnePlace', () => {
 	test('opens the journey introduction from the welcome screen', async() => {
@@ -62,40 +58,23 @@ describe('OnePlace', () => {
 		expect(screen.queryByText(/pick your character/i)).not.toBeInTheDocument();
 	});
 
-	test('offers an optional companion choice and remembers it', async() => {
+	test('introduces the North Star as the journey marker', async() => {
 		const user = userEvent.setup();
-		const view = render(<App />);
-
-		await user.click(screen.getByRole('button', { name: 'Build my OnePlace' }));
-		await user.click(screen.getByRole('button', { name: 'Next' }));
-		expect(screen.getByRole('heading', { name: 'Your Golden Retriever guide lights the way.' })).toBeVisible();
-
-		await user.click(screen.getByRole('button', { name: /Choose another companion/i }));
-		expect(screen.getByRole('dialog', { name: 'Choose the companion who guides you.' })).toBeVisible();
-		expect(screen.getAllByRole('radio')).toHaveLength(5);
-		await user.click(screen.getByRole('radio', { name: /Tabby Cat.*Calm & Curious/i }));
-		await user.click(screen.getByRole('button', { name: 'Travel with Tabby Cat' }));
-
-		expect(screen.getByRole('heading', { name: 'Your Tabby Cat guide lights the way.' })).toBeVisible();
-		expect(screen.getByText('Meow! I’m ready!')).toBeInTheDocument();
-
-		view.unmount();
 		render(<App />);
+
 		await user.click(screen.getByRole('button', { name: 'Build my OnePlace' }));
 		await user.click(screen.getByRole('button', { name: 'Next' }));
-		expect(screen.getByRole('heading', { name: 'Your Tabby Cat guide lights the way.' })).toBeVisible();
+		expect(screen.getByRole('heading', { name: 'Your North Star lights the way.' })).toBeVisible();
+		expect(screen.queryByRole('button', { name: /companion|guide/i })).not.toBeInTheDocument();
 	});
 
-	test('lets a user change their companion guide from the main app', async() => {
+	test('shows the North Star in the main app header', async() => {
 		const user = userEvent.setup();
 		render(<App />);
 
 		await user.click(screen.getByRole('button', { name: 'Preview the app' }));
-		await user.click(screen.getByRole('button', { name: 'Change guide. Current guide: Golden Retriever' }));
-		await user.click(screen.getByRole('radio', { name: /Labrador.*Friendly & Steady/i }));
-		await user.click(screen.getByRole('button', { name: 'Travel with Labrador' }));
-
-		expect(screen.getByRole('button', { name: 'Change guide. Current guide: Labrador' })).toBeVisible();
+		expect(screen.getByRole('img', { name: 'North Star journey marker' })).toBeVisible();
+		expect(screen.queryByRole('button', { name: /change guide/i })).not.toBeInTheDocument();
 	});
 
 	test('returns to the welcome screen from the main app logo', async() => {
@@ -117,41 +96,6 @@ describe('OnePlace', () => {
 		await user.click(screen.getByRole('button', { name: 'Invite someone' }));
 
 		expect(screen.getByRole('status')).toHaveTextContent('Preview only — this feature isn’t available in the prototype yet.');
-	});
-
-	test('starts with the Golden Retriever when an old preference is present', async() => {
-		window.localStorage.setItem('oneplace.companionGuide', 'tabby-cat');
-		const user = userEvent.setup();
-		render(<App />);
-
-		await user.click(screen.getByRole('button', { name: 'Preview the app' }));
-
-		expect(screen.getByRole('button', { name: 'Change guide. Current guide: Golden Retriever' })).toBeVisible();
-	});
-
-	test('closes the guide picker with Escape and restores focus', async() => {
-		const user = userEvent.setup();
-		render(<App />);
-		await user.click(screen.getByRole('button', { name: 'Preview the app' }));
-		const guideButton = screen.getByRole('button', { name: 'Change guide. Current guide: Golden Retriever' });
-
-		await user.click(guideButton);
-		fireEvent(screen.getByRole('dialog'), new Event('cancel', { cancelable: true }));
-
-		expect(screen.queryByRole('dialog', { name: 'Choose the companion who guides you.' })).not.toBeInTheDocument();
-		expect(guideButton).toHaveFocus();
-	});
-
-	test('does not cancel native touch scrolling inside the guide picker', async() => {
-		const user = userEvent.setup();
-		render(<App />);
-		await user.click(screen.getByRole('button', { name: 'Preview the app' }));
-		await user.click(screen.getByRole('button', { name: 'Change guide. Current guide: Golden Retriever' }));
-		const guideOptions = screen.getByRole('group', { name: 'Available companion guides' });
-
-		fireEvent.touchStart(guideOptions, { touches: [{ clientY: 120 }] });
-
-		expect(fireEvent.touchMove(guideOptions, { touches: [{ clientY: 180 }] })).toBe(true);
 	});
 
 	test('requires an answer before continuing the first setup question', async() => {
@@ -177,12 +121,12 @@ describe('OnePlace', () => {
 		expect(screen.getByText('Question 2 of 10')).toBeVisible();
 	});
 
-	test('keeps the map guide mounted so it travels between chapter stops', async() => {
+	test('keeps the map marker mounted so it travels between chapter stops', async() => {
 		const user = userEvent.setup();
 		await beginSetup(user);
-		const guide = document.querySelector('.map-explorer');
+		const marker = document.querySelector('.map-explorer');
 		const journeyLayout = document.querySelector('.journey-layout');
-		const startingLeft = guide.style.left;
+		const startingLeft = marker.style.left;
 
 		await user.click(screen.getByRole('button', { name: 'My children' }));
 		await user.click(screen.getByRole('button', { name: 'Save & continue' }));
@@ -193,21 +137,10 @@ describe('OnePlace', () => {
 		await user.click(screen.getByRole('button', { name: 'Save & continue' }));
 		await screen.findByRole('heading', { name: 'Do you have a will?' }, { timeout: 1500 });
 
-		const movedGuide = document.querySelector('.map-explorer');
-		expect(movedGuide).toBe(guide);
-		expect(movedGuide.style.left).not.toBe(startingLeft);
+		const movedMarker = document.querySelector('.map-explorer');
+		expect(movedMarker).toBe(marker);
+		expect(movedMarker.style.left).not.toBe(startingLeft);
 		expect(journeyLayout).toHaveClass('question-screen-enter-even');
-	});
-
-	test('settles contextual guide reactions into simple sounds', () => {
-		vi.useFakeTimers();
-		render(<App />);
-
-		expect(screen.getByText('Woof! Let’s go!')).toBeInTheDocument();
-		act(() => vi.advanceTimersByTime(9000));
-		expect(screen.getByText('Woof!')).toBeInTheDocument();
-		act(() => vi.advanceTimersByTime(9000));
-		expect(screen.getByText('Arf!')).toBeInTheDocument();
 	});
 
 	test('closes the quick-step popup from its backdrop and close button', async() => {

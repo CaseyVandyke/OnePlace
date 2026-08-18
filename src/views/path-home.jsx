@@ -2,7 +2,7 @@ import Icon from '../components/icon';
 import WorldMap from '../components/world-map';
 import { pathStops } from '../constants/dashboard';
 
-const PathHomeView = ({ guide, onContinue }) => {
+const PathHomeView = ({ onContinue }) => {
 	return (
 		<div className='path-page'>
 			<section className='path-intro'>
@@ -12,7 +12,7 @@ const PathHomeView = ({ guide, onContinue }) => {
 					<p>One thoughtful answer today will make the path clearer for your family tomorrow.</p>
 					<button className='continue-button' onClick={onContinue}>Take today’s 3-minute step <Icon name='arrow' /></button>
 				</div>
-				<WorldMap guide={guide} chapter={2} compact />
+				<WorldMap chapter={2} compact />
 			</section>
 			<section className='today-quest'>
 				<div className='quest-number'>

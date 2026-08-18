@@ -29,7 +29,7 @@ const JourneyHeader = ({ current, points, onExit }) => {
 	);
 };
 
-const SetupJourneyView = ({ guide, onComplete, onExit }) => {
+const SetupJourneyView = ({ onComplete, onExit }) => {
 	const [current, setCurrent] = useState(0);
 	const [answers, setAnswers] = useState({});
 	const [points, setPoints] = useState(0);
@@ -78,7 +78,7 @@ const SetupJourneyView = ({ guide, onComplete, onExit }) => {
 						<span>YOUR PLACE</span>
 						<strong>{Math.round((current / questions.length) * 100)}% lit</strong>
 					</div>
-					<WorldMap guide={guide} chapter={question.chapter} reactionKey={current} compact />
+					<WorldMap chapter={question.chapter} compact />
 					<div className='next-unlock'>
 						<span><Icon name={chapters[question.chapter].icon} size={17} /></span>
 						<div><small>NOW BUILDING</small><strong>{chapters[question.chapter].name}</strong></div>

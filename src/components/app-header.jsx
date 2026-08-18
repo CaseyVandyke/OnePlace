@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import AccountActions from './account-actions';
-import CompanionGuide from './companion-guide';
 import Icon from './icon';
+import JourneyToken from './journey-token';
 import Logo from './logo';
 import MenuToggleIcon from './menu-toggle-icon';
 import { appNavigationItems } from '../constants/navigation';
 
-const AppHeader = ({ guide, guideButtonRef, active, onNavigate, onJourney, onChangeGuide, onHome }) => {
+const AppHeader = ({ active, onNavigate, onJourney, onHome }) => {
 	const [menu, setMenu] = useState(false);
 	const navigate = (view) => {
 		onNavigate(view);
@@ -23,11 +23,11 @@ const AppHeader = ({ guide, guideButtonRef, active, onNavigate, onJourney, onCha
 				<AccountActions className='account-menu-actions' />
 			</nav>
 			<div className='app-header-actions'>
-				<span><Icon name='spark' size={15} /> 95 glow</span>
+				<span className='app-glow'><Icon name='spark' size={15} /> 95 glow</span>
 				<button onClick={onJourney}>Continue my path</button>
-				<button ref={guideButtonRef} className='app-avatar' type='button' onClick={onChangeGuide} aria-label={`Change guide. Current guide: ${guide.name}`}>
-					<CompanionGuide guideId={guide.id} size={36} />
-				</button>
+				<span className='app-journey-marker' role='img' aria-label='North Star journey marker'>
+					<JourneyToken size={38} />
+				</span>
 				<button
 					className='mobile-menu'
 					type='button'

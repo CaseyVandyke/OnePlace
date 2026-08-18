@@ -2,7 +2,7 @@ import Icon from '../components/icon';
 import Logo from '../components/logo';
 import WorldMap from '../components/world-map';
 
-const CompleteView = ({ guide, points, onEnter }) => {
+const CompleteView = ({ points, onEnter }) => {
 	return (
 		<section className='complete-screen'>
 			<div className='confetti'>
@@ -11,7 +11,7 @@ const CompleteView = ({ guide, points, onEnter }) => {
 			<Logo light />
 			<section className='screen-enter'>
 				<div className='complete-art'>
-					<WorldMap guide={guide} chapter={5} compact />
+					<WorldMap chapter={5} compact />
 				</div>
 				<div className='complete-copy'>
 					<span className='hello-pill'><Icon name='spark' size={15} /> First path complete</span>

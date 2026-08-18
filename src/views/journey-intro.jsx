@@ -1,56 +1,28 @@
-import { useRef, useState } from 'react';
-import CompanionGuide from '../components/companion-guide';
-import GuideBubble from '../components/guide-bubble';
-import GuidePicker from '../components/guide-picker';
+import { useState } from 'react';
 import Icon from '../components/icon';
+import JourneyToken from '../components/journey-token';
 import Logo from '../components/logo';
-import { getCompanionVoice } from '../constants/companion-guides';
 import { journeyIntroSlides } from '../constants/journey';
 
-const JourneyIntroView = ({ guide, onSelectGuide, onContinue, onSkip, onHome }) => {
+const JourneyIntroView = ({ onContinue, onSkip, onHome }) => {
 	const [slide, setSlide] = useState(0);
-	const [guidePickerOpen, setGuidePickerOpen] = useState(false);
-	const guidePickerButtonRef = useRef(null);
 	const item = journeyIntroSlides[slide];
 	const isLast = slide === journeyIntroSlides.length - 1;
-	const voice = getCompanionVoice(guide);
-	const title = slide === 1 ? `Your ${guide.name} guide lights the way.` : item.title;
-	const copy = slide === 1
-		? `A friendly ${guide.name.toLowerCase()} will travel across your family map with you. Every finished task earns Glow and brings another important place to life.`
-		: item.copy;
 
 	return (
 		<section className='journey-intro-screen' aria-labelledby='journey-intro-title'>
 			<section className='journey-intro-card'>
 				<header className='site-header'><Logo onClick={onHome} /><button onClick={onSkip}>Skip introduction</button></header>
 				<div className='journey-intro-content screen-enter' key={slide}>
-					<div className='journey-intro-art'>
-						<span><Icon name={item.icon} size={38} /></span>
-						{slide === 1 && (
-							<div className='intro-companion'>
-								<CompanionGuide guideId={guide.id} size={82} />
-								<GuideBubble
-									key={`intro-reaction-${guide.id}`}
-									cue={voice.ready}
-									simpleMessages={voice.simple}
-									reactionKey={slide}
-								/>
-							</div>
-						)}
+					<div className={`journey-intro-art ${slide === 1 ? 'north-star-slide' : ''}`}>
+						<span className={slide === 1 ? 'north-star-art' : ''}>{slide === 1 ? <JourneyToken size={112} /> : <Icon name={item.icon} size={38} />}</span>
 						<i /><i /><i />
 					</div>
 					<div>
 						<p className='question-eyebrow'>{item.eyebrow}</p>
-						<h1 id='journey-intro-title'>{title}</h1>
-						<p>{copy}</p>
+						<h1 id='journey-intro-title'>{item.title}</h1>
+						<p>{item.copy}</p>
 						<aside><Icon name={slide === 2 ? 'lock' : 'heart'} size={20} /> {item.note}</aside>
-						{slide === 1 && (
-							<button ref={guidePickerButtonRef} className='choose-guide-button' type='button' onClick={() => setGuidePickerOpen(true)}>
-								<CompanionGuide guideId={guide.id} size={36} />
-								<span><strong>Choose another companion</strong><small>Optional · Current guide: {guide.name}</small></span>
-								<Icon name='arrow' size={18} />
-							</button>
-						)}
 					</div>
 				</div>
 				<footer>
@@ -65,14 +37,6 @@ const JourneyIntroView = ({ guide, onSelectGuide, onContinue, onSkip, onHome }) 
 					</div>
 				</footer>
 			</section>
-			{guidePickerOpen && (
-				<GuidePicker
-					selectedGuideId={guide.id}
-					onSelect={onSelectGuide}
-					onClose={() => setGuidePickerOpen(false)}
-					returnFocusRef={guidePickerButtonRef}
-				/>
-			)}
 		</section>
 	);
 };

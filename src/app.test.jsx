@@ -22,6 +22,7 @@ describe('OnePlace', () => {
 
 		expect(screen.getByRole('heading', { name: 'One small step at a time.' })).toBeVisible();
 		expect(window.scrollTo).toHaveBeenCalledWith({ top: 0, left: 0, behavior: 'auto' });
+		expect(window.scrollTo.mock.calls.length).toBeGreaterThanOrEqual(2);
 		expect(screen.getByRole('main')).toBe(appShell);
 		expect(document.documentElement.style.overflow).not.toBe('hidden');
 		expect(document.body.style.overflow).not.toBe('hidden');

@@ -2,11 +2,17 @@ import { useState } from 'react';
 import Icon from '../components/icon';
 import Logo from '../components/logo';
 import { journeyIntroSlides } from '../constants/journey';
+import useScrollToTop from '../hooks/scroll-to-top';
 
 const JourneyIntroView = ({ onContinue, onSkip, onHome }) => {
 	const [slide, setSlide] = useState(0);
 	const item = journeyIntroSlides[slide];
 	const isLast = slide === journeyIntroSlides.length - 1;
+	const resetScroll = useScrollToTop(slide);
+	const showSlide = (nextSlide) => {
+		resetScroll();
+		setSlide(nextSlide);
+	};
 
 	return (
 		<section className='journey-intro-screen' aria-labelledby='journey-intro-title'>
@@ -29,8 +35,8 @@ const JourneyIntroView = ({ onContinue, onSkip, onHome }) => {
 						{journeyIntroSlides.map((_, index) => <i className={index === slide ? 'active' : ''} key={index} />)}
 					</div>
 					<div>
-						<button className='back-button' disabled={slide === 0} onClick={() => setSlide((value) => value - 1)}><Icon name='back' size={18} /> Back</button>
-						<button className='continue-button' onClick={() => isLast ? onContinue() : setSlide((value) => value + 1)}>
+						<button className='back-button' disabled={slide === 0} onClick={() => showSlide(slide - 1)}><Icon name='back' size={18} /> Back</button>
+						<button className='continue-button' onClick={() => isLast ? onContinue() : showSlide(slide + 1)}>
 							{isLast ? 'Start my journey' : 'Next'} <Icon name='arrow' size={18} />
 						</button>
 					</div>

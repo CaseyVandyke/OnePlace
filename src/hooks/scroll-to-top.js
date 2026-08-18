@@ -1,9 +1,15 @@
-import { useLayoutEffect } from 'react';
+import { useCallback, useLayoutEffect } from 'react';
 
 const useScrollToTop = (value) => {
-	useLayoutEffect(() => {
+	const resetScroll = useCallback(() => {
 		window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
-	}, [value]);
+	}, []);
+
+	useLayoutEffect(() => {
+		resetScroll();
+	}, [resetScroll, value]);
+
+	return resetScroll;
 };
 
 export default useScrollToTop;

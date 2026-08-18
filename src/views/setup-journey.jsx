@@ -37,7 +37,11 @@ const SetupJourneyView = ({ onComplete, onExit }) => {
 	const [reward, setReward] = useState(null);
 	const question = questions[current];
 	const answer = answers[current];
-	useScrollToTop(current);
+	const resetScroll = useScrollToTop(current);
+	const showQuestion = (nextQuestion) => {
+		resetScroll();
+		setCurrent(nextQuestion);
+	};
 
 	const canContinue = useMemo(() => {
 		if (!answer) return false;
@@ -58,7 +62,7 @@ const SetupJourneyView = ({ onComplete, onExit }) => {
 		window.setTimeout(() => {
 			setReward(null);
 			if (current === questions.length - 1) onComplete(points + earned);
-			else setCurrent((value) => value + 1);
+			else showQuestion(current + 1);
 		}, 780);
 	};
 	const updateAnswer = (value) => {
@@ -66,7 +70,7 @@ const SetupJourneyView = ({ onComplete, onExit }) => {
 	};
 	const skipQuestion = () => {
 		if (current === questions.length - 1) onComplete(points);
-		else setCurrent((value) => value + 1);
+		else showQuestion(current + 1);
 	};
 
 	return (
@@ -101,7 +105,7 @@ const SetupJourneyView = ({ onComplete, onExit }) => {
 						onUploadedFileNameChange={setUploaded}
 					/>
 					<div className='question-actions'>
-						<button className='back-button' disabled={current === 0} onClick={() => setCurrent((value) => Math.max(0, value - 1))}><Icon name='back' size={18} /> Back</button>
+						<button className='back-button' disabled={current === 0} onClick={() => showQuestion(Math.max(0, current - 1))}><Icon name='back' size={18} /> Back</button>
 						<button className='continue-button' disabled={!canContinue} onClick={continueJourney}>Save & continue <Icon name='arrow' size={18} /></button>
 					</div>
 					<button className='skip-question' onClick={skipQuestion}>I’ll come back to this</button>

@@ -20,14 +20,18 @@ const App = () => {
 		};
 	}, []);
 
-	useScrollToTop(screen);
-	const showWelcome = () => setScreen(screens.WELCOME);
-	const showIntroduction = () => setScreen(screens.INTRO);
-	const showJourney = () => setScreen(screens.JOURNEY);
-	const showApp = () => setScreen(screens.APP);
+	const resetScroll = useScrollToTop(screen);
+	const showScreen = (nextScreen) => {
+		resetScroll();
+		setScreen(nextScreen);
+	};
+	const showWelcome = () => showScreen(screens.WELCOME);
+	const showIntroduction = () => showScreen(screens.INTRO);
+	const showJourney = () => showScreen(screens.JOURNEY);
+	const showApp = () => showScreen(screens.APP);
 	const completeJourney = (earnedPoints) => {
 		setPoints(earnedPoints);
-		setScreen(screens.COMPLETE);
+		showScreen(screens.COMPLETE);
 	};
 
 	let content;

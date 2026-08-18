@@ -199,9 +199,10 @@ Mobile is expected to be the primary form factor.
 
 Several iterations addressed iPhone Safari behavior:
 
-- Page/question changes reset scroll to the top in a layout effect, before the
-  next screen paints. The earlier effect-plus-animation-frame version allowed
-  physical iOS Safari to retain the previous screen's position during navigation.
+- Page/question changes reset scroll both immediately before navigation and in a
+  layout effect after React commits the next screen. Physical iOS Safari retained
+  the previous position when the reset only happened on one side of that content
+  replacement.
 - Smooth scrolling was removed because it fought Safari.
 - Global overscroll prevention and a top-boundary touch guard were briefly added
   to suppress movement that looked like violent page shaking.

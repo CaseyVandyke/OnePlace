@@ -14,13 +14,17 @@ import ThingsView from './things';
 const MainAppView = ({ onRestart }) => {
 	const [active, setActive] = useState(appViews.PATH);
 	const [resume, setResume] = useState(false);
-	useScrollToTop(active);
+	const resetScroll = useScrollToTop(active);
+	const showView = (nextView) => {
+		resetScroll();
+		setActive(nextView);
+	};
 
 	return (
 		<section className='main-app'>
 			<AppHeader
 				active={active === appViews.POSSESSIONS ? appViews.THINGS : active}
-				onNavigate={setActive}
+				onNavigate={showView}
 				onHome={onRestart}
 				onJourney={() => setResume(true)}
 			/>
@@ -29,10 +33,10 @@ const MainAppView = ({ onRestart }) => {
 				{active === appViews.THINGS && (
 					<ThingsView
 						onContinue={() => setResume(true)}
-						onPossessions={() => setActive(appViews.POSSESSIONS)}
+						onPossessions={() => showView(appViews.POSSESSIONS)}
 					/>
 				)}
-				{active === appViews.POSSESSIONS && <PossessionsView onBack={() => setActive(appViews.THINGS)} />}
+				{active === appViews.POSSESSIONS && <PossessionsView onBack={() => showView(appViews.THINGS)} />}
 				{active === appViews.PEOPLE && <PeopleView />}
 				{active === appViews.MESSAGES && <MessagesView />}
 			</div>

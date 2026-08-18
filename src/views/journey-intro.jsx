@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Icon from '../components/icon';
+import JourneyLantern from '../components/journey-lantern';
 import Logo from '../components/logo';
-import NorthStar from '../components/north-star';
 import { journeyIntroSlides } from '../constants/journey';
 
 const JourneyIntroView = ({ onContinue, onSkip, onHome }) => {
@@ -14,8 +14,8 @@ const JourneyIntroView = ({ onContinue, onSkip, onHome }) => {
 			<section className='journey-intro-card'>
 				<header className='site-header'><Logo onClick={onHome} /><button onClick={onSkip}>Skip introduction</button></header>
 				<div className='journey-intro-content screen-enter' key={slide}>
-					<div className={`journey-intro-art ${slide === 1 ? 'north-star-slide' : ''}`}>
-						<span className={slide === 1 ? 'north-star-art' : ''}>{slide === 1 ? <NorthStar size={112} /> : <Icon name={item.icon} size={38} />}</span>
+					<div className={`journey-intro-art ${slide === 1 ? 'lantern-slide' : ''}`}>
+						<span className={slide === 1 ? 'lantern-art' : ''}>{slide === 1 ? <JourneyLantern size={112} /> : <Icon name={item.icon} size={38} />}</span>
 						<i /><i /><i />
 					</div>
 					<div>

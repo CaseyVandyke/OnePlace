@@ -46,7 +46,7 @@ current prototype.
 - The experience should feel like a family journey rather than a recovery app,
   enterprise dashboard, or checklist of death-related chores.
 - Gamification is meaningful rather than childish: users earn **Glow**, light
-  locations on a map, complete small steps, and follow a North Star between
+  locations on a map, complete small steps, and follow a warm lantern between
   destinations.
 - The primary audience includes older adults. Readability is a product
   requirement, not a finishing detail.
@@ -84,11 +84,11 @@ The landing page introduces the value proposition and offers:
 A short, multi-screen introduction explains how the journey works before the
 user begins. Mobile page changes must return to the top.
 
-### 3. North Star journey marker
+### 3. Lantern journey marker
 
-A single North Star guides the user through the journey. It appears in the
+A single warm lantern guides the user through the journey. It appears in the
 introduction, on the welcome map, and in the main app header. On the map, the same
-mounted star travels between destinations as progress is made. The star keeps
+mounted lantern travels between destinations as progress is made. The lantern keeps
 the journey warm and recognizable without asking users to choose, name, or manage
 a character. Its subtle glow and movement honor reduced-motion preferences.
 
@@ -244,11 +244,11 @@ physical iPhone.
 
 Introduction slides and question changes share a subtle 350ms fade and 10px
 upward entrance. Introduction content remains keyed, but the guided-question
-layout must remain mounted so the North Star can transition between map stops.
+layout must remain mounted so the lantern can transition between map stops.
 Question changes alternate equivalent `question-screen-enter-even` and
 `question-screen-enter-odd` animation names to replay the entrance without
 replacing the map. Key only the question article, not `.journey-layout`; keying
-the whole layout makes the North Star teleport to its destination. Persistent
+the whole layout makes the lantern teleport to its destination. Persistent
 navigation remains stationary, and the global reduced-motion rule continues to
 reduce these animations.
 
@@ -270,7 +270,7 @@ Important files:
 
 - `src/app.jsx` — top-level application state and screen orchestration only
 - `src/views/` — welcome, onboarding journey, completion, and preview app pages
-- `src/components/` — reusable UI, dialogs, map, keepsake photo, and North Star
+- `src/components/` — reusable UI, dialogs, map, keepsake photo, and lantern
   artwork
 - `src/components/question-body.jsx` — a small question-type dispatcher; each
   answer type is an independently testable controlled component using `value`

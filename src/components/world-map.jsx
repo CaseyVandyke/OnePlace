@@ -1,5 +1,5 @@
 import Icon from './icon';
-import NorthStar from './north-star';
+import JourneyLantern from './journey-lantern';
 import { mapStops } from '../constants/journey';
 
 const WorldMap = ({ chapter = 0, compact = false, preview = false }) => {
@@ -26,21 +26,21 @@ const WorldMap = ({ chapter = 0, compact = false, preview = false }) => {
 						style={{ left: `${stop.x}%`, top: `${stop.y}%` }}
 						key={stop.name}
 					>
-						<span><Icon name={stop.icon} size={15} /></span>
+						{index !== chapter && <span><Icon name={stop.icon} size={15} /></span>}
 						<strong>{stop.name}</strong>
 						{stop.name === 'Mount Vault' && <small>Codes & digital keys</small>}
 					</div>
 				))}
 				{!preview && (
 					<div className={`map-explorer map-explorer-${position.className}`} style={{ left: `${position.x}%`, top: `${position.y}%` }}>
-						<span className='map-explorer-marker'><NorthStar size={compact ? 42 : 54} /></span>
+						<span className='map-explorer-marker'><JourneyLantern size={compact ? 42 : 54} /></span>
 						<span>You are here</span>
 					</div>
 				)}
 				{preview && (
 					<div className='map-preview-marker' style={{ left: `${mapStops[0].x}%`, top: `${mapStops[0].y}%` }}>
-						<NorthStar size={54} />
-						<span className='map-marker-label'>Your North Star</span>
+						<JourneyLantern size={54} />
+						<span className='map-marker-label'>Your lantern</span>
 					</div>
 				)}
 				{preview && <div className='map-preview-note'><Icon name='spark' size={13} /> Your family map begins here</div>}

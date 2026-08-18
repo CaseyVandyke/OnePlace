@@ -15,6 +15,7 @@ describe('OnePlace', () => {
 		render(<App />);
 		const appShell = screen.getByRole('main');
 		expect(screen.getByText('oneplace')).toBeVisible();
+		expect(document.querySelector('.map-stop.current > span')).toBeNull();
 
 		await user.click(screen.getByRole('button', { name: 'Build my OnePlace' }));
 
@@ -58,22 +59,22 @@ describe('OnePlace', () => {
 		expect(screen.queryByText(/pick your character/i)).not.toBeInTheDocument();
 	});
 
-	test('introduces the North Star as the journey marker', async() => {
+	test('introduces the lantern as the journey marker', async() => {
 		const user = userEvent.setup();
 		render(<App />);
 
 		await user.click(screen.getByRole('button', { name: 'Build my OnePlace' }));
 		await user.click(screen.getByRole('button', { name: 'Next' }));
-		expect(screen.getByRole('heading', { name: 'Your North Star lights the way.' })).toBeVisible();
+		expect(screen.getByRole('heading', { name: 'A warm lantern lights the way.' })).toBeVisible();
 		expect(screen.queryByRole('button', { name: /companion|guide/i })).not.toBeInTheDocument();
 	});
 
-	test('shows the North Star in the main app header', async() => {
+	test('shows the lantern in the main app header', async() => {
 		const user = userEvent.setup();
 		render(<App />);
 
 		await user.click(screen.getByRole('button', { name: 'Preview the app' }));
-		expect(screen.getByRole('img', { name: 'North Star journey marker' })).toBeVisible();
+		expect(screen.getByRole('img', { name: 'Journey lantern' })).toBeVisible();
 		expect(screen.queryByRole('button', { name: /change guide/i })).not.toBeInTheDocument();
 	});
 

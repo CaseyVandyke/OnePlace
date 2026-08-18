@@ -45,9 +45,9 @@ current prototype.
 - Core colors: red, purple, and blue
 - The experience should feel like a family journey rather than a recovery app,
   enterprise dashboard, or checklist of death-related chores.
-- Gamification is meaningful rather than childish: users earn **Glow**, light
-  locations on a map, and illuminate the trail between destinations as they
-  complete small steps.
+- Progress is meaningful rather than game-like: completed steps light locations
+  on the map and illuminate the trail between destinations. The earlier numeric
+  **Glow** currency was removed because it had no clear user value.
 - On mobile, the setup header summarizes overall progress as the current place
   and chapter (for example, “Basecamp · Chapter 1 of 6”). The full six-stop
   chapter track remains available on larger screens, while the question area
@@ -190,9 +190,8 @@ professional.
 - Main-app destination changes, Welcome, Completion, Introduction slides, and
   question changes use the shared `.screen-enter` treatment for consistent
   page entrances.
-- The guided-question Glow badge uses a stable-size gradient treatment. When
-  Glow increases, the keyed badge briefly scales and settles without changing
-  header layout; reduced-motion preferences suppress that animation.
+- The guided-question header intentionally avoids a points counter. It prioritizes
+  the current chapter, the question count, and a larger progress bar instead.
 - The desktop My People orbit remains intact. On mobile it becomes a normal-flow
   list of trusted people and actions so cards do not overlap or create a fragile
   scroll boundary.

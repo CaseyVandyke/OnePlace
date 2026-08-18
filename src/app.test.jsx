@@ -74,12 +74,13 @@ describe('OnePlace', () => {
 		expect(screen.queryByRole('button', { name: /companion|guide/i })).not.toBeInTheDocument();
 	});
 
-	test('keeps the main app header focused on progress', async() => {
+	test('keeps the main app header focused on navigation', async() => {
 		const user = userEvent.setup();
 		render(<App />);
 
 		await user.click(screen.getByRole('button', { name: 'Preview the app' }));
-		expect(screen.getByText('95 glow')).toBeVisible();
+		expect(screen.getByRole('button', { name: 'Continue my path' })).toBeVisible();
+		expect(screen.queryByText(/\bglow\b/i)).not.toBeInTheDocument();
 		expect(screen.queryByRole('button', { name: /change guide/i })).not.toBeInTheDocument();
 	});
 

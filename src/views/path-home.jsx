@@ -8,7 +8,7 @@ const PathHomeView = ({ onContinue }) => {
 			<section className='path-intro'>
 				<div>
 					<span className='hello-pill'><i /> Wednesday’s small win</span>
-					<h1>Your place is<br /><em>42% glowing.</em></h1>
+					<h1>Your place is<br /><em>42% lit.</em></h1>
 					<p>One thoughtful answer today will make the path clearer for your family tomorrow.</p>
 					<button className='continue-button' onClick={onContinue}>Take today’s 3-minute step <Icon name='arrow' /></button>
 				</div>
@@ -16,8 +16,8 @@ const PathHomeView = ({ onContinue }) => {
 			</section>
 			<section className='today-quest'>
 				<div className='quest-number'>
-					<span>+20</span>
-					<small>GLOW</small>
+					<span>3</span>
+					<small>MIN</small>
 				</div>
 				<div>
 					<p>TODAY’S STEP · MONEY MAP</p>

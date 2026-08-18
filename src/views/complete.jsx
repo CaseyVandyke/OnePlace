@@ -2,7 +2,7 @@ import Icon from '../components/icon';
 import Logo from '../components/logo';
 import WorldMap from '../components/world-map';
 
-const CompleteView = ({ points, onEnter }) => {
+const CompleteView = ({ onEnter }) => {
 	return (
 		<section className='complete-screen'>
 			<div className='confetti'>
@@ -18,7 +18,7 @@ const CompleteView = ({ points, onEnter }) => {
 					<h1>Look what you’ve<br />already made.</h1>
 					<p>Your family now has a starting point. Keep going whenever you’re ready—OnePlace remembers the path.</p>
 					<div className='complete-stats'>
-						<div><strong>{points}</strong><span>glow earned</span></div>
+						<div><strong>10</strong><span>questions reviewed</span></div>
 						<div><strong>6</strong><span>places discovered</span></div>
 						<div><strong>1</strong><span>person protected</span></div>
 					</div>

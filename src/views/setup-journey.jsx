@@ -6,7 +6,7 @@ import WorldMap from '../components/world-map';
 import { chapters, questions } from '../constants/journey';
 import useScrollToTop from '../hooks/scroll-to-top';
 
-const JourneyHeader = ({ current, points, onExit }) => {
+const JourneyHeader = ({ current, onExit }) => {
 	const chapter = questions[current]?.chapter ?? 0;
 	return (
 		<header className='site-header journey-header'>
@@ -23,11 +23,6 @@ const JourneyHeader = ({ current, points, onExit }) => {
 					</div>
 				))}
 			</div>
-			<div className={`journey-points ${points > 0 ? 'glow-added' : ''}`} key={points}>
-				<Icon name='spark' size={16} />
-				<strong>{points}</strong>
-				<span>glow</span>
-			</div>
 			<button className='exit-button' onClick={onExit} aria-label='Exit setup'><Icon name='close' /></button>
 		</header>
 	);
@@ -36,9 +31,7 @@ const JourneyHeader = ({ current, points, onExit }) => {
 const SetupJourneyView = ({ onComplete, onExit }) => {
 	const [current, setCurrent] = useState(0);
 	const [answers, setAnswers] = useState({});
-	const [points, setPoints] = useState(0);
 	const [uploaded, setUploaded] = useState('');
-	const [reward, setReward] = useState(null);
 	const question = questions[current];
 	const answer = answers[current];
 	const resetScroll = useScrollToTop(current);
@@ -60,26 +53,20 @@ const SetupJourneyView = ({ onComplete, onExit }) => {
 
 	const continueJourney = () => {
 		if (!canContinue) return;
-		const earned = question.reward;
-		setPoints((value) => value + earned);
-		setReward(earned);
-		window.setTimeout(() => {
-			setReward(null);
-			if (current === questions.length - 1) onComplete(points + earned);
-			else showQuestion(current + 1);
-		}, 780);
+		if (current === questions.length - 1) onComplete();
+		else showQuestion(current + 1);
 	};
 	const updateAnswer = (value) => {
 		setAnswers((currentAnswers) => ({ ...currentAnswers, [current]: value }));
 	};
 	const skipQuestion = () => {
-		if (current === questions.length - 1) onComplete(points);
+		if (current === questions.length - 1) onComplete();
 		else showQuestion(current + 1);
 	};
 
 	return (
 		<section className='journey-screen'>
-			<JourneyHeader current={current} points={points} onExit={onExit} />
+			<JourneyHeader current={current} onExit={onExit} />
 			<section className={`journey-layout question-screen-enter-${current % 2 === 0 ? 'even' : 'odd'}`}>
 				<aside className='journey-place'>
 					<div className='journey-place-copy'>
@@ -115,13 +102,6 @@ const SetupJourneyView = ({ onComplete, onExit }) => {
 					<button className='skip-question' onClick={skipQuestion}>I’ll come back to this</button>
 				</article>
 			</section>
-			{reward && (
-				<div className='reward-pop'>
-					<span><Icon name='spark' size={24} /></span>
-					<strong>+{reward} glow</strong>
-					<small>Your OnePlace just got brighter</small>
-				</div>
-			)}
 		</section>
 	);
 };

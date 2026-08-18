@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import AccountActions from './account-actions';
-import Icon from './icon';
 import Logo from './logo';
 import MenuToggleIcon from './menu-toggle-icon';
 import { appNavigationItems } from '../constants/navigation';
@@ -22,7 +21,6 @@ const AppHeader = ({ active, onNavigate, onJourney, onHome }) => {
 				<AccountActions className='account-menu-actions' />
 			</nav>
 			<div className='app-header-actions'>
-				<span className='app-glow'><Icon name='spark' size={15} /> 95 glow</span>
 				<button onClick={onJourney}>Continue my path</button>
 				<button
 					className='mobile-menu'

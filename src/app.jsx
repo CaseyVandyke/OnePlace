@@ -9,7 +9,6 @@ import { screens } from './constants/navigation';
 
 const App = () => {
 	const [screen, setScreen] = useState(screens.WELCOME);
-	const [points, setPoints] = useState(0);
 
 	useEffect(() => {
 		const previousRestoration = window.history.scrollRestoration;
@@ -34,10 +33,7 @@ const App = () => {
 	const showIntroduction = () => showScreen(screens.INTRO);
 	const showJourney = () => showScreen(screens.JOURNEY);
 	const showApp = () => showScreen(screens.APP);
-	const completeJourney = (earnedPoints) => {
-		setPoints(earnedPoints);
-		showScreen(screens.COMPLETE);
-	};
+	const completeJourney = () => showScreen(screens.COMPLETE);
 
 	let content;
 	if (screen === screens.WELCOME) {
@@ -47,7 +43,7 @@ const App = () => {
 	} else if (screen === screens.JOURNEY) {
 		content = <SetupJourneyView onExit={showWelcome} onComplete={completeJourney} />;
 	} else if (screen === screens.COMPLETE) {
-		content = <CompleteView points={points} onEnter={showApp} />;
+		content = <CompleteView onEnter={showApp} />;
 	} else {
 		content = <MainAppView onRestart={showWelcome} />;
 	}

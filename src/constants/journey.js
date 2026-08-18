@@ -14,16 +14,14 @@ export const questions = [
 		title: 'Who are you preparing this for?',
 		copy: 'Choose everyone who comes to mind. This helps us shape the questions around your life.',
 		type: 'multi',
-		options: ['My spouse or partner', 'My children', 'Extended family', 'A close friend', 'Someone else'],
-		reward: 10
+		options: ['My spouse or partner', 'My children', 'Extended family', 'A close friend', 'Someone else']
 	},
 	{
 		chapter: 0,
 		eyebrow: 'A little about you',
 		title: 'What should your family call this place?',
 		copy: 'It can simply be your name, your family name, or something more personal.',
-		type: 'name',
-		reward: 10
+		type: 'name'
 	},
 	{
 		chapter: 1,
@@ -31,16 +29,14 @@ export const questions = [
 		title: 'Do you have a will?',
 		copy: 'No judgment either way. Your answer helps us give you the right next step.',
 		type: 'single',
-		options: ['Yes, I have one', 'I’m working on it', 'Not yet', 'I’m not sure'],
-		reward: 15
+		options: ['Yes, I have one', 'I’m working on it', 'Not yet', 'I’m not sure']
 	},
 	{
 		chapter: 1,
 		eyebrow: 'Bring it into OnePlace',
 		title: 'Want to add your will now?',
 		copy: 'Upload a copy, take a photo, or tell us where the original is kept.',
-		type: 'upload',
-		reward: 25
+		type: 'upload'
 	},
 	{
 		chapter: 2,
@@ -48,16 +44,14 @@ export const questions = [
 		title: 'Where do you keep everyday accounts?',
 		copy: 'We’ll make a simple inventory first. You decide whether to add account details or passwords later.',
 		type: 'banks',
-		options: ['Chase', 'Wells Fargo', 'Mountain America', 'Capital One', 'Another institution'],
-		reward: 20
+		options: ['Chase', 'Wells Fargo', 'Mountain America', 'Capital One', 'Another institution']
 	},
 	{
 		chapter: 2,
 		eyebrow: 'One helpful detail',
 		title: 'How should your family identify this account?',
 		copy: 'For this concept, use fictional information only.',
-		type: 'account',
-		reward: 20
+		type: 'account'
 	},
 	{
 		chapter: 3,
@@ -65,32 +59,28 @@ export const questions = [
 		title: 'Which protections do you already have?',
 		copy: 'Select anything that applies. We’ll create a short task for each one.',
 		type: 'multi',
-		options: ['Life insurance', 'Disability insurance', 'Health insurance', 'Long-term care', 'Advance directive', 'Power of attorney'],
-		reward: 20
+		options: ['Life insurance', 'Disability insurance', 'Health insurance', 'Long-term care', 'Advance directive', 'Power of attorney']
 	},
 	{
 		chapter: 4,
 		eyebrow: 'Kindred Grove · Your people',
 		title: 'Who should be your first trusted person?',
 		copy: 'They won’t see anything until you explicitly choose what to share.',
-		type: 'person',
-		reward: 25
+		type: 'person'
 	},
 	{
 		chapter: 4,
 		eyebrow: 'Kindred Grove · Possessions & keepsakes',
 		title: 'Is there something special you want someone to receive?',
 		copy: 'Start with one meaningful possession. You can build a complete “who gets what” list later.',
-		type: 'possessions',
-		reward: 25
+		type: 'possessions'
 	},
 	{
 		chapter: 5,
 		eyebrow: 'Memory Lake · Your voice',
 		title: 'Would you like to leave a hello?',
 		copy: 'A short voice note can mean more than every document combined.',
-		type: 'voice',
-		reward: 30
+		type: 'voice'
 	}
 ];
 
@@ -124,7 +114,7 @@ export const journeyIntroSlides = [
 		eyebrow: 'HOW THE JOURNEY WORKS · 2 OF 3',
 		icon: 'spark',
 		title: 'Your path lights up as you go.',
-		copy: 'Each finished task adds Glow to your trail and brings another important place on the family map to life.',
+		copy: 'Each finished task illuminates more of your trail and brings another important place on the family map to life.',
 		note: 'Discover new places, then light them by making progress.'
 	},
 	{

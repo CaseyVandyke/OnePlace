@@ -13,7 +13,7 @@ const MiniQuest = ({ onClose }) => {
 				{done ? (
 					<div className='mini-done'>
 						<span><Icon name='spark' size={27} /></span>
-						<p>+20 GLOW</p>
+						<p>PATH UPDATED</p>
 						<h2 id='mini-quest-title'>Another light is on.</h2>
 						<p>Your family will know exactly where to begin.</p>
 						<button className='continue-button' onClick={onClose}>Back to my path <Icon name='arrow' /></button>

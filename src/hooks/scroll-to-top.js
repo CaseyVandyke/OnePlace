@@ -7,6 +7,15 @@ const useScrollToTop = (value) => {
 
 	useLayoutEffect(() => {
 		resetScroll();
+		let settledFrame;
+		const renderedFrame = window.requestAnimationFrame(() => {
+			settledFrame = window.requestAnimationFrame(resetScroll);
+		});
+
+		return () => {
+			window.cancelAnimationFrame(renderedFrame);
+			if (settledFrame !== undefined) window.cancelAnimationFrame(settledFrame);
+		};
 	}, [resetScroll, value]);
 
 	return resetScroll;

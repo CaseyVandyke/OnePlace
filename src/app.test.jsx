@@ -15,7 +15,7 @@ describe('OnePlace', () => {
 		render(<App />);
 		const appShell = screen.getByRole('main');
 		expect(screen.getByText('oneplace')).toBeVisible();
-		expect(screen.getAllByText('Your path begins here')).not.toHaveLength(0);
+		expect(document.querySelector('.map-stop.current > .map-stop-icon')).toBeInTheDocument();
 
 		await user.click(screen.getByRole('button', { name: 'Build my OnePlace' }));
 
@@ -57,6 +57,7 @@ describe('OnePlace', () => {
 
 		expect(screen.getByRole('heading', { name: 'Who are you preparing this for?' })).toBeVisible();
 		expect(screen.queryByText(/pick your character/i)).not.toBeInTheDocument();
+		expect(screen.queryByText('You are here')).not.toBeInTheDocument();
 	});
 
 	test('introduces the illuminated path', async() => {

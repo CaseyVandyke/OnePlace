@@ -59,7 +59,7 @@ Preserve these rules:
 - Supporting text should generally be at least 16px on mobile.
 - Important explanatory copy is often 17–19px on mobile.
 - Touch targets should be at least 44px, preferably 52–56px for primary actions.
-- Do not shrink labels such as “Question 4 of 10,” “You are here,” map locations,
+- Do not shrink labels such as “Question 4 of 10,” map locations,
   descriptions, navigation labels, or form helper text.
 - Text on cream, white, purple, and map backgrounds must meet practical contrast
   expectations. Avoid pale gray or translucent text for information people need
@@ -88,7 +88,7 @@ user begins. Mobile page changes must return to the top.
 
 The map itself communicates progress rather than relying on a mascot or symbolic
 object. Completed trail segments illuminate in sequence, and the current
-destination glows with a clear “You are here” label. The persistent trail remains
+destination pulses without an additional text badge. The persistent trail remains
 mounted between questions so each newly completed segment animates smoothly.
 Reduced-motion preferences shorten these nonessential transitions.
 
@@ -130,9 +130,8 @@ The prototype main app includes:
 - **Memory Lake** — stories, notes, and recordings
 - **Mount Vault** — passwords, vault codes, devices, and digital keys
 
-The puppy guide visibly moves between stops. The movement was intentionally slowed so
-the user can see it after the page returns to the top. The current location has
-a pulsing treatment and a large “You are here” badge.
+The path illuminates between stops as chapters are reached. The current location
+uses a restrained pulsing treatment without an additional marker or text badge.
 
 ## Recently implemented features
 
@@ -205,8 +204,7 @@ Several iterations addressed iPhone Safari behavior:
 - Global overscroll prevention and a top-boundary touch guard were briefly added
   to suppress movement that looked like violent page shaking.
 - The journey explanation received special mobile scrolling fixes.
-- The map was resized and repositioned to prevent location labels and the
-  “You are here” badge from clipping.
+- The map was resized and repositioned to prevent location labels from clipping.
 - Map text, question counters, and supporting copy received senior-first size
   increases.
 

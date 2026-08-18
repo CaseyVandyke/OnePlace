@@ -32,7 +32,6 @@ const WorldMap = ({ chapter = 0, compact = false, preview = false }) => {
 					>
 						<span className='map-stop-icon'><Icon name={stop.icon} size={15} /></span>
 						<strong>{stop.name}</strong>
-						{index === chapter && <span className='map-current-label'>{preview ? 'Your path begins here' : 'You are here'}</span>}
 						{stop.name === 'Mount Vault' && <small>Codes & digital keys</small>}
 					</div>
 				))}

@@ -519,7 +519,6 @@ button { cursor: pointer; }
   .journey-place .map-stop.current strong { font-size: 14px; }
   .journey-place .map-stop.current small { display: none; }
   .journey-place .map-explorer > span:last-child { display: none; }
-  .journey-place .map-explorer .journey-lantern { transform: scale(.82); transform-origin: center; }
 
   .question-stage { width: 100%; margin: 0; padding: 38px 20px 56px; }
   .question-counter { grid-template-columns: auto minmax(44px,1fr) auto; gap: 10px; margin-bottom: 38px; font-size: 12px; line-height: 1.4; }

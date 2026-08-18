@@ -26,7 +26,7 @@ const AppHeader = ({ active, onNavigate, onJourney, onHome }) => {
 				<span className='app-glow'><Icon name='spark' size={15} /> 95 glow</span>
 				<button onClick={onJourney}>Continue my path</button>
 				<span className='app-journey-marker' role='img' aria-label='Journey lantern'>
-					<JourneyLantern size={38} />
+					<JourneyLantern size={42} />
 				</span>
 				<button
 					className='mobile-menu'

@@ -88,9 +88,9 @@ user begins. Mobile page changes must return to the top.
 
 A single warm lantern guides the user through the journey. It appears in the
 introduction, on the welcome map, and in the main app header. On the map, the same
-mounted lantern travels between destinations as progress is made. The lantern keeps
-the journey warm and recognizable without asking users to choose, name, or manage
-a character. Its subtle glow and movement honor reduced-motion preferences.
+mounted lantern travels between destinations as progress is made. The lantern
+keeps the journey warm and recognizable without asking users to choose, name, or
+manage a character. Its subtle flame movement honors reduced-motion preferences.
 
 ### 4. Guided setup
 

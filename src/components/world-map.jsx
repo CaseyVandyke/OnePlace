@@ -33,7 +33,7 @@ const WorldMap = ({ chapter = 0, compact = false, preview = false }) => {
 				))}
 				{!preview && (
 					<div className={`map-explorer map-explorer-${position.className}`} style={{ left: `${position.x}%`, top: `${position.y}%` }}>
-						<span className='map-explorer-marker'><JourneyLantern size={compact ? 42 : 54} /></span>
+						<span className='map-explorer-marker'><JourneyLantern size={compact ? 52 : 58} /></span>
 						<span>You are here</span>
 					</div>
 				)}

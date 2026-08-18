@@ -2,7 +2,8 @@ import { useCallback, useLayoutEffect } from 'react';
 
 const useScrollToTop = (value) => {
 	const resetScroll = useCallback(() => {
-		window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+		window.scrollTo(0, 0);
+		if (document.scrollingElement) document.scrollingElement.scrollTop = 0;
 	}, []);
 
 	useLayoutEffect(() => {

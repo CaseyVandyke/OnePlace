@@ -23,7 +23,12 @@ const App = () => {
 	const resetScroll = useScrollToTop(screen);
 	const showScreen = (nextScreen) => {
 		resetScroll();
-		setScreen(nextScreen);
+		// Give WebKit one painted frame at the document top before replacing a
+		// long screen with a shorter one. Otherwise it can preserve the tapped
+		// element's previous scroll anchor on the new screen.
+		window.requestAnimationFrame(() => {
+			window.requestAnimationFrame(() => setScreen(nextScreen));
+		});
 	};
 	const showWelcome = () => showScreen(screens.WELCOME);
 	const showIntroduction = () => showScreen(screens.INTRO);

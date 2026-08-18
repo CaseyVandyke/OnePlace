@@ -205,6 +205,9 @@ Several iterations addressed iPhone Safari behavior:
   scroll anchor after the React commit. Earlier versions that reset on only one
   side of the content replacement, or before Safari's final anchoring pass, did
   not reliably return a long-to-short screen transition to the top.
+- Top-level screen navigation allows the existing document to paint once at
+  scroll position zero before React replaces it. This prevents WebKit from
+  carrying the tapped element's position from a long screen into a shorter one.
 - Smooth scrolling was removed because it fought Safari.
 - Global overscroll prevention and a top-boundary touch guard were briefly added
   to suppress movement that looked like violent page shaking.

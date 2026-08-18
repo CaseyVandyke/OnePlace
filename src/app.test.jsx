@@ -21,7 +21,7 @@ describe('OnePlace', () => {
 		await user.click(screen.getByRole('button', { name: 'Build my OnePlace' }));
 
 		expect(screen.getByRole('heading', { name: 'One small step at a time.' })).toBeVisible();
-		expect(window.scrollTo).toHaveBeenCalledWith({ top: 0, left: 0, behavior: 'auto' });
+		expect(window.scrollTo).toHaveBeenCalledWith(0, 0);
 		expect(window.scrollTo.mock.calls.length).toBeGreaterThanOrEqual(2);
 		expect(screen.getByRole('main')).toBe(appShell);
 		expect(document.documentElement.style.overflow).not.toBe('hidden');

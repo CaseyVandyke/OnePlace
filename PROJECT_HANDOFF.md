@@ -1,6 +1,6 @@
 # OnePlace Project Handoff
 
-Last updated: August 10, 2026
+Last updated: August 18, 2026
 Repository: https://github.com/CaseyVandyke/OnePlace  
 Live prototype: https://caseyvandyke.github.io/OnePlace/  
 Architecture refactor baseline: commit `93956c3`
@@ -114,11 +114,19 @@ The setup uses a map and a series of questions. It currently includes:
 The rendered question count is data-driven. Treat the `questions` array in
 `src/constants/journey.js` as authoritative.
 
+Each question is tracked as answered or skipped. Answered questions increase the
+calculated progress percentage; skipped questions remain pending and appear in a
+“Come back to this” list in My Path. The first unanswered or skipped question
+determines the active map destination. After all onboarding questions are
+answered, Mount Vault becomes the next recommended destination for digital-access
+instructions.
+
 ### 5. Completion and main app
 
 The prototype main app includes:
 
-- **My path** — progress, today’s small task, milestones, and achievements
+- **My path** — calculated progress, the next unfinished task, resumable skipped
+  questions, milestones, and achievements
 - **My things** — themed destinations for documents, accounts, protections,
   digital access, memories, and possessions
 - **My people** — trusted-person access concept
@@ -192,6 +200,9 @@ professional.
   page entrances.
 - The guided-question header intentionally avoids a points counter. It prioritizes
   the current chapter, the question count, and a larger progress bar instead.
+- The key icon on the map is **Mount Vault**, the destination for device access,
+  account recovery, and other digital instructions. Its label remains visible on
+  the mobile My Path map so the icon is not unexplained.
 - The desktop My People orbit remains intact. On mobile it becomes a normal-flow
   list of trusted people and actions so cards do not overlap or create a fragile
   scroll boundary.
@@ -273,13 +284,19 @@ reduce these animations.
 - No database
 - No authentication
 - No external institution APIs
-- State is local React state and resets after refresh
+- Sensitive answer content, uploads, and photos remain session-only React state.
+- Non-sensitive progress metadata (answered/skipped status and completed quick-step
+  identifiers) persists in local storage under `oneplace-journey-progress-v1`.
+  This metadata is what drives the dashboard percentage, map destination, chapter
+  counts, and “Come back to this” list.
 
 Important files:
 
 - `src/app.jsx` — top-level application state and screen orchestration only
 - `src/views/` — welcome, onboarding journey, completion, and preview app pages
 - `src/components/` — reusable UI, dialogs, map, and keepsake photo controls
+- `src/hooks/journey-progress.js` — shared progress metadata, local-storage
+  persistence, and derived dashboard progress
 - `src/components/question-body.jsx` — a small question-type dispatcher; each
   answer type is an independently testable controlled component using `value`
   and `onChange`

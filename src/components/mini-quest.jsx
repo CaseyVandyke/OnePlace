@@ -2,8 +2,12 @@ import { useState } from 'react';
 import Icon from './icon';
 import { quickStepOptions } from '../constants/dashboard';
 
-const MiniQuest = ({ onClose }) => {
+const MiniQuest = ({ onClose, onComplete }) => {
 	const [done, setDone] = useState(false);
+	const completeStep = () => {
+		onComplete();
+		setDone(true);
+	};
 
 	return (
 		<div className='quest-overlay' role='dialog' aria-modal='true' aria-labelledby='mini-quest-title'>
@@ -21,11 +25,11 @@ const MiniQuest = ({ onClose }) => {
 				) : (
 					<>
 						<p className='question-eyebrow'>TODAY’S 3-MINUTE STEP</p>
-						<h2 id='mini-quest-title'>Where is your retirement account held?</h2>
-						<p>You can add more detail later. The institution is enough for today.</p>
+						<h2 id='mini-quest-title'>Where can your family find device-access instructions?</h2>
+						<p>You do not need to add a password here. A safe location is enough for today.</p>
 						<div className='quick-options'>
 							{quickStepOptions.map((option) => (
-								<button onClick={() => setDone(true)} key={option}>
+								<button onClick={completeStep} key={option}>
 									<span>{option.slice(0, 2).toUpperCase()}</span>
 									<strong>{option}</strong>
 									<Icon name='arrow' />

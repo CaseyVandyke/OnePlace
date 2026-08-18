@@ -11,13 +11,20 @@ import PeopleView from './people';
 import PossessionsView from './possessions';
 import ThingsView from './things';
 
-const MainAppView = ({ onRestart }) => {
+const MainAppView = ({ journeyProgress, onRestart, onResumeJourney }) => {
 	const [active, setActive] = useState(appViews.PATH);
 	const [resume, setResume] = useState(false);
 	const resetScroll = useScrollToTop(active);
 	const showView = (nextView) => {
 		resetScroll();
 		setActive(nextView);
+	};
+	const continuePath = () => {
+		if (journeyProgress.summary.nextQuestionIndex >= 0) {
+			onResumeJourney(journeyProgress.summary.nextQuestionIndex);
+		} else {
+			setResume(true);
+		}
 	};
 
 	return (
@@ -26,10 +33,17 @@ const MainAppView = ({ onRestart }) => {
 				active={active === appViews.POSSESSIONS ? appViews.THINGS : active}
 				onNavigate={showView}
 				onHome={onRestart}
-				onJourney={() => setResume(true)}
+				onJourney={continuePath}
 			/>
 			<div className='screen-enter' key={active}>
-				{active === appViews.PATH && <PathHomeView onContinue={() => setResume(true)} />}
+				{active === appViews.PATH && (
+					<PathHomeView
+						progress={journeyProgress.progress}
+						summary={journeyProgress.summary}
+						onContinue={continuePath}
+						onResumeQuestion={onResumeJourney}
+					/>
+				)}
 				{active === appViews.THINGS && (
 					<ThingsView
 						onContinue={() => setResume(true)}
@@ -45,7 +59,12 @@ const MainAppView = ({ onRestart }) => {
 				<p>Everything that matters, ready for the people who matter.</p>
 				<button onClick={onRestart}><Icon name='logout' size={15} /> Replay first-time experience</button>
 			</footer>
-			{resume && <MiniQuest onClose={() => setResume(false)} />}
+			{resume && (
+				<MiniQuest
+					onClose={() => setResume(false)}
+					onComplete={() => journeyProgress.completeQuickStep('device-access-location')}
+				/>
+			)}
 		</section>
 	);
 };

@@ -28,12 +28,11 @@ const JourneyHeader = ({ current, onExit }) => {
 	);
 };
 
-const SetupJourneyView = ({ onComplete, onExit }) => {
-	const [current, setCurrent] = useState(0);
-	const [answers, setAnswers] = useState({});
+const SetupJourneyView = ({ initialQuestion, journeyProgress, onComplete, onExit }) => {
+	const [current, setCurrent] = useState(initialQuestion);
 	const [uploaded, setUploaded] = useState('');
 	const question = questions[current];
-	const answer = answers[current];
+	const answer = journeyProgress.answers[current];
 	const resetScroll = useScrollToTop(current);
 	const showQuestion = (nextQuestion) => {
 		resetScroll();
@@ -53,13 +52,15 @@ const SetupJourneyView = ({ onComplete, onExit }) => {
 
 	const continueJourney = () => {
 		if (!canContinue) return;
+		journeyProgress.setQuestionStatus(current, 'answered');
 		if (current === questions.length - 1) onComplete();
 		else showQuestion(current + 1);
 	};
 	const updateAnswer = (value) => {
-		setAnswers((currentAnswers) => ({ ...currentAnswers, [current]: value }));
+		journeyProgress.updateAnswer(current, value);
 	};
 	const skipQuestion = () => {
+		journeyProgress.setQuestionStatus(current, 'skipped');
 		if (current === questions.length - 1) onComplete();
 		else showQuestion(current + 1);
 	};

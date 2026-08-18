@@ -1,60 +1,102 @@
 import Icon from '../components/icon';
 import WorldMap from '../components/world-map';
 import { pathStops } from '../constants/dashboard';
+import { chapters, questions } from '../constants/journey';
 
-const PathHomeView = ({ onContinue }) => {
+const PathHomeView = ({ onContinue, onResumeQuestion, progress, summary }) => {
+	const nextQuestion = summary.nextQuestionIndex >= 0 ? questions[summary.nextQuestionIndex] : null;
+	const nextQuestionWasSkipped = progress.questionStatuses[summary.nextQuestionIndex] === 'skipped';
+	const activePathStop = nextQuestion
+		? pathStops.findIndex((stop) => stop.questionIndexes.includes(summary.nextQuestionIndex))
+		: 3;
+	const getStopProgress = (stop, index) => {
+		const target = stop.questionIndexes.length || 1;
+		const completed = stop.questionIndexes.length
+			? stop.questionIndexes.filter((questionIndex) => progress.questionStatuses[questionIndex] === 'answered').length
+			: Number(progress.completedQuickSteps.includes('device-access-location'));
+		const state = index === activePathStop ? 'current' : completed === target ? 'complete' : '';
+
+		return { completed, state, target };
+	};
+
 	return (
 		<div className='path-page'>
 			<section className='path-intro'>
 				<div>
 					<span className='hello-pill'><i /> Wednesday’s small win</span>
-					<h1>Your place is<br /><em>42% lit.</em></h1>
+					<h1>Your place is<br /><em>{summary.percentComplete}% lit.</em></h1>
 					<p>One thoughtful answer today will make the path clearer for your family tomorrow.</p>
-					<button className='continue-button' onClick={onContinue}>Take today’s 3-minute step <Icon name='arrow' /></button>
+					<button className='continue-button' onClick={onContinue}>
+						{nextQuestion ? nextQuestionWasSkipped ? 'Return to saved question' : 'Continue setup' : 'Take today’s 3-minute step'}
+						<Icon name='arrow' />
+					</button>
 				</div>
-				<WorldMap chapter={2} compact />
+				<WorldMap chapter={summary.currentChapter} compact />
 			</section>
 			<section className='today-quest'>
 				<div className='quest-number'>
-					<span>3</span>
-					<small>MIN</small>
+					<span>{nextQuestion ? summary.answeredQuestions.length : 3}</span>
+					<small>{nextQuestion ? 'DONE' : 'MIN'}</small>
 				</div>
 				<div>
-					<p>TODAY’S STEP · MONEY MAP</p>
-					<h2>Add where your retirement account is held.</h2>
-					<span>We only need the institution to start. Details can come later.</span>
+					<p>
+						{nextQuestion
+							? `${nextQuestionWasSkipped ? 'COME BACK TO THIS' : 'CONTINUE SETUP'} · ${chapters[nextQuestion.chapter].name}`
+							: 'NEXT RECOMMENDED · MOUNT VAULT'}
+					</p>
+					<h2>{nextQuestion ? nextQuestion.title : 'Add where device-access instructions are kept.'}</h2>
+					<span>{nextQuestion ? nextQuestion.copy : 'Record only the safe location—not a password or access code.'}</span>
 				</div>
-				<button onClick={onContinue}>Let’s do it <Icon name='arrow' /></button>
+				<button onClick={onContinue}>{nextQuestionWasSkipped ? 'Return to it' : 'Let’s do it'} <Icon name='arrow' /></button>
 			</section>
+			{summary.skippedQuestions.length > 0 && (
+				<section className='pending-questions' aria-labelledby='pending-questions-title'>
+					<header>
+						<div><p>COME BACK TO THIS</p><h2 id='pending-questions-title'>Saved for when you’re ready.</h2></div>
+						<span>{summary.skippedQuestions.length} {summary.skippedQuestions.length === 1 ? 'item' : 'items'}</span>
+					</header>
+					<div>
+						{summary.skippedQuestions.map((questionIndex) => (
+							<button onClick={() => onResumeQuestion(questionIndex)} key={questionIndex}>
+								<span>{chapters[questions[questionIndex].chapter].name}</span>
+								<strong>{questions[questionIndex].title}</strong>
+								<Icon name='arrow' />
+							</button>
+						))}
+					</div>
+				</section>
+			)}
 			<section className='path-section'>
 				<div className='path-heading'>
 					<div><p>YOUR JOURNEY</p><h2>A little clearer with every stop.</h2></div>
-					<span>7 of 23 essentials cared for</span>
+					<span>{summary.completedEssentials} of {summary.totalEssentials} essentials cared for</span>
 				</div>
 				<div className='winding-path'>
 					<svg viewBox='0 0 900 720' preserveAspectRatio='none' aria-hidden='true'>
 						<path d='M160 0 C160 100 730 70 730 190 S170 285 170 390 S730 480 730 570 S380 690 160 720' />
 					</svg>
-					{pathStops.map((stop, index) => (
-						<article className={`path-stop stop-${index} ${stop.state}`} key={stop.chapter}>
-							<span className='stop-icon'>{stop.state === 'complete' ? <Icon name='check' /> : <Icon name={stop.icon} />}</span>
-							<div><p>{stop.chapter}</p><h3>{stop.title}</h3><span>{stop.copy}</span></div>
-							<small>{stop.count}</small>
-							{stop.state === 'current' && <button onClick={onContinue}>Continue <Icon name='arrow' size={15} /></button>}
-						</article>
-					))}
+					{pathStops.map((stop, index) => {
+						const stopProgress = getStopProgress(stop, index);
+						return (
+							<article className={`path-stop stop-${index} ${stopProgress.state}`} key={stop.chapter}>
+								<span className='stop-icon'>{stopProgress.state === 'complete' ? <Icon name='check' /> : <Icon name={stop.icon} />}</span>
+								<div><p>{stop.chapter}</p><h3>{stop.title}</h3><span>{stop.copy}</span></div>
+								<small>{stopProgress.completed} of {stopProgress.target}</small>
+								{stopProgress.state === 'current' && <button onClick={onContinue}>Continue <Icon name='arrow' size={15} /></button>}
+							</article>
+						);
+					})}
 				</div>
 			</section>
-			<section className='achievement-strip'>
-				<div>
-					<Icon name='gift' size={27} />
-					<span><small>NEW KEEPSAKE</small><strong>The Trail Starter</strong></span>
-				</div>
-				<p>You mapped your first account and gave your family a clear place to begin.</p>
-				<div className='badge-stack'>
-					<i /><i /><i /><span>+2</span>
-				</div>
-			</section>
+			{summary.completedEssentials > 0 && (
+				<section className='achievement-strip'>
+					<div>
+						<Icon name='check' size={27} />
+						<span><small>PROGRESS SAVED</small><strong>{summary.percentComplete}% of your path is lit</strong></span>
+					</div>
+					<p>Your completed steps stay marked while skipped questions wait for you.</p>
+				</section>
+			)}
 		</div>
 	);
 };

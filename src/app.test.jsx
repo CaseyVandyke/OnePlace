@@ -1,7 +1,18 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, test } from 'vitest';
 import App from './app';
+import { journeyProgressStorageKey } from './hooks/journey-progress';
+
+const seedCompletedOnboarding = () => {
+	const questionStatuses = Object.fromEntries(
+		Array.from({ length: 10 }, (_, index) => [index, 'answered'])
+	);
+	window.localStorage.setItem(journeyProgressStorageKey, JSON.stringify({
+		questionStatuses,
+		completedQuickSteps: []
+	}));
+};
 
 async function beginSetup(user) {
 	render(<App />);
@@ -80,6 +91,7 @@ describe('OnePlace', () => {
 
 		await user.click(screen.getByRole('button', { name: 'Preview the app' }));
 		expect(screen.getByRole('button', { name: 'Continue my path' })).toBeVisible();
+		expect(screen.getByText('0% lit.')).toBeVisible();
 		expect(screen.queryByText(/\bglow\b/i)).not.toBeInTheDocument();
 		expect(screen.queryByRole('button', { name: /change guide/i })).not.toBeInTheDocument();
 	});
@@ -126,6 +138,27 @@ describe('OnePlace', () => {
 			name: 'What should your family call this place?'
 		}, { timeout: 1500 })).toBeVisible();
 		expect(screen.getByText('Question 2 of 10')).toBeVisible();
+		expect(JSON.parse(window.localStorage.getItem(journeyProgressStorageKey))).toEqual({
+			questionStatuses: { 0: 'answered' },
+			completedQuickSteps: []
+		});
+	});
+
+	test('keeps skipped questions pending and lets the user return to them', async() => {
+		const user = userEvent.setup();
+		await beginSetup(user);
+
+		for (let index = 0; index < 10; index += 1) {
+			await user.click(screen.getByRole('button', { name: 'I’ll come back to this' }));
+		}
+
+		await user.click(screen.getByRole('button', { name: 'Enter my OnePlace' }));
+		const pendingQuestions = screen.getByRole('heading', { name: 'Saved for when you’re ready.' }).closest('section');
+
+		expect(screen.getByText('0% lit.')).toBeVisible();
+		expect(within(pendingQuestions).getByText('10 items')).toBeVisible();
+		await user.click(within(pendingQuestions).getByRole('button', { name: /Who are you preparing this for/ }));
+		expect(screen.getByRole('heading', { name: 'Who are you preparing this for?' })).toBeVisible();
 	});
 
 	test('keeps the map trail mounted while completed segments illuminate', async() => {
@@ -153,11 +186,12 @@ describe('OnePlace', () => {
 
 	test('closes the quick-step popup from its backdrop and close button', async() => {
 		const user = userEvent.setup();
+		seedCompletedOnboarding();
 		render(<App />);
 		await user.click(screen.getByRole('button', { name: 'Preview the app' }));
 
 		await user.click(screen.getByRole('button', { name: 'Take today’s 3-minute step' }));
-		expect(screen.getByRole('dialog', { name: 'Where is your retirement account held?' })).toBeVisible();
+		expect(screen.getByRole('dialog', { name: 'Where can your family find device-access instructions?' })).toBeVisible();
 		await user.click(screen.getAllByRole('button', { name: 'Close quick step' })[0]);
 		expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
 

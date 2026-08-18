@@ -4,11 +4,14 @@ import JourneyIntroView from './views/journey-intro';
 import MainAppView from './views/main-app';
 import SetupJourneyView from './views/setup-journey';
 import WelcomeView from './views/welcome';
+import useJourneyProgress from './hooks/journey-progress';
 import useScrollToTop from './hooks/scroll-to-top';
 import { screens } from './constants/navigation';
 
 const App = () => {
 	const [screen, setScreen] = useState(screens.WELCOME);
+	const journeyProgress = useJourneyProgress();
+	const [journeyQuestion, setJourneyQuestion] = useState(0);
 
 	useEffect(() => {
 		const previousRestoration = window.history.scrollRestoration;
@@ -31,7 +34,10 @@ const App = () => {
 	};
 	const showWelcome = () => showScreen(screens.WELCOME);
 	const showIntroduction = () => showScreen(screens.INTRO);
-	const showJourney = () => showScreen(screens.JOURNEY);
+	const showJourney = (questionIndex = journeyProgress.summary.nextQuestionIndex) => {
+		setJourneyQuestion(questionIndex >= 0 ? questionIndex : 0);
+		showScreen(screens.JOURNEY);
+	};
 	const showApp = () => showScreen(screens.APP);
 	const completeJourney = () => showScreen(screens.COMPLETE);
 
@@ -39,13 +45,32 @@ const App = () => {
 	if (screen === screens.WELCOME) {
 		content = <WelcomeView onStart={showIntroduction} onPreview={showApp} />;
 	} else if (screen === screens.INTRO) {
-		content = <JourneyIntroView onSkip={showJourney} onContinue={showJourney} onHome={showWelcome} />;
+		content = <JourneyIntroView onSkip={() => showJourney()} onContinue={() => showJourney()} onHome={showWelcome} />;
 	} else if (screen === screens.JOURNEY) {
-		content = <SetupJourneyView onExit={showWelcome} onComplete={completeJourney} />;
+		content = (
+			<SetupJourneyView
+				initialQuestion={journeyQuestion}
+				journeyProgress={journeyProgress}
+				onExit={showWelcome}
+				onComplete={completeJourney}
+			/>
+		);
 	} else if (screen === screens.COMPLETE) {
-		content = <CompleteView onEnter={showApp} />;
+		content = (
+			<CompleteView
+				completedQuestions={journeyProgress.summary.answeredQuestions.length}
+				onEnter={showApp}
+				pendingQuestions={journeyProgress.summary.skippedQuestions.length}
+			/>
+		);
 	} else {
-		content = <MainAppView onRestart={showWelcome} />;
+		content = (
+			<MainAppView
+				journeyProgress={journeyProgress}
+				onRestart={showWelcome}
+				onResumeJourney={showJourney}
+			/>
+		);
 	}
 
 	return <main className='app-shell'>{content}</main>;

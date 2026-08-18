@@ -1,11 +1,8 @@
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 
 const useScrollToTop = (value) => {
-	useEffect(() => {
-		const frame = window.requestAnimationFrame(() => {
-			window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
-		});
-		return () => window.cancelAnimationFrame(frame);
+	useLayoutEffect(() => {
+		window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
 	}, [value]);
 };
 

@@ -17,9 +17,11 @@ describe('OnePlace', () => {
 		expect(screen.getByText('oneplace')).toBeVisible();
 		expect(document.querySelector('.map-stop.current > .map-stop-icon')).toBeInTheDocument();
 
+		window.scrollTo.mockClear();
 		await user.click(screen.getByRole('button', { name: 'Build my OnePlace' }));
 
 		expect(screen.getByRole('heading', { name: 'One small step at a time.' })).toBeVisible();
+		expect(window.scrollTo).toHaveBeenCalledWith({ top: 0, left: 0, behavior: 'auto' });
 		expect(screen.getByRole('main')).toBe(appShell);
 		expect(document.documentElement.style.overflow).not.toBe('hidden');
 		expect(document.body.style.overflow).not.toBe('hidden');

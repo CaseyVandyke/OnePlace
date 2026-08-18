@@ -104,6 +104,14 @@ export const mapStops = [
 	{ name: 'Mount Vault', icon: 'key', x: 79, y: 14, className: 'mount-vault' }
 ];
 
+export const mapTrailSegments = [
+	'M126 424C102 350 70 288 84 223',
+	'M84 223C110 170 175 150 252 106',
+	'M252 106C340 125 390 320 476 419',
+	'M476 419C510 355 535 278 588 228',
+	'M588 228C530 205 460 225 371 260'
+];
+
 export const journeyIntroSlides = [
 	{
 		eyebrow: 'HOW THE JOURNEY WORKS · 1 OF 3',
@@ -115,8 +123,8 @@ export const journeyIntroSlides = [
 	{
 		eyebrow: 'HOW THE JOURNEY WORKS · 2 OF 3',
 		icon: 'spark',
-		title: 'A warm lantern lights the way.',
-		copy: 'Your lantern travels across the family map with you. Every finished task earns Glow and brings another important place to life.',
+		title: 'Your path lights up as you go.',
+		copy: 'Each finished task adds Glow to your trail and brings another important place on the family map to life.',
 		note: 'Discover new places, then light them by making progress.'
 	},
 	{

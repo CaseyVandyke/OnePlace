@@ -15,7 +15,7 @@ describe('OnePlace', () => {
 		render(<App />);
 		const appShell = screen.getByRole('main');
 		expect(screen.getByText('oneplace')).toBeVisible();
-		expect(document.querySelector('.map-stop.current > span')).toBeNull();
+		expect(screen.getAllByText('Your path begins here')).not.toHaveLength(0);
 
 		await user.click(screen.getByRole('button', { name: 'Build my OnePlace' }));
 
@@ -59,22 +59,22 @@ describe('OnePlace', () => {
 		expect(screen.queryByText(/pick your character/i)).not.toBeInTheDocument();
 	});
 
-	test('introduces the lantern as the journey marker', async() => {
+	test('introduces the illuminated path', async() => {
 		const user = userEvent.setup();
 		render(<App />);
 
 		await user.click(screen.getByRole('button', { name: 'Build my OnePlace' }));
 		await user.click(screen.getByRole('button', { name: 'Next' }));
-		expect(screen.getByRole('heading', { name: 'A warm lantern lights the way.' })).toBeVisible();
+		expect(screen.getByRole('heading', { name: 'Your path lights up as you go.' })).toBeVisible();
 		expect(screen.queryByRole('button', { name: /companion|guide/i })).not.toBeInTheDocument();
 	});
 
-	test('shows the lantern in the main app header', async() => {
+	test('keeps the main app header focused on progress', async() => {
 		const user = userEvent.setup();
 		render(<App />);
 
 		await user.click(screen.getByRole('button', { name: 'Preview the app' }));
-		expect(screen.getByRole('img', { name: 'Journey lantern' })).toBeVisible();
+		expect(screen.getByText('95 glow')).toBeVisible();
 		expect(screen.queryByRole('button', { name: /change guide/i })).not.toBeInTheDocument();
 	});
 
@@ -122,12 +122,13 @@ describe('OnePlace', () => {
 		expect(screen.getByText('Question 2 of 10')).toBeVisible();
 	});
 
-	test('keeps the map marker mounted so it travels between chapter stops', async() => {
+	test('keeps the map trail mounted while completed segments illuminate', async() => {
 		const user = userEvent.setup();
 		await beginSetup(user);
-		const marker = document.querySelector('.map-explorer');
+		const trail = document.querySelector('.map-trail');
+		const firstSegment = document.querySelector('.trail-segment-light');
 		const journeyLayout = document.querySelector('.journey-layout');
-		const startingLeft = marker.style.left;
+		expect(firstSegment).not.toHaveClass('lit');
 
 		await user.click(screen.getByRole('button', { name: 'My children' }));
 		await user.click(screen.getByRole('button', { name: 'Save & continue' }));
@@ -138,9 +139,9 @@ describe('OnePlace', () => {
 		await user.click(screen.getByRole('button', { name: 'Save & continue' }));
 		await screen.findByRole('heading', { name: 'Do you have a will?' }, { timeout: 1500 });
 
-		const movedMarker = document.querySelector('.map-explorer');
-		expect(movedMarker).toBe(marker);
-		expect(movedMarker.style.left).not.toBe(startingLeft);
+		expect(document.querySelector('.map-trail')).toBe(trail);
+		expect(document.querySelector('.trail-segment-light')).toBe(firstSegment);
+		expect(firstSegment).toHaveClass('lit');
 		expect(journeyLayout).toHaveClass('question-screen-enter-even');
 	});
 

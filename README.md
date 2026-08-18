@@ -6,8 +6,8 @@ OnePlace is a polished product concept for organizing essential documents,
 accounts, personal wishes, trusted-person access, and legacy messages. This
 repository contains fictional demonstration data only.
 
-The guided journey uses a warm lantern that travels across the family
-map as the user completes thoughtful, manageable steps.
+The guided journey illuminates the trail across the family map as the user
+completes thoughtful, manageable steps.
 
 ## Continue the project
 

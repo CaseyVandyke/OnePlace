@@ -46,8 +46,8 @@ current prototype.
 - The experience should feel like a family journey rather than a recovery app,
   enterprise dashboard, or checklist of death-related chores.
 - Gamification is meaningful rather than childish: users earn **Glow**, light
-  locations on a map, complete small steps, and follow a warm lantern between
-  destinations.
+  locations on a map, and illuminate the trail between destinations as they
+  complete small steps.
 - The primary audience includes older adults. Readability is a product
   requirement, not a finishing detail.
 
@@ -84,13 +84,13 @@ The landing page introduces the value proposition and offers:
 A short, multi-screen introduction explains how the journey works before the
 user begins. Mobile page changes must return to the top.
 
-### 3. Lantern journey marker
+### 3. Illuminated path
 
-A single warm lantern guides the user through the journey. It appears in the
-introduction, on the welcome map, and in the main app header. On the map, the same
-mounted lantern travels between destinations as progress is made. The lantern
-keeps the journey warm and recognizable without asking users to choose, name, or
-manage a character. Its subtle flame movement honors reduced-motion preferences.
+The map itself communicates progress rather than relying on a mascot or symbolic
+object. Completed trail segments illuminate in sequence, and the current
+destination glows with a clear “You are here” label. The persistent trail remains
+mounted between questions so each newly completed segment animates smoothly.
+Reduced-motion preferences shorten these nonessential transitions.
 
 ### 4. Guided setup
 
@@ -244,11 +244,11 @@ physical iPhone.
 
 Introduction slides and question changes share a subtle 350ms fade and 10px
 upward entrance. Introduction content remains keyed, but the guided-question
-layout must remain mounted so the lantern can transition between map stops.
+layout must remain mounted so the trail can transition between progress states.
 Question changes alternate equivalent `question-screen-enter-even` and
 `question-screen-enter-odd` animation names to replay the entrance without
 replacing the map. Key only the question article, not `.journey-layout`; keying
-the whole layout makes the lantern teleport to its destination. Persistent
+the whole layout prevents the trail illumination from animating. Persistent
 navigation remains stationary, and the global reduced-motion rule continues to
 reduce these animations.
 
@@ -270,8 +270,7 @@ Important files:
 
 - `src/app.jsx` — top-level application state and screen orchestration only
 - `src/views/` — welcome, onboarding journey, completion, and preview app pages
-- `src/components/` — reusable UI, dialogs, map, keepsake photo, and lantern
-  artwork
+- `src/components/` — reusable UI, dialogs, map, and keepsake photo controls
 - `src/components/question-body.jsx` — a small question-type dispatcher; each
   answer type is an independently testable controlled component using `value`
   and `onChange`

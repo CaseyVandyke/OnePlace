@@ -1,5 +1,5 @@
 import Icon from './icon';
-import JourneyToken from './journey-token';
+import NorthStar from './north-star';
 import { mapStops } from '../constants/journey';
 
 const WorldMap = ({ chapter = 0, compact = false, preview = false }) => {
@@ -33,13 +33,13 @@ const WorldMap = ({ chapter = 0, compact = false, preview = false }) => {
 				))}
 				{!preview && (
 					<div className={`map-explorer map-explorer-${position.className}`} style={{ left: `${position.x}%`, top: `${position.y}%` }}>
-						<span className='map-explorer-marker'><JourneyToken size={compact ? 42 : 54} /></span>
+						<span className='map-explorer-marker'><NorthStar size={compact ? 42 : 54} /></span>
 						<span>You are here</span>
 					</div>
 				)}
 				{preview && (
 					<div className='map-preview-marker' style={{ left: `${mapStops[0].x}%`, top: `${mapStops[0].y}%` }}>
-						<JourneyToken size={54} />
+						<NorthStar size={54} />
 						<span className='map-marker-label'>Your North Star</span>
 					</div>
 				)}

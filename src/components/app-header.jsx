@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import AccountActions from './account-actions';
 import Icon from './icon';
-import JourneyToken from './journey-token';
 import Logo from './logo';
 import MenuToggleIcon from './menu-toggle-icon';
+import NorthStar from './north-star';
 import { appNavigationItems } from '../constants/navigation';
 
 const AppHeader = ({ active, onNavigate, onJourney, onHome }) => {
@@ -26,7 +26,7 @@ const AppHeader = ({ active, onNavigate, onJourney, onHome }) => {
 				<span className='app-glow'><Icon name='spark' size={15} /> 95 glow</span>
 				<button onClick={onJourney}>Continue my path</button>
 				<span className='app-journey-marker' role='img' aria-label='North Star journey marker'>
-					<JourneyToken size={38} />
+					<NorthStar size={38} />
 				</span>
 				<button
 					className='mobile-menu'

@@ -59,6 +59,7 @@ describe('OnePlace', () => {
 		await beginSetup(user);
 
 		expect(screen.getByRole('heading', { name: 'Who are you preparing this for?' })).toBeVisible();
+		expect(document.querySelector('.mobile-chapter-status')).toHaveTextContent(/Basecamp.*Chapter 1 of 6/);
 		expect(screen.queryByText(/pick your character/i)).not.toBeInTheDocument();
 		expect(screen.queryByText('You are here')).not.toBeInTheDocument();
 	});

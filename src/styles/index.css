@@ -122,6 +122,7 @@ button { cursor: pointer; }
 .chapter-track small { font-size: 8px; font-weight: 700; }
 .chapter-track .complete span { border-color: transparent; color: #fff; background: var(--purple); }
 .chapter-track .current { color: var(--ink); }.chapter-track .current span { border-color: var(--red); color: var(--red); box-shadow: 0 0 0 4px rgba(225,89,85,.1); }
+.mobile-chapter-status { display: none; }
 .journey-points { min-width: 112px; display: grid; grid-template-columns: auto auto; column-gap: 8px; align-items: center; padding: 7px 11px 7px 7px; border: 1px solid #ded3e2; border-radius: 99px; background: linear-gradient(110deg,#f7e7e7,#eee7f2 55%,#e5edf5); }
 .journey-points svg { grid-row: 1/3; width: 34px; height: 34px; padding: 8px; border-radius: 50%; color: #fff; background: linear-gradient(145deg,var(--red),var(--purple) 58%,var(--blue)); }.journey-points strong { color: var(--ink); font-size: 11px; line-height: 1; }.journey-points span { color: #674989; font-size: 7px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
 .journey-points.glow-added { animation: glow-added .48s cubic-bezier(.2,.85,.25,1.2); }
@@ -497,10 +498,9 @@ button { cursor: pointer; }
   .journey-points strong { font-size: 15px; }
   .journey-points span { font-size: 11px; }
   .exit-button { width: 44px; height: 44px; }
-  .chapter-track { position: static; grid-column: 1 / -1; grid-row: 2; padding: 8px 10px 0; }
-  .chapter-track > div { width: 16.66%; }
-  .chapter-track > div:not(:last-child)::after { width: calc(100% - 34px); left: calc(50% + 18px); }
-  .chapter-track span { width: 36px; height: 36px; margin-bottom: 0; font-size: 14px; }
+  .chapter-track { display: none; }
+  .mobile-chapter-status { grid-column: 1 / -1; grid-row: 2; display: flex; align-items: baseline; gap: 7px; margin: 2px 0 0; padding: 7px 2px 2px; color: #5e5a64; font-size: 16px; line-height: 1.4; }
+  .mobile-chapter-status strong { color: var(--ink); }
   .journey-layout { display: flex; flex-direction: column; }
   .journey-place { overflow: clip; padding: 36px 0 18px; }
   .journey-place .world-map { width: min(410px, 94vw); margin: 0 auto; transform: none; }
@@ -606,7 +606,6 @@ button { cursor: pointer; }
 }
 
 @media (max-width: 390px) {
-  .chapter-track span { width: 34px; height: 34px; }
   .question-stage { padding-left: 17px; padding-right: 17px; }
 }
 
@@ -628,7 +627,6 @@ button { cursor: pointer; }
   .question-copy { font-size: 19px; }
   .journey-points strong { font-size: 17px; }
   .journey-points span { font-size: 15px; }
-  .chapter-track span { font-size: 16px; }
   .journey-place-copy span { font-size: 15px; }
   .journey-place .map-stop.current strong { font-size: 16px; }
 

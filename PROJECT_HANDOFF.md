@@ -48,6 +48,10 @@ current prototype.
 - Gamification is meaningful rather than childish: users earn **Glow**, light
   locations on a map, and illuminate the trail between destinations as they
   complete small steps.
+- On mobile, the setup header summarizes overall progress as the current place
+  and chapter (for example, “Basecamp · Chapter 1 of 6”). The full six-stop
+  chapter track remains available on larger screens, while the question area
+  separately communicates “Question X of 10.”
 - The primary audience includes older adults. Readability is a product
   requirement, not a finishing detail.
 

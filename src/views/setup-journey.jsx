@@ -11,6 +11,10 @@ const JourneyHeader = ({ current, points, onExit }) => {
 	return (
 		<header className='site-header journey-header'>
 			<Logo onClick={onExit} />
+			<p className='mobile-chapter-status'>
+				<strong>{chapters[chapter].name}</strong>
+				<span>· Chapter {chapter + 1} of {chapters.length}</span>
+			</p>
 			<div className='chapter-track'>
 				{chapters.map((item, index) => (
 					<div className={`${index < chapter ? 'complete' : ''} ${index === chapter ? 'current' : ''}`} key={item.name}>

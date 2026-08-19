@@ -145,6 +145,13 @@ is derived from this progress and must not use a hard-coded weekday.
 
 ### 5. Completion and main app
 
+The completion screen offers **Back to questions**, which returns to Question
+10 and its navigable map without clearing progress. Its decorative confetti is
+contained inside a noninteractive paint layer, uses nine explicitly positioned
+pieces, runs once, and never travels beyond the layer's vertical bounds. Do not
+restore the former infinite `top: 110%` animation; its changing overflow could
+destabilize Safari's bottom scroll boundary.
+
 The prototype main app includes:
 
 - **My path** — calculated progress, the next unfinished task, resumable skipped

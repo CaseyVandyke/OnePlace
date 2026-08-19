@@ -2,11 +2,11 @@ import Icon from '../components/icon';
 import Logo from '../components/logo';
 import WorldMap from '../components/world-map';
 
-const CompleteView = ({ completedQuestions, onEnter, pendingQuestions }) => {
+const CompleteView = ({ completedQuestions, onBack, onEnter, pendingQuestions }) => {
 	return (
 		<section className='complete-screen'>
-			<div className='confetti'>
-				{Array.from({ length: 18 }).map((_, index) => <i key={index} />)}
+			<div className='confetti' aria-hidden='true'>
+				{Array.from({ length: 9 }).map((_, index) => <i key={index} />)}
 			</div>
 			<Logo light />
 			<section className='screen-enter'>
@@ -22,7 +22,10 @@ const CompleteView = ({ completedQuestions, onEnter, pendingQuestions }) => {
 						<div><strong>6</strong><span>places discovered</span></div>
 						<div><strong>{pendingQuestions}</strong><span>saved for later</span></div>
 					</div>
-					<button className='journey-button' onClick={onEnter}>Enter my OnePlace <Icon name='arrow' /></button>
+					<div className='complete-actions'>
+						<button className='complete-back' type='button' onClick={onBack}><Icon name='back' size={18} /> Back to questions</button>
+						<button className='journey-button' onClick={onEnter}>Enter my OnePlace <Icon name='arrow' /></button>
+					</div>
 				</div>
 			</section>
 		</section>

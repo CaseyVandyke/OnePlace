@@ -301,6 +301,10 @@ describe('OnePlace', () => {
 			await user.click(screen.getByRole('button', { name: 'I’ll come back to this' }));
 		}
 
+		expect(document.querySelectorAll('.confetti i')).toHaveLength(9);
+		await user.click(screen.getByRole('button', { name: 'Back to questions' }));
+		expect(screen.getByText('Question 10 of 10')).toBeVisible();
+		await user.click(screen.getByRole('button', { name: 'I’ll come back to this' }));
 		await user.click(screen.getByRole('button', { name: 'Enter my OnePlace' }));
 		const pendingQuestions = screen.getByRole('heading', { name: 'Saved for when you’re ready.' }).closest('section');
 

@@ -6,6 +6,7 @@ import SetupJourneyView from './views/setup-journey';
 import WelcomeView from './views/welcome';
 import useJourneyProgress from './hooks/journey-progress';
 import useScrollToTop from './hooks/scroll-to-top';
+import { questions } from './constants/journey';
 import { screens } from './constants/navigation';
 
 const App = () => {
@@ -62,6 +63,7 @@ const App = () => {
 		content = (
 			<CompleteView
 				completedQuestions={journeyProgress.summary.answeredQuestions.length}
+				onBack={() => showJourney(questions.length - 1)}
 				onEnter={showApp}
 				pendingQuestions={journeyProgress.summary.skippedQuestions.length}
 			/>

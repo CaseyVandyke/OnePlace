@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
+import { microphoneReuseMilliseconds } from '../hooks/audio-recorder';
 import AudioRecorder from './audio-recorder';
 
 const getUserMedia = vi.fn();
@@ -61,6 +62,10 @@ describe('AudioRecorder', () => {
 		});
 	});
 
+	afterEach(() => {
+		vi.useRealTimers();
+	});
+
 	test('records, stops, and prepares playback', async() => {
 		const user = userEvent.setup();
 		const view = render(<RecorderHarness />);
@@ -104,5 +109,21 @@ describe('AudioRecorder', () => {
 
 		await waitFor(() => expect(screen.getByRole('alert')).toHaveTextContent('Microphone access was not allowed'));
 		expect(screen.getByRole('button', { name: 'Add an audio file instead' })).toBeVisible();
+	});
+
+	test('fully releases the muted microphone after the reuse window', async() => {
+		vi.useFakeTimers();
+		render(<RecorderHarness />);
+
+		await act(async() => {
+			fireEvent.click(screen.getByRole('button', { name: 'Start recording' }));
+			await Promise.resolve();
+		});
+		fireEvent.click(screen.getByRole('button', { name: 'Stop recording' }));
+
+		expect(microphoneTrack.enabled).toBe(false);
+		expect(microphoneTrack.stop).not.toHaveBeenCalled();
+		act(() => vi.advanceTimersByTime(microphoneReuseMilliseconds));
+		expect(microphoneTrack.stop).toHaveBeenCalledTimes(1);
 	});
 });

@@ -321,7 +321,9 @@ Important files:
 - `src/app.jsx` — top-level application state and screen orchestration only
 - `src/views/` — welcome, onboarding journey, completion, and preview app pages
 - `src/components/` — reusable UI, dialogs, map, keepsake photo controls, and
-  the shared audio recorder
+  the shared audio-recorder presentation
+- `src/hooks/audio-recorder.js` — microphone permissions, MediaRecorder state,
+  stream reuse/release, timers, and recording object-URL cleanup
 - `src/hooks/journey-progress.js` — shared progress metadata, local-storage
   persistence, and derived dashboard progress
 - `src/components/question-body.jsx` — a small question-type dispatcher; each
@@ -331,7 +333,8 @@ Important files:
 - `src/hooks/` — reusable React behavior such as intentional scroll restoration
 - `src/styles/index.css` — shared visual, responsive, accessibility, and animation
   rules
-- `src/styles/components/` — component-specific styles
+- `src/styles/components/audio-recorder.css` — recorder-specific light, dark,
+  responsive, and motion styles
 - `vite.config.js` — Vite configuration with relative asset base
 - `.github/workflows/deploy-pages.yml` — GitHub Pages deployment
 - `README.md` — short public project overview

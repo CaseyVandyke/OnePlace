@@ -420,15 +420,15 @@ These decisions still need deeper product work:
 
 ## Recommended next steps
 
-1. Test the latest onboarding and possessions experience on a physical iPhone.
-2. Add a persistent data model using fictional local data before selecting a
-   production backend.
-3. Design item-level sharing controls and the trusted-person recipient view.
-4. Prototype the death/incapacity activation and dispute flow without real data.
-5. Conduct a complete WCAG-focused accessibility review.
-6. Create a formal threat model before accepting any sensitive information.
-7. Only after the security model is agreed, evaluate storage, authentication,
-   email, verification, and institution APIs.
+The formal production scope, initial threat model, architecture requirements,
+release gates, and decisions requiring owner approval now live in
+`docs/PRODUCTION_READINESS.md`.
+
+1. Choose the encryption and recovery model.
+2. Choose the authentication experience.
+3. Compare backend stacks only after those requirements are agreed.
+4. Build a non-sensitive account-and-response vertical slice in private staging.
+5. Design and test item-level sharing before accepting restricted information.
 
 ## Suggested prompt for a new coding conversation
 

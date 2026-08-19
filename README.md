@@ -16,6 +16,10 @@ a new account or coding conversation. It records the product decisions, current
 flow, mobile accessibility requirements, security boundaries, and recommended
 next steps.
 
+The production scope, threat model, release gates, and unresolved architecture
+decisions are tracked in
+[docs/PRODUCTION_READINESS.md](docs/PRODUCTION_READINESS.md).
+
 ## Run locally
 
 ```sh

@@ -191,6 +191,10 @@ professional.
   up to 30 seconds so an immediate re-record does not wait for Safari to reopen
   the hardware. It is fully released after that window, when the recording is
   removed or replaced by a file, and when the recorder unmounts.
+- “Record again” returns to the ready-to-record state without capturing. The
+  user must explicitly press “Start recording,” and the recorder's capture and
+  playback states use the shared screen-entrance animation instead of swapping
+  abruptly.
 - An audio-file picker provides a fallback when microphone recording is
   unavailable or permission is denied.
 - Recordings are held as browser `Blob` objects in session-only React state.

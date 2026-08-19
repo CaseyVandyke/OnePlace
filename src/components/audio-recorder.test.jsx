@@ -79,6 +79,14 @@ describe('AudioRecorder', () => {
 
 		await user.click(screen.getByRole('button', { name: /Record again/ }));
 
+		const startAgainButton = await screen.findByRole('button', { name: 'Start recording' });
+		expect(startAgainButton).toBeVisible();
+		expect(startAgainButton.closest('.screen-enter')).toHaveClass('audio-capture');
+		expect(getUserMedia).toHaveBeenCalledTimes(1);
+		expect(microphoneTrack.enabled).toBe(false);
+
+		await user.click(startAgainButton);
+
 		expect(await screen.findByRole('button', { name: 'Stop recording' })).toBeVisible();
 		expect(getUserMedia).toHaveBeenCalledTimes(1);
 		expect(microphoneTrack.enabled).toBe(true);

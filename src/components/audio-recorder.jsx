@@ -160,6 +160,11 @@ const AudioRecorder = ({ description, onChange, title, value, variant = 'light' 
 		setError('');
 		onChange(null);
 	};
+	const prepareToRecordAgain = () => {
+		setElapsedSeconds(0);
+		setError('');
+		onChange(null);
+	};
 
 	return (
 		<div className={`audio-recorder audio-recorder-${variant}`}>
@@ -172,7 +177,7 @@ const AudioRecorder = ({ description, onChange, title, value, variant = 'light' 
 				aria-label='Choose an audio file'
 			/>
 			{value?.blob ? (
-				<div className='audio-ready'>
+				<div className='audio-ready screen-enter' key='recording-ready'>
 					<span className='audio-ready-icon'><Icon name='check' size={27} /></span>
 					<div className='audio-ready-copy'>
 						<strong>{title || 'Your recording is ready'}</strong>
@@ -185,14 +190,14 @@ const AudioRecorder = ({ description, onChange, title, value, variant = 'light' 
 						<a href={playbackUrl} download={value.name || `oneplace-voice-message.${getAudioExtension(value.mimeType)}`}>
 							<Icon name='download' size={18} /> Download
 						</a>
-						<button type='button' onClick={startRecording} disabled={status === 'requesting'}>
-							<Icon name='mic' size={18} /> {status === 'requesting' ? 'Opening microphone…' : 'Record again'}
+						<button type='button' onClick={prepareToRecordAgain}>
+							<Icon name='mic' size={18} /> Record again
 						</button>
 						<button type='button' className='remove-audio' onClick={removeRecording}><Icon name='trash' size={18} /> Delete</button>
 					</div>
 				</div>
 			) : (
-				<>
+				<div className='audio-capture screen-enter' key='recording-capture'>
 					<button
 						type='button'
 						className={`record-audio-button ${status === 'recording' ? 'recording' : ''}`}
@@ -207,7 +212,7 @@ const AudioRecorder = ({ description, onChange, title, value, variant = 'light' 
 					<strong aria-live='polite'>{status === 'recording' ? 'Recording your message…' : status === 'requesting' ? 'Opening your microphone…' : title}</strong>
 					<p>{status === 'recording' ? `${formatDuration(elapsedSeconds)} of 5:00 maximum` : description}</p>
 					<button type='button' className='choose-audio-file' onClick={chooseAudioFile}>Add an audio file instead</button>
-				</>
+				</div>
 			)}
 			{error && <p className='audio-error' role='alert'>{error}</p>}
 			<p className='audio-privacy'><Icon name='lock' size={16} /> The microphone turns off after recording. Your audio stays in this browser session for the prototype.</p>

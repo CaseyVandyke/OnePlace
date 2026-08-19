@@ -168,8 +168,8 @@ button { cursor: pointer; }
 .record-audio-button > i:last-child { inset: -22px; animation-delay: .7s; }
 .record-audio-button.recording { background: #b94350; }
 .record-audio-button.recording > i { border-color: rgba(185,67,80,.45); animation-duration: 1.1s; }
-.audio-recorder > strong { display: block; font: 600 24px "Playfair Display"; }
-.audio-recorder > p { margin: 7px 0 0; color: var(--muted); font-size: 16px; line-height: 1.5; }
+.audio-capture > strong { display: block; font: 600 24px "Playfair Display"; }
+.audio-capture > p { margin: 7px 0 0; color: var(--muted); font-size: 16px; line-height: 1.5; }
 .choose-audio-file { min-height: 44px; margin-top: 10px; border: 0; color: var(--purple); background: none; font-size: 15px; font-weight: 800; text-decoration: underline; text-underline-offset: 4px; }
 .audio-recorder > .audio-privacy { display: flex; justify-content: center; align-items: flex-start; gap: 7px; margin-top: 18px; font-size: 14px; }
 .audio-privacy svg { flex: 0 0 auto; margin-top: 3px; color: var(--blue); }
@@ -207,7 +207,7 @@ button { cursor: pointer; }
 .message-stage h2 { margin: 15px 0 18px; font: 600 31px/1.3 "Playfair Display"; }
 .message-stage-copy > p { margin: 0; color: #d1cbd6; font-size: 16px; line-height: 1.6; }
 .audio-recorder-dark { border: 1px solid rgba(255,255,255,.16); border-radius: 22px; background: rgba(255,255,255,.06); padding: 34px 24px 24px; }
-.audio-recorder-dark > p { color: #ddd7e2; }
+.audio-recorder-dark .audio-capture > p,.audio-recorder-dark > .audio-privacy { color: #ddd7e2; }
 .audio-recorder-dark .choose-audio-file { color: #f0d6ed; }
 .audio-recorder-dark .audio-privacy svg { color: #a9c9e5; }
 .audio-recorder-dark .audio-ready { border-color: rgba(255,255,255,.18); background: rgba(255,255,255,.08); }
@@ -651,7 +651,7 @@ button { cursor: pointer; }
   .access-note small { font-size: 16px; }
   .bank-logo { font-size: 14px; }
 
-  .audio-recorder > p,
+  .audio-capture > p,
   .audio-recorder > .audio-privacy,
   .choose-audio-file,
   .audio-ready-copy span,

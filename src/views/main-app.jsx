@@ -52,7 +52,12 @@ const MainAppView = ({ journeyProgress, onRestart, onResumeJourney }) => {
 				)}
 				{active === appViews.POSSESSIONS && <PossessionsView onBack={() => showView(appViews.THINGS)} />}
 				{active === appViews.PEOPLE && <PeopleView />}
-				{active === appViews.MESSAGES && <MessagesView />}
+				{active === appViews.MESSAGES && (
+					<MessagesView
+						message={journeyProgress.answers[9]}
+						onMessageChange={(message) => journeyProgress.updateAnswer(9, message)}
+					/>
+				)}
 			</div>
 			<footer className='app-footer'>
 				<Logo />

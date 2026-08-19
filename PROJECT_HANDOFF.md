@@ -1,6 +1,6 @@
 # OnePlace Project Handoff
 
-Last updated: August 18, 2026
+Last updated: August 19, 2026
 Repository: https://github.com/CaseyVandyke/OnePlace  
 Live prototype: https://caseyvandyke.github.io/OnePlace/  
 Architecture refactor baseline: commit `93956c3`
@@ -179,6 +179,22 @@ The page includes a reminder that personal wishes are useful but important gifts
 should also appear in a will or trust and be reviewed with an estate
 professional.
 
+### Audio recordings
+
+- Guided Question 10 and the Messages page share one browser-native audio
+  recorder component.
+- The recorder requests microphone access only after the user presses the
+  record button, shows elapsed time, stops automatically after five minutes,
+  and supports playback, downloading, re-recording, and deletion.
+- An audio-file picker provides a fallback when microphone recording is
+  unavailable or permission is denied.
+- Recordings are held as browser `Blob` objects in session-only React state.
+  They are not written to local storage, uploaded, or included in the persisted
+  journey-progress metadata.
+- Browser microphone access requires a secure context. It works on the HTTPS
+  GitHub Pages site; a physical phone visiting a plain `http://192.168...` local
+  development address may need to use the audio-file fallback.
+
 ### Preview navigation and prototype actions
 
 - Welcome, Introduction, guided Questions, and the main app share the
@@ -284,7 +300,8 @@ reduce these animations.
 - No database
 - No authentication
 - No external institution APIs
-- Sensitive answer content, uploads, and photos remain session-only React state.
+- Sensitive answer content, uploads, photos, and audio recordings remain
+  session-only React state.
 - Non-sensitive progress metadata (answered/skipped status and completed quick-step
   identifiers) persists in local storage under `oneplace-journey-progress-v1`.
   This metadata is what drives the dashboard percentage, map destination, chapter
@@ -294,7 +311,8 @@ Important files:
 
 - `src/app.jsx` — top-level application state and screen orchestration only
 - `src/views/` — welcome, onboarding journey, completion, and preview app pages
-- `src/components/` — reusable UI, dialogs, map, and keepsake photo controls
+- `src/components/` — reusable UI, dialogs, map, keepsake photo controls, and
+  the shared audio recorder
 - `src/hooks/journey-progress.js` — shared progress metadata, local-storage
   persistence, and derived dashboard progress
 - `src/components/question-body.jsx` — a small question-type dispatcher; each

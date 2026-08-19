@@ -136,6 +136,20 @@ describe('OnePlace', () => {
 		expect(screen.getByRole('status')).toHaveTextContent('Preview only — this feature isn’t available in the prototype yet.');
 	});
 
+	test('offers real audio recording and selectable prompts on the messages page', async() => {
+		const user = userEvent.setup();
+		render(<App />);
+
+		await user.click(screen.getByRole('button', { name: 'Preview the app' }));
+		await user.click(screen.getByRole('button', { name: 'Messages' }));
+
+		expect(screen.getByRole('button', { name: 'Start recording' })).toBeVisible();
+		const prompt = screen.getByRole('button', { name: /Tell the story behind something you treasure/ });
+		await user.click(prompt);
+		expect(prompt).toHaveAttribute('aria-pressed', 'true');
+		expect(screen.getByRole('heading', { name: 'Tell the story behind something you treasure.' })).toBeVisible();
+	});
+
 	test('requires an answer before continuing the first setup question', async() => {
 		const user = userEvent.setup();
 		await beginSetup(user);

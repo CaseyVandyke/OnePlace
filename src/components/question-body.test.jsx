@@ -89,12 +89,17 @@ describe('QuestionBody', () => {
 		expect(onChange.mock.lastCall[0][0].item).toBe('Ring');
 	});
 
-	test('toggles a voice-message recording', async() => {
-		const user = userEvent.setup();
-		const { onChange } = renderQuestion({ type: 'voice' });
+	test('accepts an audio file for a voice message', () => {
+		const { container, onChange } = renderQuestion({ type: 'voice' });
+		const file = new File(['audio'], 'hello.m4a', { type: 'audio/mp4' });
 
-		await user.click(screen.getByRole('button'));
+		fireEvent.change(container.querySelector("input[type='file']"), { target: { files: [file] } });
 
-		expect(onChange).toHaveBeenCalledWith('recorded');
+		expect(onChange).toHaveBeenCalledWith({
+			blob: file,
+			duration: 0,
+			mimeType: 'audio/mp4',
+			name: 'hello.m4a'
+		});
 	});
 });

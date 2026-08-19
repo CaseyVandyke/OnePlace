@@ -48,9 +48,9 @@ export const questions = [
 	},
 	{
 		chapter: 2,
-		eyebrow: 'One safe reference',
-		title: 'What will help them know which account you mean?',
-		copy: 'Use a nickname, category, and contact path—not an account number, balance, or password.',
+		eyebrow: 'Safe account references',
+		title: 'Add a safe reference for each institution.',
+		copy: 'Use a nickname, category, and contact path for each one—not account numbers, balances, or passwords.',
 		type: 'financial-reference'
 	},
 	{

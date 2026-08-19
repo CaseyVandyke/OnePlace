@@ -6,6 +6,8 @@ import WorldMap from '../components/world-map';
 import { chapters, questions } from '../constants/journey';
 import useScrollToTop from '../hooks/scroll-to-top';
 
+const bankQuestionIndex = questions.findIndex(({ type }) => type === 'banks');
+
 const JourneyHeader = ({ current, onExit }) => {
 	const chapter = questions[current]?.chapter ?? 0;
 	return (
@@ -92,6 +94,7 @@ const SetupJourneyView = ({ initialQuestion, journeyProgress, onComplete, onExit
 						question={question}
 						value={answer}
 						onChange={updateAnswer}
+						selectedInstitutions={journeyProgress.answers[bankQuestionIndex]}
 					/>
 					<div className='question-actions'>
 						<button className='back-button' disabled={current === 0} onClick={() => showQuestion(Math.max(0, current - 1))}><Icon name='back' size={18} /> Back</button>

@@ -8,7 +8,7 @@ import SingleChoiceAnswer from './single-choice-answer';
 import TrustedPersonAnswer from './trusted-person-answer';
 import VoiceMessageAnswer from './voice-message-answer';
 
-const QuestionBody = ({ question, value, onChange }) => {
+const QuestionBody = ({ question, value, onChange, selectedInstitutions }) => {
 	if (question.type === 'multi') {
 		return <MultipleChoiceAnswer options={question.options} value={value} onChange={onChange} />;
 	}
@@ -30,7 +30,7 @@ const QuestionBody = ({ question, value, onChange }) => {
 	}
 
 	if (question.type === 'financial-reference') {
-		return <FinancialReferenceAnswer value={value} onChange={onChange} />;
+		return <FinancialReferenceAnswer value={value} institutions={selectedInstitutions} onChange={onChange} />;
 	}
 
 	if (question.type === 'person') {

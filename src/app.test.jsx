@@ -191,6 +191,24 @@ describe('OnePlace', () => {
 		});
 	});
 
+	test('shows one financial reference form for every selected institution', async() => {
+		const user = userEvent.setup();
+		await beginSetup(user);
+
+		for (let index = 0; index < 4; index += 1) {
+			await user.click(screen.getByRole('button', { name: 'I’ll come back to this' }));
+		}
+		await user.click(screen.getByRole('button', { name: /Chase$/ }));
+		await user.click(screen.getByRole('button', { name: /Capital One$/ }));
+		await user.click(screen.getByRole('button', { name: 'Save & continue' }));
+
+		expect(await screen.findByRole('heading', {
+			name: 'Add a safe reference for each institution.'
+		}, { timeout: 1500 })).toBeVisible();
+		expect(screen.getByRole('group', { name: 'Reference for Chase' })).toBeVisible();
+		expect(screen.getByRole('group', { name: 'Reference for Capital One' })).toBeVisible();
+	});
+
 	test('keeps skipped questions pending and lets the user return to them', async() => {
 		const user = userEvent.setup();
 		await beginSetup(user);

@@ -1,15 +1,16 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, test, vi } from 'vitest';
 import QuestionBody from './question-body';
 
-const renderQuestion = ({ type, options = [], value } = {}) => {
+const renderQuestion = ({ type, options = [], value, selectedInstitutions } = {}) => {
 	const onChange = vi.fn();
 	const view = render(
 		<QuestionBody
 			question={{ type, options }}
 			value={value}
 			onChange={onChange}
+			selectedInstitutions={selectedInstitutions}
 		/>
 	);
 
@@ -63,14 +64,38 @@ describe('QuestionBody', () => {
 		expect(onChange).toHaveBeenCalledWith(['Chase']);
 	});
 
-	test('updates a financial reference without collecting account numbers', () => {
-		const { onChange } = renderQuestion({ type: 'financial-reference', value: { nickname: 'Daily' } });
+	test('creates and updates one safe reference for each selected institution', () => {
+		const { onChange } = renderQuestion({
+			type: 'financial-reference',
+			value: [],
+			selectedInstitutions: ['Chase', 'Capital One']
+		});
+		const chaseReference = screen.getByRole('group', { name: 'Reference for Chase' });
+		const capitalOneReference = screen.getByRole('group', { name: 'Reference for Capital One' });
 
-		fireEvent.change(screen.getByPlaceholderText('Mountain America'), { target: { value: 'Bank' } });
+		fireEvent.change(within(capitalOneReference).getByPlaceholderText('Everyday checking'), { target: { value: 'Travel card' } });
 
-		expect(onChange).toHaveBeenCalledWith({ nickname: 'Daily', institution: 'Bank' });
+		expect(chaseReference).toBeVisible();
+		expect(onChange).toHaveBeenCalledWith([
+			{ selectedInstitution: 'Chase', institution: 'Chase' },
+			{ selectedInstitution: 'Capital One', institution: 'Capital One', nickname: 'Travel card' }
+		]);
 		expect(screen.queryByLabelText(/account number/i)).not.toBeInTheDocument();
 		expect(screen.queryByLabelText(/last 4/i)).not.toBeInTheDocument();
+	});
+
+	test('allows a selected custom institution to be named', () => {
+		const { onChange } = renderQuestion({
+			type: 'financial-reference',
+			value: [],
+			selectedInstitutions: ['Another institution']
+		});
+
+		fireEvent.change(screen.getByPlaceholderText('Institution name'), { target: { value: 'Local Credit Union' } });
+
+		expect(onChange).toHaveBeenCalledWith([
+			{ selectedInstitution: 'Another institution', institution: 'Local Credit Union' }
+		]);
 	});
 
 	test('updates a trusted person', () => {

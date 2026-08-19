@@ -880,6 +880,9 @@ button { cursor: pointer; }
 
 /* Possessions and keepsakes */
 .possession-answer { min-width: 0; max-width: 100%; display: grid; gap: 14px; }
+.possession-entry-reveal { min-width: 0; display: grid; grid-template-rows: 1fr; }
+.possession-entry-reveal.adding { animation: possession-entry-in .34s cubic-bezier(.22,.8,.3,1) both; }
+.possession-entry-reveal > .possession-entry { min-height: 0; }
 .possession-entry { min-width: 0; max-width: 100%; overflow: hidden; border: 1px solid var(--line); border-radius: 16px; background: #fff; box-shadow: 0 10px 28px rgba(51,42,57,.05); }
 .possession-entry > header { min-height: 58px; display: flex; align-items: center; gap: 11px; padding: 11px 16px; border-bottom: 1px solid var(--line); background: #f5eff6; }
 .possession-entry > header > span { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 11px; color: #fff; background: linear-gradient(145deg,var(--red),var(--purple)); }
@@ -901,6 +904,11 @@ button { cursor: pointer; }
 .add-keepsake { min-height: 52px; display: inline-flex; align-items: center; justify-content: center; gap: 9px; border: 1px solid var(--purple); border-radius: 99px; color: var(--purple); background: #fff; padding: 11px 18px; font-size: 16px; font-weight: 800; }
 .possession-legal-note { min-width: 0; max-width: 100%; display: flex; align-items: flex-start; gap: 9px; margin: 0; border-radius: 12px; padding: 13px 15px; color: #55515d; background: #f1edf1; font-size: 15px; line-height: 1.55; }
 .possession-legal-note svg { flex: 0 0 auto; margin-top: 3px; color: var(--purple); }
+
+@keyframes possession-entry-in {
+  from { grid-template-rows: 0fr; opacity: 0; transform: translateY(-5px); }
+  to { grid-template-rows: 1fr; opacity: 1; transform: translateY(0); }
+}
 
 .room-block:nth-child(5) { grid-column: span 1; }
 .room-plum { background: #765074; }

@@ -114,6 +114,23 @@ describe('QuestionBody', () => {
 		expect(onChange.mock.lastCall[0][0].item).toBe('Ring');
 	});
 
+	test('reveals a newly added possession smoothly', async() => {
+		const user = userEvent.setup();
+		const { onChange, rerender } = renderQuestion({ type: 'possessions' });
+
+		await user.click(screen.getByRole('button', { name: 'Add another possession' }));
+		rerender(
+			<QuestionBody
+				question={{ type: 'possessions', options: [] }}
+				value={onChange.mock.lastCall[0]}
+				onChange={onChange}
+			/>
+		);
+		const addedPossession = screen.getByText('Possession 2').closest('.possession-entry-reveal');
+
+		expect(addedPossession).toHaveClass('adding');
+	});
+
 	test('accepts an audio file for a voice message', () => {
 		const { container, onChange } = renderQuestion({ type: 'voice' });
 		const file = new File(['audio'], 'hello.m4a', { type: 'audio/mp4' });

@@ -85,7 +85,6 @@ button { cursor: pointer; }
 .map-stop-button:active > .map-stop-icon { transform: translateY(0) scale(.96); }
 .map-stop-button:focus-visible { outline: 0; }
 .map-stop-button:focus-visible > .map-stop-icon { outline: 3px solid #fff; outline-offset: 4px; }
-.map-stop-button.locked { opacity: .72; filter: none; }
 .map-preview-note { position: absolute; z-index: 8; left: 50%; bottom: -44px; transform: translateX(-50%); display: flex; align-items: center; gap: 5px; border: 1px solid rgba(255,255,255,.12); border-radius: 99px; padding: 7px 10px; color: #e7dbe4; background: rgba(29,27,49,.94); font-size: 7px; white-space: nowrap; }.map-preview { margin-bottom: 52px; }.map-compact { width: min(570px,100%); }
 
 /* The living place illustration */

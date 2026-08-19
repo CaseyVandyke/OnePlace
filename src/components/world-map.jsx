@@ -28,7 +28,7 @@ const WorldMap = ({ chapter = 0, compact = false, litChapter = chapter, onSelect
 					const current = index === chapter;
 					const unlocked = index <= litChapter || preview;
 					const selectable = !selectableStops || selectableStops.includes(stop.name);
-					const interactive = Boolean(onSelectStop && selectable && !current);
+					const interactive = Boolean(onSelectStop && selectable && unlocked && !current);
 					const Stop = interactive ? 'button' : 'div';
 
 					return (

@@ -154,34 +154,40 @@ describe('OnePlace', () => {
 		expect(screen.getByRole('heading', { name: 'Leave more than instructions.' })).toBeVisible();
 	});
 
-	test('keeps every main map destination available', async() => {
+	test('keeps unreached main map destinations locked', async() => {
 		const user = userEvent.setup();
 		render(<App />);
 
 		await user.click(screen.getByRole('button', { name: 'Preview the app' }));
 		expect(screen.queryByRole('button', { name: 'Open Basecamp' })).not.toBeInTheDocument();
-		await user.click(screen.getByRole('button', { name: 'Open Money Meadow' }));
-		expect(screen.getByRole('heading', { name: /Every part of your life/ })).toBeVisible();
-		expect(screen.getByRole('button', { name: 'Back to map' })).toBeVisible();
-
+		expect(screen.queryByRole('button', { name: 'Open Money Meadow' })).not.toBeInTheDocument();
+		expect(document.querySelector('.map-stop.money-meadow')).toHaveClass('locked');
 	});
 
 	test('navigates between guided question groups from the map', async() => {
 		const user = userEvent.setup();
 		await beginSetup(user);
-		const basecampQuestion = document.querySelector('.question-stage');
 
-		await user.click(screen.getByRole('button', { name: 'Open Money Meadow' }));
-		expect(screen.getByText('Question 5 of 10')).toBeVisible();
-		expect(screen.getByRole('heading', { name: 'Which financial institutions should your family know about?' })).toBeVisible();
-		expect(document.querySelector('.question-stage')).not.toBe(basecampQuestion);
-		expect(document.querySelector('.question-stage')).toHaveClass('screen-enter');
+		expect(screen.queryByRole('button', { name: 'Open Paper Port' })).not.toBeInTheDocument();
+		await user.click(screen.getByRole('button', { name: 'My children' }));
+		await user.click(screen.getByRole('button', { name: 'Save & continue' }));
+		await user.type(screen.getByRole('textbox', { name: 'Your place’s name' }), 'Morgan family');
+		await user.click(screen.getByRole('button', { name: 'Save & continue' }));
+		await screen.findByRole('heading', { name: 'Do you have a will?' }, { timeout: 1500 });
 
-		const moneyQuestion = document.querySelector('.question-stage');
+		const paperQuestion = document.querySelector('.question-stage');
+		expect(screen.queryByRole('button', { name: 'Open Paper Port' })).not.toBeInTheDocument();
+		expect(screen.queryByRole('button', { name: 'Open Money Meadow' })).not.toBeInTheDocument();
 		await user.click(screen.getByRole('button', { name: 'Open Basecamp' }));
 		expect(screen.getByText('Question 1 of 10')).toBeVisible();
 		expect(screen.getByRole('heading', { name: 'Who are you preparing this for?' })).toBeVisible();
-		expect(document.querySelector('.question-stage')).not.toBe(moneyQuestion);
+		expect(document.querySelector('.question-stage')).not.toBe(paperQuestion);
+		expect(document.querySelector('.question-stage')).toHaveClass('screen-enter');
+
+		const basecampQuestion = document.querySelector('.question-stage');
+		await user.click(screen.getByRole('button', { name: 'Open Paper Port' }));
+		expect(screen.getByRole('heading', { name: 'Do you have a will?' })).toBeVisible();
+		expect(document.querySelector('.question-stage')).not.toBe(basecampQuestion);
 		expect(document.querySelector('.question-stage')).toHaveClass('screen-enter');
 		expect(screen.queryByRole('button', { name: 'Open Mount Vault' })).not.toBeInTheDocument();
 	});

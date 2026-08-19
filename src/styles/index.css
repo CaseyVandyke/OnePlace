@@ -85,6 +85,7 @@ button { cursor: pointer; }
 .map-stop-button:active > .map-stop-icon { transform: translateY(0) scale(.96); }
 .map-stop-button:focus-visible { outline: 0; }
 .map-stop-button:focus-visible > .map-stop-icon { outline: 3px solid #fff; outline-offset: 4px; }
+.map-stop-button.locked { opacity: .72; filter: none; }
 .map-preview-note { position: absolute; z-index: 8; left: 50%; bottom: -44px; transform: translateX(-50%); display: flex; align-items: center; gap: 5px; border: 1px solid rgba(255,255,255,.12); border-radius: 99px; padding: 7px 10px; color: #e7dbe4; background: rgba(29,27,49,.94); font-size: 7px; white-space: nowrap; }.map-preview { margin-bottom: 52px; }.map-compact { width: min(570px,100%); }
 
 /* The living place illustration */
@@ -294,6 +295,9 @@ button { cursor: pointer; }
 .screen-enter { animation: stage-in .35s ease; }
 .question-screen-enter-even { animation: question-screen-in-even .35s ease; }
 .question-screen-enter-odd { animation: question-screen-in-odd .35s ease; }
+.back-to-map { width: min(1180px,calc(100% - 8vw)); min-height: 48px; margin: 24px auto 0; display: flex; align-items: center; gap: 9px; border: 0; padding: 0; color: #5f5661; background: none; font-size: 16px; font-weight: 700; text-align: left; }
+.back-to-map:hover { color: var(--purple); }
+.back-to-map:focus-visible { border-radius: 8px; outline: 3px solid rgba(113,84,155,.35); outline-offset: 3px; }
 
 @media (max-width: 1000px) {
   .chapter-track > div { width: 70px; }.chapter-track > div:not(:last-child)::after { width: 37px; left: 52px; }
@@ -515,6 +519,7 @@ button { cursor: pointer; }
   .mobile-menu { width: 50px; height: 50px; display: grid; place-items: center; padding: 0; }
   .app-header nav .account-menu-actions { display: grid; gap: 4px; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--line); }
   .app-header nav .account-menu-actions button { min-height: 48px; color: var(--purple); }
+  .back-to-map { width: calc(100% - 40px); margin-top: 18px; font-size: 17px; }
   .path-intro { display: flex; min-height: 0; width: 100%; flex-direction: column; padding: 54px 20px 30px; text-align: left; }
   .path-intro > div:first-child > p,
   .path-intro .hello-pill { margin-left: 0; margin-right: 0; }

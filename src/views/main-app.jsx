@@ -40,6 +40,11 @@ const MainAppView = ({ journeyProgress, onRestart, onResumeJourney }) => {
 				onJourney={continuePath}
 			/>
 			<div className='screen-enter' key={active}>
+				{active !== appViews.PATH && active !== appViews.POSSESSIONS && (
+					<button className='back-to-map' type='button' onClick={() => showView(appViews.PATH)}>
+						<Icon name='back' size={18} /> Back to map
+					</button>
+				)}
 				{active === appViews.PATH && (
 					<PathHomeView
 						progress={journeyProgress.progress}

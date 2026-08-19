@@ -27,7 +27,7 @@ const WorldMap = ({ chapter = 0, compact = false, onSelectStop, preview = false 
 				{mapStops.map((stop, index) => {
 					const current = index === chapter;
 					const unlocked = index <= chapter || preview;
-					const interactive = Boolean(onSelectStop && unlocked);
+					const interactive = Boolean(onSelectStop);
 					const Stop = interactive ? 'button' : 'div';
 
 					return (

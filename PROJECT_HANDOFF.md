@@ -148,10 +148,12 @@ The prototype main app includes:
 - **My people** — trusted-person access concept
 - **Messages** — personal audio-message concept
 
-The map on **My path** is interactive. Reached and current locations are real,
-keyboard-accessible buttons that open their corresponding main-app section;
-future locations remain visibly locked. The Welcome and guided-setup maps stay
-informational so they do not introduce competing navigation during onboarding.
+The map on **My path** is interactive. Every location is a real,
+keyboard-accessible button that opens its corresponding main-app section, even
+when that location has not been reached yet. Progress controls the illumination,
+not navigation. Destination sections provide an explicit **Back to map** action.
+The Welcome and guided-setup maps stay informational so they do not introduce
+competing navigation during onboarding.
 
 ## Map destinations
 

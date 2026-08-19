@@ -1,3 +1,4 @@
+import ReferenceDateField from './reference-date-field';
 import ReferenceSafetyNote from './reference-safety-note';
 
 const resourceTypes = [
@@ -48,14 +49,7 @@ const FinancialReferenceAnswer = ({ value = {}, onChange }) => {
 						placeholder='Beneficiary services or a trusted person'
 					/>
 				</label>
-				<label>
-					When did you last confirm this?
-					<input
-						type='date'
-						value={value.verifiedAt || ''}
-						onChange={(event) => updateField('verifiedAt', event.target.value)}
-					/>
-				</label>
+				<ReferenceDateField value={value.verifiedAt} onChange={(verifiedAt) => updateField('verifiedAt', verifiedAt)} />
 			</div>
 			<ReferenceSafetyNote />
 		</div>

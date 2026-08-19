@@ -303,6 +303,13 @@ remains stable throughout the native Safari toolbar transition. Do not restore a
 dynamic safe-area inset to those scroll boundaries without retesting on a
 physical iPhone.
 
+On August 20, 2026, iOS Safari continued to render a padded native date input
+wider than its single-column form grid despite `width`, `min-width`, and
+`max-width` constraints. This matches WebKit bug 301648. Reference date fields
+therefore keep the native `input[type='date']` unpadded inside a bordered,
+padded `.reference-date-control` wrapper. Do not move that padding back onto the
+native input without retesting on a physical iPhone.
+
 Introduction slides and question changes share a subtle 350ms fade and 10px
 upward entrance. Introduction content remains keyed, but the guided-question
 layout must remain mounted so the trail can transition between progress states.

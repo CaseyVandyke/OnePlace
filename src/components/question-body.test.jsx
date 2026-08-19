@@ -50,6 +50,7 @@ describe('QuestionBody', () => {
 
 		expect(onChange).toHaveBeenCalledWith({ holder: 'Attorney', generalLocation: 'Home office fire safe' });
 		expect(container.querySelector("input[type='file']")).not.toBeInTheDocument();
+		expect(screen.getByLabelText('When did you last confirm this?').parentElement).toHaveClass('reference-date-control');
 		expect(screen.getByText('Add a helpful reference, not the secret itself.')).toBeVisible();
 	});
 

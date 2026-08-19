@@ -167,6 +167,13 @@ the percentage, and completed chapter styling come from saved answer progress,
 while the current marker comes from the question being viewed. The Welcome map
 remains informational.
 
+Every guided question change remounts only the keyed `.question-stage`, which
+restarts the shared `.screen-enter` animation consistently for sequential Back
+and Continue actions and for map jumps. Keep `.journey-layout` and `WorldMap`
+mounted so trail illumination can transition without resetting. Do not restore
+the former even/odd animation-class workaround; jumps between same-parity
+question indexes do not restart an unchanged CSS animation.
+
 ## Map destinations
 
 - **Basecamp** — starting point and essentials

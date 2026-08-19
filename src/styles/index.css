@@ -288,13 +288,9 @@ button { cursor: pointer; }
 @keyframes button-gradient { from { background-position: 0 50%; } to { background-position: 100% 50%; } }
 @keyframes prototype-notice-in { from { opacity: 0; transform: translate(-50%,10px); } }
 @keyframes header-menu-in { from { opacity: 0; transform: translateY(-7px) scale(.98); } }
-@keyframes question-screen-in-even { from { opacity: 0; transform: translateY(10px); } }
-@keyframes question-screen-in-odd { from { opacity: 0; transform: translateY(10px); } }
 @keyframes confetti { from { top: -20px; transform: rotate(0deg); } to { top: 110%; transform: rotate(540deg); } }
 
 .screen-enter { animation: stage-in .35s ease; }
-.question-screen-enter-even { animation: question-screen-in-even .35s ease; }
-.question-screen-enter-odd { animation: question-screen-in-odd .35s ease; }
 .back-to-map { width: min(1180px,calc(100% - 8vw)); min-height: 48px; margin: 24px auto 0; display: flex; align-items: center; gap: 9px; border: 0; padding: 0; color: #5f5661; background: none; font-size: 16px; font-weight: 700; text-align: left; }
 .back-to-map:hover { color: var(--purple); }
 .back-to-map:focus-visible { border-radius: 8px; outline: 3px solid rgba(113,84,155,.35); outline-offset: 3px; }

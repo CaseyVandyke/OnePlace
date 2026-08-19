@@ -169,14 +169,20 @@ describe('OnePlace', () => {
 	test('navigates between guided question groups from the map', async() => {
 		const user = userEvent.setup();
 		await beginSetup(user);
+		const basecampQuestion = document.querySelector('.question-stage');
 
 		await user.click(screen.getByRole('button', { name: 'Open Money Meadow' }));
 		expect(screen.getByText('Question 5 of 10')).toBeVisible();
 		expect(screen.getByRole('heading', { name: 'Which financial institutions should your family know about?' })).toBeVisible();
+		expect(document.querySelector('.question-stage')).not.toBe(basecampQuestion);
+		expect(document.querySelector('.question-stage')).toHaveClass('screen-enter');
 
+		const moneyQuestion = document.querySelector('.question-stage');
 		await user.click(screen.getByRole('button', { name: 'Open Basecamp' }));
 		expect(screen.getByText('Question 1 of 10')).toBeVisible();
 		expect(screen.getByRole('heading', { name: 'Who are you preparing this for?' })).toBeVisible();
+		expect(document.querySelector('.question-stage')).not.toBe(moneyQuestion);
+		expect(document.querySelector('.question-stage')).toHaveClass('screen-enter');
 		expect(screen.queryByRole('button', { name: 'Open Mount Vault' })).not.toBeInTheDocument();
 	});
 
@@ -304,13 +310,16 @@ describe('OnePlace', () => {
 		const trail = document.querySelector('.map-trail');
 		const firstSegment = document.querySelector('.trail-segment-light');
 		const journeyLayout = document.querySelector('.journey-layout');
+		const firstQuestionStage = document.querySelector('.question-stage');
 		expect(firstSegment).not.toHaveClass('lit');
 
 		await user.click(screen.getByRole('button', { name: 'My children' }));
 		await user.click(screen.getByRole('button', { name: 'Save & continue' }));
 		await screen.findByRole('heading', { name: 'What should your family call this place?' }, { timeout: 1500 });
 		expect(document.querySelector('.journey-layout')).toBe(journeyLayout);
-		expect(journeyLayout).toHaveClass('question-screen-enter-odd');
+		expect(document.querySelector('.question-stage')).not.toBe(firstQuestionStage);
+		expect(document.querySelector('.question-stage')).toHaveClass('screen-enter');
+		const secondQuestionStage = document.querySelector('.question-stage');
 		await user.type(screen.getByRole('textbox', { name: 'Your place’s name' }), 'Morgan family');
 		await user.click(screen.getByRole('button', { name: 'Save & continue' }));
 		await screen.findByRole('heading', { name: 'Do you have a will?' }, { timeout: 1500 });
@@ -318,7 +327,8 @@ describe('OnePlace', () => {
 		expect(document.querySelector('.map-trail')).toBe(trail);
 		expect(document.querySelector('.trail-segment-light')).toBe(firstSegment);
 		expect(firstSegment).toHaveClass('lit');
-		expect(journeyLayout).toHaveClass('question-screen-enter-even');
+		expect(document.querySelector('.question-stage')).not.toBe(secondQuestionStage);
+		expect(document.querySelector('.question-stage')).toHaveClass('screen-enter');
 	});
 
 	test('closes the quick-step popup from its backdrop and close button', async() => {

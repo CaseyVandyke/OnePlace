@@ -118,6 +118,8 @@ describe('QuestionBody', () => {
 		const { container, onChange } = renderQuestion({ type: 'voice' });
 		const file = new File(['audio'], 'hello.m4a', { type: 'audio/mp4' });
 
+		expect(screen.getByText('If you’re listening to this…')).toBeVisible();
+
 		fireEvent.change(container.querySelector("input[type='file']"), { target: { files: [file] } });
 
 		expect(onChange).toHaveBeenCalledWith({

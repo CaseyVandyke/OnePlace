@@ -20,3 +20,13 @@ export const appNavigationItems = [
 	appViews.PEOPLE,
 	appViews.MESSAGES
 ];
+
+export const mapDestinationViews = {
+	Basecamp: appViews.PATH,
+	'Paper Port': appViews.THINGS,
+	'Money Meadow': appViews.THINGS,
+	'Safety Harbor': appViews.THINGS,
+	'Kindred Grove': appViews.PEOPLE,
+	'Memory Lake': appViews.MESSAGES,
+	'Mount Vault': appViews.THINGS
+};

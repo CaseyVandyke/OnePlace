@@ -3,7 +3,7 @@ import AppHeader from '../components/app-header';
 import Icon from '../components/icon';
 import Logo from '../components/logo';
 import MiniQuest from '../components/mini-quest';
-import { appViews } from '../constants/navigation';
+import { appViews, mapDestinationViews } from '../constants/navigation';
 import useScrollToTop from '../hooks/scroll-to-top';
 import MessagesView from './messages';
 import PathHomeView from './path-home';
@@ -18,6 +18,10 @@ const MainAppView = ({ journeyProgress, onRestart, onResumeJourney }) => {
 	const showView = (nextView) => {
 		resetScroll();
 		setActive(nextView);
+	};
+	const showMapDestination = (stopName) => {
+		const nextView = mapDestinationViews[stopName];
+		if (nextView) showView(nextView);
 	};
 	const continuePath = () => {
 		if (journeyProgress.summary.nextQuestionIndex >= 0) {
@@ -41,6 +45,7 @@ const MainAppView = ({ journeyProgress, onRestart, onResumeJourney }) => {
 						progress={journeyProgress.progress}
 						summary={journeyProgress.summary}
 						onContinue={continuePath}
+						onMapDestination={showMapDestination}
 						onResumeQuestion={onResumeJourney}
 					/>
 				)}

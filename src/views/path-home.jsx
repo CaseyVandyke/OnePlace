@@ -3,7 +3,7 @@ import WorldMap from '../components/world-map';
 import { pathStops } from '../constants/dashboard';
 import { chapters, questions } from '../constants/journey';
 
-const PathHomeView = ({ onContinue, onResumeQuestion, progress, summary }) => {
+const PathHomeView = ({ onContinue, onMapDestination, onResumeQuestion, progress, summary }) => {
 	const nextQuestion = summary.nextQuestionIndex >= 0 ? questions[summary.nextQuestionIndex] : null;
 	const nextQuestionWasSkipped = progress.questionStatuses[summary.nextQuestionIndex] === 'skipped';
 	const progressLabel = nextQuestion
@@ -36,7 +36,7 @@ const PathHomeView = ({ onContinue, onResumeQuestion, progress, summary }) => {
 						<Icon name='arrow' />
 					</button>
 				</div>
-				<WorldMap chapter={summary.currentChapter} compact />
+				<WorldMap chapter={summary.currentChapter} compact onSelectStop={onMapDestination} />
 			</section>
 			<section className='today-quest'>
 				<div className='quest-number'>

@@ -1,7 +1,7 @@
 import Icon from './icon';
 import { mapStops, mapTrailSegments } from '../constants/journey';
 
-const WorldMap = ({ chapter = 0, compact = false, preview = false }) => {
+const WorldMap = ({ chapter = 0, compact = false, onSelectStop, preview = false }) => {
 	return (
 		<div className={`world-map ${compact ? 'map-compact' : ''} ${preview ? 'map-preview' : ''}`}>
 			<div className='map-paper'>
@@ -24,17 +24,28 @@ const WorldMap = ({ chapter = 0, compact = false, preview = false }) => {
 				<div className='map-trees trees-a'>{Array.from({ length: 6 }).map((_, index) => <i key={index} />)}</div>
 				<div className='map-trees trees-b'>{Array.from({ length: 5 }).map((_, index) => <i key={index} />)}</div>
 				<div className='map-compass' aria-label='Map compass pointing north'><b>NORTH</b><i /><span>✦</span></div>
-				{mapStops.map((stop, index) => (
-					<div
-						className={`map-stop ${stop.className} ${index === chapter ? 'current' : ''} ${index <= chapter || preview ? 'unlocked' : 'locked'}`}
-						style={{ left: `${stop.x}%`, top: `${stop.y}%` }}
-						key={stop.name}
-					>
-						<span className='map-stop-icon'><Icon name={stop.icon} size={15} /></span>
-						<strong>{stop.name}</strong>
-						{stop.name === 'Mount Vault' && <small>Codes & digital keys</small>}
-					</div>
-				))}
+				{mapStops.map((stop, index) => {
+					const current = index === chapter;
+					const unlocked = index <= chapter || preview;
+					const interactive = Boolean(onSelectStop && unlocked);
+					const Stop = interactive ? 'button' : 'div';
+
+					return (
+						<Stop
+							aria-current={current ? 'location' : undefined}
+							aria-label={interactive ? `Open ${stop.name}` : undefined}
+							className={`map-stop ${interactive ? 'map-stop-button' : ''} ${stop.className} ${current ? 'current' : ''} ${unlocked ? 'unlocked' : 'locked'}`}
+							key={stop.name}
+							onClick={interactive ? () => onSelectStop(stop.name) : undefined}
+							style={{ left: `${stop.x}%`, top: `${stop.y}%` }}
+							type={interactive ? 'button' : undefined}
+						>
+							<span className='map-stop-icon'><Icon name={stop.icon} size={15} /></span>
+							<strong>{stop.name}</strong>
+							{stop.name === 'Mount Vault' && <small>Codes & digital keys</small>}
+						</Stop>
+					);
+				})}
 				{preview && <div className='map-preview-note'><Icon name='spark' size={13} /> Your family map begins here</div>}
 			</div>
 		</div>

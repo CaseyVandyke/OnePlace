@@ -148,6 +148,11 @@ The prototype main app includes:
 - **My people** — trusted-person access concept
 - **Messages** — personal audio-message concept
 
+The map on **My path** is interactive. Reached and current locations are real,
+keyboard-accessible buttons that open their corresponding main-app section;
+future locations remain visibly locked. The Welcome and guided-setup maps stay
+informational so they do not introduce competing navigation during onboarding.
+
 ## Map destinations
 
 - **Basecamp** — starting point and essentials

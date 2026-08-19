@@ -130,6 +130,38 @@ describe('OnePlace', () => {
 		expect(screen.getByText('10 of 10 setup steps complete')).toBeVisible();
 	});
 
+	test('opens main app destinations from reached map locations', async() => {
+		const user = userEvent.setup();
+		seedCompletedOnboarding();
+		render(<App />);
+
+		await user.click(screen.getByRole('button', { name: 'Preview the app' }));
+		await user.click(screen.getByRole('button', { name: 'Open Money Meadow' }));
+		expect(screen.getByRole('heading', { name: /Every part of your life/ })).toBeVisible();
+
+		await user.click(screen.getByRole('button', { name: 'My path' }));
+		await user.click(screen.getByRole('button', { name: 'Open Kindred Grove' }));
+		expect(screen.getByRole('heading', { name: 'A circle built on trust.' })).toBeVisible();
+
+		await user.click(screen.getByRole('button', { name: 'My path' }));
+		await user.click(screen.getByRole('button', { name: 'Open Memory Lake' }));
+		expect(screen.getByRole('heading', { name: 'Leave more than instructions.' })).toBeVisible();
+	});
+
+	test('keeps unreached and onboarding map locations noninteractive', async() => {
+		const user = userEvent.setup();
+		render(<App />);
+
+		await user.click(screen.getByRole('button', { name: 'Preview the app' }));
+		expect(screen.getByRole('button', { name: 'Open Basecamp' })).toBeVisible();
+		expect(screen.queryByRole('button', { name: 'Open Money Meadow' })).not.toBeInTheDocument();
+
+		await user.click(screen.getByRole('button', { name: 'Return to the Welcome screen' }));
+		await user.click(screen.getByRole('button', { name: 'Build my OnePlace' }));
+		await user.click(screen.getByRole('button', { name: 'Skip introduction' }));
+		expect(screen.queryByRole('button', { name: 'Open Basecamp' })).not.toBeInTheDocument();
+	});
+
 	test('returns to the welcome screen from the main app logo', async() => {
 		const user = userEvent.setup();
 		render(<App />);

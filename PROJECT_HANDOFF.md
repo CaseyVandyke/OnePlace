@@ -434,7 +434,9 @@ These decisions still need deeper product work:
 
 The formal production scope, initial threat model, architecture requirements,
 release gates, and decisions requiring owner approval now live in
-`docs/PRODUCTION_READINESS.md`.
+`docs/PRODUCTION_READINESS.md`. The minimum useful fields, prohibited-data
+boundary, trusted-person grants, and required prototype changes are defined in
+`docs/REFERENCE_DATA_MODEL.md`.
 
 1. Choose the authentication experience.
 2. Compare backend stacks against the approved data boundary and authentication

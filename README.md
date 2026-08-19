@@ -21,6 +21,8 @@ next steps.
 The production scope, threat model, release gates, and unresolved architecture
 decisions are tracked in
 [docs/PRODUCTION_READINESS.md](docs/PRODUCTION_READINESS.md).
+The category-by-category field rules and approved reference model are in
+[docs/REFERENCE_DATA_MODEL.md](docs/REFERENCE_DATA_MODEL.md).
 
 ## Run locally
 

@@ -182,6 +182,9 @@ email previews.
 The production model should distinguish ownership from access instead of putting
 a shared-user identifier directly on every record.
 
+The field-level product specification is maintained in
+[`REFERENCE_DATA_MODEL.md`](REFERENCE_DATA_MODEL.md).
+
 - `User`: account identity and authentication state.
 - `OnePlace`: the owner's private workspace.
 - `Profile`: owner-facing name and preferences.

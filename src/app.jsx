@@ -33,7 +33,10 @@ const App = () => {
 		});
 	};
 	const showWelcome = () => showScreen(screens.WELCOME);
-	const showIntroduction = () => showScreen(screens.INTRO);
+	const startNewJourney = () => {
+		journeyProgress.resetJourney();
+		showScreen(screens.INTRO);
+	};
 	const showJourney = (questionIndex = 0) => {
 		setJourneyQuestion(questionIndex >= 0 ? questionIndex : 0);
 		showScreen(screens.JOURNEY);
@@ -43,7 +46,7 @@ const App = () => {
 
 	let content;
 	if (screen === screens.WELCOME) {
-		content = <WelcomeView onStart={showIntroduction} onPreview={showApp} />;
+		content = <WelcomeView onStart={startNewJourney} onPreview={showApp} />;
 	} else if (screen === screens.INTRO) {
 		content = <JourneyIntroView onSkip={() => showJourney()} onContinue={() => showJourney()} onHome={showWelcome} />;
 	} else if (screen === screens.JOURNEY) {

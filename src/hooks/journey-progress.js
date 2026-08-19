@@ -84,6 +84,10 @@ const useJourneyProgress = () => {
 				: [...current.completedQuickSteps, step]
 		}));
 	}, []);
+	const resetJourney = useCallback(() => {
+		setProgress({ questionStatuses: {}, completedQuickSteps: [] });
+		setAnswers({});
+	}, []);
 
 	const summary = useMemo(() => summarizeJourneyProgress(progress), [progress]);
 
@@ -91,6 +95,7 @@ const useJourneyProgress = () => {
 		answers,
 		completeQuickStep,
 		progress,
+		resetJourney,
 		setQuestionStatus,
 		summary,
 		updateAnswer

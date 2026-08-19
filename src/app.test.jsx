@@ -76,7 +76,7 @@ describe('OnePlace', () => {
 		expect(screen.queryByText('You are here')).not.toBeInTheDocument();
 	});
 
-	test('starts a new welcome walkthrough at question one despite saved progress', async() => {
+	test('starts a fresh welcome walkthrough without previously saved progress', async() => {
 		const user = userEvent.setup();
 		window.localStorage.setItem(journeyProgressStorageKey, JSON.stringify({
 			questionStatuses: {
@@ -92,7 +92,13 @@ describe('OnePlace', () => {
 		await beginSetup(user);
 
 		expect(screen.getByText('Question 1 of 10')).toBeVisible();
+		expect(screen.getByText('0% lit')).toBeVisible();
 		expect(screen.getByRole('heading', { name: 'Who are you preparing this for?' })).toBeVisible();
+		expect(document.querySelector('.trail-segment-light')).not.toHaveClass('lit');
+		expect(JSON.parse(window.localStorage.getItem(journeyProgressStorageKey))).toEqual({
+			questionStatuses: {},
+			completedQuickSteps: []
+		});
 	});
 
 	test('introduces the illuminated path', async() => {

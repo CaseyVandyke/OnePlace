@@ -93,6 +93,12 @@ The landing page introduces the value proposition and offers:
 - A route to preview the existing concept
 - Reassurance that users can go at their own pace, control access, and pause
 
+For reliable prototype testing, **Build my OnePlace** starts a genuinely fresh
+walkthrough: it clears saved question statuses, completed quick steps, and
+in-session answers before opening the introduction. **Preview the app** does not
+reset progress. Revisit this behavior when authentication and real user-owned
+data are introduced; a production reset must be explicit and confirmed.
+
 ### 2. Journey explanation
 
 A short, multi-screen introduction explains how the journey works before the

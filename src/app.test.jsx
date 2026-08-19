@@ -148,7 +148,7 @@ describe('OnePlace', () => {
 		expect(screen.getByRole('heading', { name: 'Leave more than instructions.' })).toBeVisible();
 	});
 
-	test('keeps every main map destination available without making onboarding interactive', async() => {
+	test('keeps every main map destination available', async() => {
 		const user = userEvent.setup();
 		render(<App />);
 
@@ -158,10 +158,20 @@ describe('OnePlace', () => {
 		expect(screen.getByRole('heading', { name: /Every part of your life/ })).toBeVisible();
 		expect(screen.getByRole('button', { name: 'Back to map' })).toBeVisible();
 
-		await user.click(screen.getByRole('button', { name: 'Return to the Welcome screen' }));
-		await user.click(screen.getByRole('button', { name: 'Build my OnePlace' }));
-		await user.click(screen.getByRole('button', { name: 'Skip introduction' }));
-		expect(screen.queryByRole('button', { name: 'Open Basecamp' })).not.toBeInTheDocument();
+	});
+
+	test('navigates between guided question groups from the map', async() => {
+		const user = userEvent.setup();
+		await beginSetup(user);
+
+		await user.click(screen.getByRole('button', { name: 'Open Money Meadow' }));
+		expect(screen.getByText('Question 5 of 10')).toBeVisible();
+		expect(screen.getByRole('heading', { name: 'Which financial institutions should your family know about?' })).toBeVisible();
+
+		await user.click(screen.getByRole('button', { name: 'Open Basecamp' }));
+		expect(screen.getByText('Question 1 of 10')).toBeVisible();
+		expect(screen.getByRole('heading', { name: 'Who are you preparing this for?' })).toBeVisible();
+		expect(screen.queryByRole('button', { name: 'Open Mount Vault' })).not.toBeInTheDocument();
 	});
 
 	test('returns to the welcome screen from the main app logo', async() => {

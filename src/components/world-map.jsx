@@ -1,7 +1,7 @@
 import Icon from './icon';
 import { mapStops, mapTrailSegments } from '../constants/journey';
 
-const WorldMap = ({ chapter = 0, compact = false, onSelectStop, preview = false }) => {
+const WorldMap = ({ chapter = 0, compact = false, onSelectStop, preview = false, selectableStops }) => {
 	return (
 		<div className={`world-map ${compact ? 'map-compact' : ''} ${preview ? 'map-preview' : ''}`}>
 			<div className='map-paper'>
@@ -27,7 +27,7 @@ const WorldMap = ({ chapter = 0, compact = false, onSelectStop, preview = false 
 				{mapStops.map((stop, index) => {
 					const current = index === chapter;
 					const unlocked = index <= chapter || preview;
-					const interactive = Boolean(onSelectStop);
+					const interactive = Boolean(onSelectStop && (!selectableStops || selectableStops.includes(stop.name)));
 					const Stop = interactive ? 'button' : 'div';
 
 					return (

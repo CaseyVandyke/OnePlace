@@ -7,6 +7,11 @@ import { chapters, questions } from '../constants/journey';
 import useScrollToTop from '../hooks/scroll-to-top';
 
 const bankQuestionIndex = questions.findIndex(({ type }) => type === 'banks');
+const chapterQuestionIndexes = Object.fromEntries(chapters.map((chapter, chapterIndex) => [
+	chapter.name,
+	questions.findIndex((question) => question.chapter === chapterIndex)
+]));
+const guidedMapStops = Object.keys(chapterQuestionIndexes);
 
 const JourneyHeader = ({ current, onExit }) => {
 	const chapter = questions[current]?.chapter ?? 0;
@@ -38,6 +43,10 @@ const SetupJourneyView = ({ initialQuestion, journeyProgress, onComplete, onExit
 	const showQuestion = (nextQuestion) => {
 		resetScroll();
 		setCurrent(nextQuestion);
+	};
+	const showMapDestination = (stopName) => {
+		const questionIndex = chapterQuestionIndexes[stopName];
+		if (questionIndex >= 0) showQuestion(questionIndex);
 	};
 
 	const canContinue = useMemo(() => {
@@ -75,7 +84,12 @@ const SetupJourneyView = ({ initialQuestion, journeyProgress, onComplete, onExit
 						<span>YOUR PLACE</span>
 						<strong>{Math.round((current / questions.length) * 100)}% lit</strong>
 					</div>
-					<WorldMap chapter={question.chapter} compact />
+					<WorldMap
+						chapter={question.chapter}
+						compact
+						onSelectStop={showMapDestination}
+						selectableStops={guidedMapStops}
+					/>
 					<div className='next-unlock'>
 						<span><Icon name={chapters[question.chapter].icon} size={17} /></span>
 						<div><small>NOW BUILDING</small><strong>{chapters[question.chapter].name}</strong></div>

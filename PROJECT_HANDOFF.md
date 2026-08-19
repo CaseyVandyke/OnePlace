@@ -152,8 +152,10 @@ The map on **My path** is interactive. Every location is a real,
 keyboard-accessible button that opens its corresponding main-app section, even
 when that location has not been reached yet. Progress controls the illumination,
 not navigation. Destination sections provide an explicit **Back to map** action.
-The Welcome and guided-setup maps stay informational so they do not introduce
-competing navigation during onboarding.
+The guided-setup map also navigates to the first question in each of its six
+chapters, letting someone revisit an earlier or later location directly. Mount
+Vault stays noninteractive during setup because it has no guided question yet.
+The Welcome map remains informational.
 
 ## Map destinations
 

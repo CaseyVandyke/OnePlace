@@ -24,16 +24,26 @@ secondary users tied to the owner's account. They should only receive access to
 specific information the owner explicitly shares, and only at the time or under
 the conditions the owner chooses.
 
-Information the eventual product may organize includes:
+The approved production direction is a data-minimized reference model: OnePlace
+will tell authorized people what exists, where the original is generally kept,
+and who to contact without storing the underlying high-risk secrets or records.
 
-- Wills, identification, powers of attorney, and other legal documents
-- Bank, retirement, investment, debt, and bill information
-- Life, disability, health, and long-term-care insurance
-- Advance directives and care wishes
-- Passwords, device access, digital accounts, and vault codes
+Information the eventual product may reference includes:
+
+- The existence, professional holder, and general location of wills, powers of
+  attorney, advance directives, and other legal documents
+- Financial institutions, account categories, and professional contacts
+- Life, disability, health, and long-term-care insurance contacts and categories
+- The person or external service responsible for passwords, device access,
+  digital accounts, and physical access instructions
 - Trusted people, heirs, and access permissions
 - Possessions and keepsakes, including who should receive each item
 - Personal notes, letters, stories, and audio recordings
+
+The first production release will not store passwords, PINs, recovery codes,
+safe combinations, identity documents, uploaded legal or medical records, or
+full financial identifiers. Keepsake photos and personal audio remain permitted
+private content with explicit access controls.
 
 Institution integrations may be considered later. They are not part of the
 current prototype.
@@ -140,7 +150,8 @@ The prototype main app includes:
 - **Safety Harbor** — insurance, protection, medical, and care wishes
 - **Kindred Grove** — trusted people and recipients
 - **Memory Lake** — stories, notes, and recordings
-- **Mount Vault** — passwords, vault codes, devices, and digital keys
+- **Mount Vault** — external password-manager, device-recovery, and physical
+  access contacts or instructions; never the passwords, codes, or keys themselves
 
 The path illuminates between stops as chapters are reached. The current location
 uses a restrained halo without an additional marker or text badge. The icon
@@ -379,13 +390,14 @@ this file, `README.md`, `src/app.jsx`, and the relevant sections of
 ## Security and legal boundary
 
 A production OnePlace cannot be created by simply adding a database to this
-prototype. It will require deliberate architecture and professional review,
-including:
+prototype. It will use the approved data-minimized reference model documented in
+`docs/PRODUCTION_READINESS.md` and still requires deliberate architecture and
+professional review, including:
 
+- Product and technical controls that discourage or reject prohibited secrets
 - Strong user authentication and account recovery
 - Encryption in transit and at rest
-- Preferably client-side or zero-knowledge encryption for highly sensitive data
-- Key management that prevents ordinary administrators from reading secrets
+- Managed envelope encryption and least-privilege key access
 - Fine-grained item-level permissions
 - Auditable sharing, revocation, and access history
 - Trusted-person identity verification
@@ -424,11 +436,11 @@ The formal production scope, initial threat model, architecture requirements,
 release gates, and decisions requiring owner approval now live in
 `docs/PRODUCTION_READINESS.md`.
 
-1. Choose the encryption and recovery model.
-2. Choose the authentication experience.
-3. Compare backend stacks only after those requirements are agreed.
-4. Build a non-sensitive account-and-response vertical slice in private staging.
-5. Design and test item-level sharing before accepting restricted information.
+1. Choose the authentication experience.
+2. Compare backend stacks against the approved data boundary and authentication
+   requirements.
+3. Build a non-sensitive account-and-reference vertical slice in private staging.
+4. Design and test item-level sharing before accepting private information.
 
 ## Suggested prompt for a new coding conversation
 

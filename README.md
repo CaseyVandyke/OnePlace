@@ -2,9 +2,11 @@
 
 Everything that matters, ready for the people who matter.
 
-OnePlace is a polished product concept for organizing essential documents,
-accounts, personal wishes, trusted-person access, and legacy messages. This
-repository contains fictional demonstration data only.
+OnePlace is a polished product concept for creating a private, shareable index
+of what matters, where it can be found, and who can help. It is not intended to
+store passwords, access codes, full financial identifiers, identity documents,
+or uploaded legal and medical records. This repository contains fictional
+demonstration data only.
 
 The guided journey illuminates the trail across the family map as the user
 completes thoughtful, manageable steps.

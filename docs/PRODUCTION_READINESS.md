@@ -15,10 +15,58 @@ financial, identity, credential, medical, or estate information.
 
 ## Product outcome
 
-OnePlace helps an owner organize important information and intentionally share
-specific items with people they trust. The product should remain reassuring,
-plain-spoken, and senior-first while treating the underlying information as
-highly sensitive.
+OnePlace helps an owner create a private, shareable index of what exists, where
+it can be found, and who can help. It does not attempt to become a password
+manager, document vault, financial database, or legal record system. The product
+should remain reassuring, plain-spoken, and senior-first while treating even
+this minimized information as private.
+
+## Product data boundary
+
+**Decision: OnePlace will use a data-minimized reference model.**
+
+The first production release stores directions to important information rather
+than the underlying secrets or records. A useful OnePlace entry answers:
+
+1. What exists?
+2. Who or which organization has it?
+3. How can an authorized person contact them?
+4. Where is the original kept, using a general description that does not reveal
+   an access code?
+5. Which trusted people may see this reference?
+6. When was the reference last verified?
+
+### Permitted reference information
+
+- Professional, institution, and trusted-person names.
+- Business contact methods and the minimum personal contact information needed
+  for an invitation or authorized handoff.
+- The existence and general category of a document, policy, account, protection,
+  device plan, or other important item.
+- A general physical location such as “home office fire safe,” without the key,
+  combination, PIN, or other access secret.
+- Responsibility and next-step instructions such as “contact the estate
+  attorney” or “ask Daniel for the password-manager recovery process.”
+- Item-level sharing choices and the date the information was last verified.
+- Personal notes, keepsake photos, and voice messages that users intentionally
+  create for trusted people, with clear privacy controls.
+
+### Prohibited information
+
+- Passwords, passphrases, PINs, security-question answers, one-time codes,
+  recovery codes, encryption keys, and safe or vault combinations.
+- Social Security, national identity, driver's-license, and passport numbers or
+  images.
+- Full bank, card, brokerage, loan, insurance, or routing numbers.
+- Authentication tokens or password-manager master credentials.
+- Uploaded wills, trusts, powers of attorney, medical directives, tax records,
+  insurance contracts, identity documents, or financial statements.
+- Detailed medical records or diagnoses.
+
+The interface must say this plainly near relevant fields. Structured fields
+should replace unrestricted text where possible. Client and server validation
+may warn when an entry resembles prohibited information, but warnings are a
+backstop rather than a claim that every accidental secret can be detected.
 
 The production product will use one shared React experience delivered through:
 
@@ -63,9 +111,12 @@ The prototype does not yet have:
 - Account creation, sign-in, sign-out, and secure account recovery.
 - Owner profile and basic preferences.
 - The guided OnePlace journey.
-- Documents and document-location records.
-- Financial-institution and account reference information.
-- Insurance and protection information.
+- Document existence, holder, contact, and general-location references without
+  document uploads.
+- Financial-institution, professional-contact, and account-category references
+  without account or routing numbers.
+- Insurance and protection contacts and policy-category references without full
+  policy identifiers or uploaded contracts.
 - Trusted people and owner-controlled invitations.
 - Possessions and keepsakes with photos.
 - Personal notes and audio messages.
@@ -84,6 +135,8 @@ The prototype does not yet have:
 - Multi-party approval, waiting periods, or dispute adjudication.
 - Direct banking, insurance, health-record, or government integrations.
 - Password-manager replacement or automatic credential entry.
+- Storage of passwords, access codes, full financial identifiers, identity
+  documents, legal documents, or medical records.
 - Legal-document generation or claims that an in-app wish is legally binding.
 - Paid plans until the retention costs and App Store business model are agreed.
 
@@ -114,13 +167,15 @@ visible under an internal access policy.
 
 | Class | Examples | Minimum handling |
 | --- | --- | --- |
-| Restricted | Credentials, vault codes, identity documents, legal documents, financial identifiers, medical directives, private recordings | Strong encryption, least-privilege access, explicit sharing, access audit, protected logs, strict retention |
-| Confidential | Names, emails, relationships, possessions, recipients, locations, notes | Encryption, authorization, explicit sharing, deletion and export support |
+| Prohibited | Credentials, access codes, identity documents, legal/medical records, full financial identifiers | Do not request, upload, retain, log, or transmit; warn and reject recognizable prohibited formats where feasible |
+| Sensitive private | Voice messages, keepsake photos, personal notes, general document locations, trusted relationships | Strong encryption, least-privilege access, explicit sharing, access audit, protected logs, strict retention |
+| Confidential | Names, emails, professional contacts, institution names, categories, recipients | Encryption, authorization, explicit sharing, deletion and export support |
 | Operational | Account state, consent records, invitation status, file metadata, audit events | Integrity protection, access controls, retention policy |
 | Public | Marketing copy, support content, App Store information | Normal publishing controls |
 
-Restricted content must never appear in analytics events, application logs,
-crash reports, support tickets, URLs, notification text, or email previews.
+Private and confidential content must never appear in analytics events,
+application logs, crash reports, support tickets, URLs, notification text, or
+email previews.
 
 ## Initial domain model
 
@@ -131,9 +186,11 @@ a shared-user identifier directly on every record.
 - `OnePlace`: the owner's private workspace.
 - `Profile`: owner-facing name and preferences.
 - `JourneyResponse`: a structured response to an onboarding question.
-- `Item`: a common record for documents, accounts, protections, possessions,
-  instructions, notes, and messages.
-- `FileObject`: encrypted file, photo, or audio metadata and storage reference.
+- `ReferenceItem`: a common record describing the existence, holder, contact,
+  general location, responsibility, and verification state of an important item.
+- `PersonalContent`: a private note, permitted keepsake photo, or voice message.
+- `MediaObject`: encrypted permitted photo or audio metadata and storage
+  reference. It must not accept prohibited document categories.
 - `TrustedRelationship`: the relationship between an owner and trusted person.
 - `Invitation`: expiring, single-use invitation state.
 - `Grant`: item-level permission from an owner to a trusted relationship.
@@ -181,7 +238,9 @@ request; hiding a control in React is not authorization.
 - Use a versioned HTTPS API.
 - Use a production relational database such as PostgreSQL rather than a shared
   SQLite file.
-- Store files in private object storage, never in the public web deployment.
+- Store permitted photos and audio in private object storage, never in the
+  public web deployment. The first release must not expose a general-purpose
+  document uploader.
 - Verify authorization for the requested resource and action on every endpoint.
 - Use short-lived sessions or access tokens with secure rotation and revocation.
 - Process uploads with file-type validation, size limits, malware scanning, and
@@ -194,8 +253,8 @@ request; hiding a control in React is not authorization.
 ### Assets to protect
 
 - User identity and account access.
-- Legal, financial, medical, and credential-related content.
-- Photos, documents, and audio recordings.
+- Private references to legal, financial, medical, and digital-access resources.
+- Keepsake photos, personal notes, and audio recordings.
 - Encryption keys and recovery material.
 - Trusted-person relationships and permissions.
 - Audit evidence and consent history.
@@ -218,10 +277,10 @@ request; hiding a control in React is not authorization.
 | Invitation forwarded or intercepted | Random single-use token, short expiration, recipient verification, no private content in invitation, explicit acceptance |
 | Trusted person accesses too much | Deny-by-default item grants, backend enforcement, clear access review, immediate revocation, auditable access |
 | Broken object-level authorization | Central authorization policy, negative authorization tests, opaque identifiers, security review |
-| Malicious or disguised upload | Allowlisted types, size limits, content inspection, malware scanning, private storage, safe content disposition |
+| Malicious or disguised media upload | Photo/audio allowlist, size limits, content inspection, malware scanning, private storage, safe content disposition; no general document uploads |
 | Sensitive information leaks through telemetry | Structured log allowlist, redaction, no answer bodies or file names in analytics/crash reports |
 | Database or storage compromise | Encryption at rest, private networking and buckets, least-privilege service identities, key separation, monitored access |
-| Lost or compromised device | Short reauthentication window for restricted content, biometric re-entry on iOS, session management, remote revocation |
+| Lost or compromised device | Short reauthentication window for sensitive private content, biometric re-entry on iOS, session management, remote revocation |
 | Permanent accidental deletion | Confirmation, recoverable deletion window where appropriate, encrypted backups, tested restore process |
 | Insider access | Least privilege, audited and time-bound support access, separation of duties, alerts for privileged activity |
 | Dependency or build compromise | Locked dependencies, automated dependency review, protected releases, reproducible CI build records |
@@ -234,26 +293,22 @@ heirs, invalid legal authority, and jurisdictional disputes are not solved in
 the first release. Event-triggered access cannot ship until those threats have a
 reviewed product, legal, and operational response.
 
-## Encryption decision
+## Encryption direction
 
-Encryption in transit and at rest is mandatory. A deeper decision remains open:
+Encryption in transit and at rest remains mandatory. Because the first release
+will not store credentials, access codes, legal documents, identity documents,
+full financial identifiers, or detailed medical records, it will begin with
+service-managed encryption and normal secure account recovery rather than a
+zero-knowledge key-recovery system.
 
-### Option A: service-managed content encryption
+This does not make the remaining information non-sensitive. Sensitive private
+content should use envelope encryption with managed keys, strict service and
+staff permissions, audited privileged access, and separate keys or access
+boundaries where the selected infrastructure supports them.
 
-The service can decrypt content for an authorized user. This is simpler for
-recovery, search, previews, support, and future sharing workflows, but a backend
-or privileged-access compromise can expose readable content.
-
-### Option B: client-side or zero-knowledge content encryption
-
-Content is encrypted before upload and the service does not normally possess the
-decryption material. This provides a stronger privacy boundary, but makes
-recovery, sharing, search, multi-device access, and post-event access much more
-complex. Lost keys may make data permanently unrecoverable.
-
-This decision must be made before storing real restricted content because it
-changes the schema, sharing model, recovery experience, native client, and
-operational capabilities.
+Any future proposal to store prohibited information automatically reopens this
+decision and requires a new threat model, legal review, security architecture,
+and explicit product approval before implementation.
 
 ## Authentication decision
 
@@ -261,7 +316,7 @@ The authentication design must cover:
 
 - Email verification.
 - Password, passkey, or passwordless sign-in.
-- MFA expectations for restricted information.
+- MFA expectations for sensitive private information.
 - Secure account and device recovery.
 - Session listing and revocation.
 - Rate limiting and abuse protection.
@@ -315,7 +370,7 @@ Accessibility regressions block release.
 - Network interruption, expired session, denied permission, storage quota, and
   large-file testing.
 - Automated dependency, secret, and static security scanning in CI.
-- Independent security review before restricted information is accepted.
+- Independent security review before private user information is accepted.
 
 ## App Store readiness
 
@@ -382,32 +437,30 @@ Official references:
 
 ## Open decisions requiring owner approval
 
-1. **Encryption:** service-managed encryption or client-side/zero-knowledge
-   encryption for restricted content.
-2. **Authentication:** passkeys/passwordless, password plus MFA, or a hybrid.
-3. **Backend stack:** hosting, PostgreSQL, object storage, email, queues, and
+1. **Authentication:** passkeys/passwordless, password plus MFA, or a hybrid.
+2. **Backend stack:** hosting, PostgreSQL, object storage, email, queues, and
    monitoring providers.
-4. **Sharing:** whether every grant is immediate and revocable in version one,
-   and whether recipients may download shared files.
-5. **Recovery:** what can be recovered if credentials or encryption keys are
-   lost, and what security tradeoff is acceptable.
-6. **Native scope:** which capabilities must be present in the first App Store
-   release beyond camera, microphone, files, secure re-entry, and sharing.
-7. **Business model:** free beta duration, eventual subscription structure, and
+3. **Sharing:** whether every grant is immediate and revocable in version one,
+   and whether recipients may download shared photos or audio.
+4. **Native scope:** which capabilities must be present in the first App Store
+   release beyond camera, microphone, permitted media, secure re-entry, and
+   sharing.
+5. **Business model:** free beta duration, eventual subscription structure, and
    required storage limits.
-8. **Jurisdictions:** where the initial product will be offered and legally
+6. **Jurisdictions:** where the initial product will be offered and legally
    reviewed.
 
 ## Immediate next work
 
-The next working session should resolve the first three open decisions in this
+The next working session should resolve the first two open decisions in this
 order:
 
-1. Choose the encryption and recovery model.
-2. Choose the authentication experience.
-3. Compare production backend stacks against those requirements.
+1. Choose the authentication experience.
+2. Compare production backend stacks against the approved data boundary and
+   authentication requirements.
 
 After those decisions, document the selected architecture and build a small
 vertical slice in a private staging environment: create an account, save one
-non-sensitive journey response, sign out, sign back in, and retrieve it. Do not
-start with file, photo, audio, credential, or trusted-person data.
+reference containing a category, professional contact, general location, and
+last-verified date, sign out, sign back in, and retrieve it. Do not start with
+photo, audio, prohibited information, or trusted-person data.

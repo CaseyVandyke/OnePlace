@@ -153,7 +153,7 @@ describe('OnePlace', () => {
 		render(<App />);
 
 		await user.click(screen.getByRole('button', { name: 'Preview the app' }));
-		expect(screen.getByRole('button', { name: 'Open Basecamp' })).toBeVisible();
+		expect(screen.queryByRole('button', { name: 'Open Basecamp' })).not.toBeInTheDocument();
 		await user.click(screen.getByRole('button', { name: 'Open Money Meadow' }));
 		expect(screen.getByRole('heading', { name: /Every part of your life/ })).toBeVisible();
 		expect(screen.getByRole('button', { name: 'Back to map' })).toBeVisible();
@@ -172,6 +172,27 @@ describe('OnePlace', () => {
 		expect(screen.getByText('Question 1 of 10')).toBeVisible();
 		expect(screen.getByRole('heading', { name: 'Who are you preparing this for?' })).toBeVisible();
 		expect(screen.queryByRole('button', { name: 'Open Mount Vault' })).not.toBeInTheDocument();
+	});
+
+	test('keeps earned trail progress lit when revisiting an earlier chapter', async() => {
+		const user = userEvent.setup();
+		await beginSetup(user);
+
+		await user.click(screen.getByRole('button', { name: 'My children' }));
+		await user.click(screen.getByRole('button', { name: 'Save & continue' }));
+		await user.type(screen.getByRole('textbox', { name: 'Your place’s name' }), 'Morgan family');
+		await user.click(screen.getByRole('button', { name: 'Save & continue' }));
+		await screen.findByRole('heading', { name: 'Do you have a will?' }, { timeout: 1500 });
+
+		const firstTrailSegment = document.querySelector('.trail-segment-light');
+		expect(firstTrailSegment).toHaveClass('lit');
+		expect(screen.getByText('20% lit')).toBeVisible();
+		await user.click(screen.getByRole('button', { name: 'Open Basecamp' }));
+
+		expect(screen.getByRole('heading', { name: 'Who are you preparing this for?' })).toBeVisible();
+		expect(firstTrailSegment).toHaveClass('lit');
+		expect(screen.getByText('20% lit')).toBeVisible();
+		expect(screen.queryByRole('button', { name: 'Open Basecamp' })).not.toBeInTheDocument();
 	});
 
 	test('returns to the welcome screen from the main app logo', async() => {

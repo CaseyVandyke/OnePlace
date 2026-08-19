@@ -13,7 +13,7 @@ const chapterQuestionIndexes = Object.fromEntries(chapters.map((chapter, chapter
 ]));
 const guidedMapStops = Object.keys(chapterQuestionIndexes);
 
-const JourneyHeader = ({ current, onExit }) => {
+const JourneyHeader = ({ current, onExit, progressChapter }) => {
 	const chapter = questions[current]?.chapter ?? 0;
 	return (
 		<header className='site-header journey-header'>
@@ -23,12 +23,16 @@ const JourneyHeader = ({ current, onExit }) => {
 				<span>· Chapter {chapter + 1} of {chapters.length}</span>
 			</p>
 			<div className='chapter-track'>
-				{chapters.map((item, index) => (
-					<div className={`${index < chapter ? 'complete' : ''} ${index === chapter ? 'current' : ''}`} key={item.name}>
-						<span>{index < chapter ? <Icon name='check' size={13} /> : index + 1}</span>
-						<small>{item.name}</small>
-					</div>
-				))}
+				{chapters.map((item, index) => {
+					const complete = index < progressChapter;
+					const currentChapter = index === chapter;
+					return (
+						<div className={`${complete ? 'complete' : ''} ${currentChapter ? 'current' : ''}`} key={item.name}>
+							<span>{complete && !currentChapter ? <Icon name='check' size={13} /> : index + 1}</span>
+							<small>{item.name}</small>
+						</div>
+					);
+				})}
 			</div>
 			<button className='exit-button' onClick={onExit} aria-label='Exit setup'><Icon name='close' /></button>
 		</header>
@@ -77,16 +81,17 @@ const SetupJourneyView = ({ initialQuestion, journeyProgress, onComplete, onExit
 
 	return (
 		<section className='journey-screen'>
-			<JourneyHeader current={current} onExit={onExit} />
+			<JourneyHeader current={current} onExit={onExit} progressChapter={journeyProgress.summary.currentChapter} />
 			<section className={`journey-layout question-screen-enter-${current % 2 === 0 ? 'even' : 'odd'}`}>
 				<aside className='journey-place'>
 					<div className='journey-place-copy'>
 						<span>YOUR PLACE</span>
-						<strong>{Math.round((current / questions.length) * 100)}% lit</strong>
+						<strong>{journeyProgress.summary.setupPercentComplete}% lit</strong>
 					</div>
 					<WorldMap
 						chapter={question.chapter}
 						compact
+						litChapter={journeyProgress.summary.currentChapter}
 						onSelectStop={showMapDestination}
 						selectableStops={guidedMapStops}
 					/>

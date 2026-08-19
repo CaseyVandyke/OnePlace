@@ -155,7 +155,11 @@ not navigation. Destination sections provide an explicit **Back to map** action.
 The guided-setup map also navigates to the first question in each of its six
 chapters, letting someone revisit an earlier or later location directly. Mount
 Vault stays noninteractive during setup because it has no guided question yet.
-The Welcome map remains informational.
+The currently viewed location is highlighted but is not a redundant button.
+Viewing an earlier chapter must not undo earned illumination: trail lighting,
+the percentage, and completed chapter styling come from saved answer progress,
+while the current marker comes from the question being viewed. The Welcome map
+remains informational.
 
 ## Map destinations
 

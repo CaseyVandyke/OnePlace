@@ -881,27 +881,27 @@ button { cursor: pointer; }
 }
 
 /* Possessions and keepsakes */
-.possession-answer { display: grid; gap: 14px; }
-.possession-entry { overflow: hidden; border: 1px solid var(--line); border-radius: 16px; background: #fff; box-shadow: 0 10px 28px rgba(51,42,57,.05); }
+.possession-answer { min-width: 0; max-width: 100%; display: grid; gap: 14px; }
+.possession-entry { min-width: 0; max-width: 100%; overflow: hidden; border: 1px solid var(--line); border-radius: 16px; background: #fff; box-shadow: 0 10px 28px rgba(51,42,57,.05); }
 .possession-entry > header { min-height: 58px; display: flex; align-items: center; gap: 11px; padding: 11px 16px; border-bottom: 1px solid var(--line); background: #f5eff6; }
 .possession-entry > header > span { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 11px; color: #fff; background: linear-gradient(145deg,var(--red),var(--purple)); }
 .possession-entry > header strong { font-size: 17px; }
 .possession-entry > header button { min-height: 44px; margin-left: auto; border: 0; color: #9c3f4a; background: transparent; font-size: 15px; font-weight: 800; }
-.possession-entry > div { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 17px; }
+.possession-entry > div { min-width: 0; display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 15px; padding: 17px; }
 .possession-entry label,
-.keepsake-fields label { display: grid; gap: 7px; color: var(--ink); font-size: 16px; font-weight: 800; }
+.keepsake-fields label { min-width: 0; display: grid; gap: 7px; color: var(--ink); font-size: 16px; font-weight: 800; }
 .possession-entry label > span,
 .keepsake-fields label > span { color: var(--muted); font-size: 14px; font-weight: 500; }
 .possession-entry input,
 .possession-entry textarea,
 .keepsake-fields input,
-.keepsake-fields textarea { width: 100%; min-height: 52px; border: 1px solid #d9d1d2; border-radius: 11px; padding: 12px 14px; color: var(--ink); background: #fff; font-size: 16px; line-height: 1.45; }
+.keepsake-fields textarea { width: 100%; min-width: 0; max-width: 100%; min-height: 52px; border: 1px solid #d9d1d2; border-radius: 11px; padding: 12px 14px; color: var(--ink); background: #fff; font-size: 16px; line-height: 1.45; }
 .possession-entry textarea,
 .keepsake-fields textarea { min-height: 92px; resize: vertical; }
 .possession-entry label:last-of-type { grid-column: 1 / -1; }
 .add-possession,
 .add-keepsake { min-height: 52px; display: inline-flex; align-items: center; justify-content: center; gap: 9px; border: 1px solid var(--purple); border-radius: 99px; color: var(--purple); background: #fff; padding: 11px 18px; font-size: 16px; font-weight: 800; }
-.possession-legal-note { display: flex; align-items: flex-start; gap: 9px; margin: 0; border-radius: 12px; padding: 13px 15px; color: #55515d; background: #f1edf1; font-size: 15px; line-height: 1.55; }
+.possession-legal-note { min-width: 0; max-width: 100%; display: flex; align-items: flex-start; gap: 9px; margin: 0; border-radius: 12px; padding: 13px 15px; color: #55515d; background: #f1edf1; font-size: 15px; line-height: 1.55; }
 .possession-legal-note svg { flex: 0 0 auto; margin-top: 3px; color: var(--purple); }
 
 .room-block:nth-child(5) { grid-column: span 1; }
@@ -926,9 +926,10 @@ button { cursor: pointer; }
 .keepsake-number svg { width: 58px; height: 58px; border-radius: 18px; padding: 15px; color: #fff; background: linear-gradient(145deg,var(--red),var(--purple)); }
 .keepsake-fields { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; padding-right: 95px; }
 .keepsake-note { grid-column: 1 / -1; }
-.keepsake-photo { grid-column: 1 / -1; }
+.keepsake-photo { min-width: 0; max-width: 100%; grid-column: 1 / -1; }
 .keepsake-photo-input { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
-.add-keepsake-photo { width: 100%; min-height: 82px; display: grid; grid-template-columns: auto 1fr auto; gap: 14px; align-items: center; border: 1px dashed #bcaec3; border-radius: 14px; color: var(--purple); background: #f8f3f8; padding: 14px 16px; text-align: left; }
+.add-keepsake-photo { width: 100%; min-width: 0; max-width: 100%; min-height: 82px; display: grid; grid-template-columns: auto minmax(0,1fr) auto; gap: 14px; align-items: center; border: 1px dashed #bcaec3; border-radius: 14px; color: var(--purple); background: #f8f3f8; padding: 14px 16px; text-align: left; }
+.add-keepsake-photo > span:nth-child(2) { min-width: 0; }
 .add-keepsake-photo > span:first-child { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 14px; color: #fff; background: linear-gradient(145deg,var(--red),var(--purple)); }
 .add-keepsake-photo strong,
 .add-keepsake-photo small { display: block; }
@@ -955,7 +956,7 @@ button { cursor: pointer; }
 .keepsake-guidance span { margin-top: 4px; color: #555c64; font-size: 16px; line-height: 1.55; }
 
 @media (max-width: 780px) {
-  .possession-entry > div { grid-template-columns: 1fr; padding: 15px; }
+  .possession-entry > div { grid-template-columns: minmax(0,1fr); padding: 15px; }
   .possession-entry label:last-of-type { grid-column: auto; }
   .possession-entry label,
   .keepsake-fields label { font-size: 17px; }
@@ -984,7 +985,7 @@ button { cursor: pointer; }
   .keepsake-fields { grid-template-columns: 1fr; gap: 15px; padding: 0; }
   .keepsake-note { grid-column: auto; }
   .keepsake-photo { grid-column: auto; }
-  .add-keepsake-photo { min-height: 108px; grid-template-columns: auto 1fr; padding: 15px; }
+  .add-keepsake-photo { min-height: 108px; grid-template-columns: auto minmax(0,1fr); padding: 15px; }
   .add-keepsake-photo > svg { display: none; }
   .add-keepsake-photo strong { font-size: 18px; }
   .add-keepsake-photo small { font-size: 16px; }

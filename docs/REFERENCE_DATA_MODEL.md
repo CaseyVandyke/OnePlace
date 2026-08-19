@@ -347,9 +347,9 @@ product direction:
 
 | Current area | Required change |
 | --- | --- |
-| Question 4: will upload | Replace upload/photo controls with document status, holder/contact, general location, and last-verified fields |
-| Question 5: institutions | Remove copy suggesting passwords may be added later; describe a safe inventory of institutions and resource categories |
-| Question 6: identifying detail | Replace the encryption promise with reference guidance; initially collect nickname, institution, resource category, contact path, and last verified date without last four |
+| Question 4: will reference | Implemented: document uploads were replaced with holder/contact, general location, and last-verified fields |
+| Question 5: institutions | Implemented: the question now describes a safe contact inventory and explicitly excludes account numbers and sign-in details |
+| Question 6: financial reference | Implemented: nickname, institution, resource category, contact path, and last-verified fields replace account identifiers and the old encryption promise |
 | Question 7: protections | Keep the category selection, then allow provider/contact references without policy details |
 | Question 8: trusted person | Preserve explicit no-access-by-default behavior; replace demo invitations only when real authentication exists |
 | Question 9: possessions | Add last verified and estate-plan alignment; keep the existing legal reminder and optional photo |

@@ -149,14 +149,12 @@ button { cursor: pointer; }
 .skip-question { display: block; margin: 12px auto 0; border: 0; background: none; color: #9d9799; font-size: 9px; text-decoration: underline; text-underline-offset: 4px; }
 
 .name-answer { display: grid; grid-template-columns: 1.2fr .8fr; gap: 17px; align-items: stretch; margin-top: 29px; }
-.name-answer label, .account-answer label, .person-answer label { display: flex; flex-direction: column; gap: 7px; color: #686268; font-size: 9px; font-weight: 700; }
-.name-answer input, .account-answer input, .person-answer input, .person-answer select { width: 100%; border: 1px solid #dcd5d1; background: #fff; border-radius: 10px; padding: 13px 14px; outline: 0; color: var(--ink); font-size: 11px; }
-.name-answer input:focus, .account-answer input:focus, .person-answer input:focus, .person-answer select:focus { border-color: var(--purple); box-shadow: 0 0 0 3px rgba(120,87,168,.08); }
+.name-answer label, .reference-answer label, .person-answer label { display: flex; flex-direction: column; gap: 7px; color: #686268; font-size: 9px; font-weight: 700; }
+.name-answer input, .reference-answer input, .reference-answer select, .person-answer input, .person-answer select { width: 100%; border: 1px solid #dcd5d1; background: #fff; border-radius: 10px; padding: 13px 14px; outline: 0; color: var(--ink); font-size: 11px; }
+.name-answer input:focus, .reference-answer input:focus, .reference-answer select:focus, .person-answer input:focus, .person-answer select:focus { border-color: var(--purple); box-shadow: 0 0 0 3px rgba(120,87,168,.08); }
 .name-preview { display: grid; grid-template-columns: auto 1fr; align-content: center; border-radius: 12px; color: #fff; background: linear-gradient(135deg, #343044, #5d456e); padding: 18px; }.name-preview .brand-door { grid-row: 1/3; margin-right: 10px; }.name-preview p { margin: 0; color: #a8a2b1; font-size: 8px; }.name-preview strong { font: 600 14px "Playfair Display"; }
-.upload-answer { margin-top: 28px; }.upload-answer > input { display: none; }.upload-zone { width: 100%; min-height: 135px; border: 1px dashed #bfb4bd; border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(255,255,255,.65); }.upload-zone > span { width: 40px; height: 40px; display: grid; place-items: center; border-radius: 12px; color: var(--purple); background: #eee7f1; }.upload-zone strong { margin-top: 10px; font-size: 10px; }.upload-zone small { margin-top: 4px; color: #999297; font-size: 8px; }.upload-zone.has-file { border-style: solid; border-color: #76a082; background: #f0f6f1; }.upload-zone.has-file > span { color: #4e7a5c; background: #dfece2; }
-.location-choice { width: 100%; display: grid; grid-template-columns: auto 1fr auto; gap: 11px; align-items: center; margin-top: 8px; border: 1px solid var(--line); border-radius: 11px; background: #fff; padding: 12px; text-align: left; }.location-choice > svg { color: var(--blue); }.location-choice strong, .location-choice small { display: block; }.location-choice strong { font-size: 9px; }.location-choice small { color: var(--muted); font-size: 8px; margin-top: 3px; }.location-choice > i { width: 18px; height: 18px; border: 1px solid #d6cfcc; border-radius: 50%; }.location-choice > i.chosen { border: 5px solid var(--purple); }
+.reference-answer { display: grid; gap: 14px; margin-top: 28px; }.reference-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }.reference-field-wide { grid-column: 1 / -1; }.reference-safety-note { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: start; margin: 0; padding: 14px; border-radius: 11px; color: var(--blue); background: #eef1f5; }.reference-safety-note p { margin: 0; }.reference-safety-note strong, .reference-safety-note span { display: block; }.reference-safety-note strong { color: var(--ink); font-size: 10px; }.reference-safety-note span { margin-top: 3px; color: var(--muted); font-size: 8px; line-height: 1.5; }
 .bank-answer { display: grid; grid-template-columns: repeat(2, 1fr); gap: 9px; margin-top: 28px; }.bank-answer button { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px; min-height: 58px; border: 1px solid var(--line); border-radius: 11px; background: #fff; padding: 9px; text-align: left; }.bank-answer button.selected { border-color: var(--purple); background: #f4f0f6; }.bank-logo { width: 35px; height: 35px; border-radius: 9px; display: grid; place-items: center; color: #fff; background: #3c6288; font-size: 8px; font-weight: 800; }.logo-0 { background: #214c78; }.logo-1 { background: #a84f4c; }.logo-2 { background: #75559b; }.logo-3 { background: #315d87; }.logo-4 { background: #eee8ed; color: var(--purple); }.bank-answer strong { font-size: 9px; }.bank-answer i { width: 20px; height: 20px; display: grid; place-items: center; border-radius: 50%; color: #fff; background: var(--purple); }
-.account-answer { margin-top: 28px; }.account-answer > div { display: grid; grid-template-columns: 1fr .65fr; gap: 10px; margin-top: 10px; }.account-answer p { display: flex; gap: 7px; align-items: center; margin: 14px 0 0; color: #858087; font-size: 8px; }.account-answer p svg { color: var(--blue); }
 .person-answer { display: grid; grid-template-columns: auto 1fr 1fr; gap: 12px; align-items: end; margin-top: 28px; }.person-avatar { width: 53px; height: 53px; display: grid; place-items: center; border-radius: 50%; color: #fff; background: linear-gradient(135deg, var(--red), var(--purple)); font-size: 12px; font-weight: 800; }.access-note { grid-column: 2/4; display: flex; gap: 9px; align-items: center; padding: 11px; border-radius: 9px; background: #eeeef3; color: var(--blue); }.access-note strong, .access-note small { display: block; }.access-note strong { color: var(--ink); font-size: 9px; }.access-note small { color: var(--muted); margin-top: 2px; font-size: 8px; }
 .contact-email { position: relative; grid-column: 2 / 4; }.contact-email > span { position: absolute; right: 0; top: 0; color: var(--muted); font-weight: 500; }.invite-choice { grid-column: 1 / -1; margin-top: 8px; }.invite-choice > p { margin: 0 0 10px; color: var(--ink); font-size: 16px; font-weight: 800; }.invite-choice > div:first-of-type { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }.invite-choice > div:first-of-type button { min-height: 78px; display: grid; grid-template-columns: auto 1fr; column-gap: 10px; align-items: center; border: 1px solid var(--line); border-radius: 12px; background: #fff; padding: 12px; text-align: left; }.invite-choice > div:first-of-type button.selected { border-color: var(--purple); background: #f2edf5; box-shadow: 0 0 0 3px rgba(120,87,168,.08); }.invite-choice > div:first-of-type button > span { grid-row: 1 / 3; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 11px; color: var(--purple); background: #eee7f1; }.invite-choice button strong,.invite-choice button small { display: block; }.invite-choice button strong { color: var(--ink); font-size: 16px; }.invite-choice button small { margin-top: 2px; color: #5e5a64; font-size: 14px; line-height: 1.35; }.invite-result { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 10px; border-radius: 12px; padding: 12px 14px; color: var(--blue); background: #edf1f5; }.invite-result > div { display: flex; align-items: center; gap: 10px; }.invite-result strong,.invite-result small { display: block; }.invite-result strong { color: var(--ink); font-size: 16px; }.invite-result small { margin-top: 3px; color: #5e5a64; font-size: 14px; line-height: 1.4; }.invite-result > button { flex: 0 0 auto; min-height: 44px; border: 0; border-radius: 99px; color: #fff; background: var(--purple); padding: 9px 14px; font-size: 14px; font-weight: 800; }.invite-result > button:disabled { color: #625e67; background: #d4d0d5; cursor: not-allowed; }.code-result { background: #f2edf5; }.code-result strong { font: 700 18px "DM Mono"; letter-spacing: .08em; }
 .voice-answer { margin-top: 25px; }
@@ -225,20 +223,15 @@ button { cursor: pointer; }
 .back-button,.continue-button { font-size: 15px; }
 .continue-button { padding: 16px 22px 16px 25px; }
 .skip-question { font-size: 14px; }
-.name-answer label,.account-answer label,.person-answer label { font-size: 14px; }
-.name-answer input,.account-answer input,.person-answer input,.person-answer select { padding: 16px 17px; font-size: 16px; }
+.name-answer label,.reference-answer label,.person-answer label { font-size: 14px; }
+.name-answer input,.reference-answer input,.reference-answer select,.person-answer input,.person-answer select { padding: 16px 17px; font-size: 16px; }
 .name-preview p { font-size: 13px; }
 .name-preview strong { font-size: 20px; }
-.upload-zone { min-height: 155px; }
-.upload-zone strong { margin-top: 12px; font-size: 16px; }
-.upload-zone small { margin-top: 6px; font-size: 14px; }
-.location-choice { padding: 17px; }
-.location-choice strong { font-size: 15px; }
-.location-choice small { font-size: 13px; }
+.reference-safety-note strong { font-size: 15px; }
+.reference-safety-note span { font-size: 13px; }
 .bank-answer button { min-height: 68px; padding: 12px; }
 .bank-logo { width: 40px; height: 40px; font-size: 10px; }
 .bank-answer strong { font-size: 15px; }
-.account-answer p { font-size: 13px; }
 .access-note strong { font-size: 15px; }
 .access-note small { font-size: 13px; }
 .app-header nav button { font-size: 12px; }
@@ -357,24 +350,20 @@ button { cursor: pointer; }
 .back-button { padding: 10px 12px; }
 .skip-question { padding: 10px 14px; }
 .name-answer label,
-.account-answer label,
+.reference-answer label,
 .person-answer label { font-size: 15px; }
 .name-answer input,
-.account-answer input,
+.reference-answer input,
+.reference-answer select,
 .person-answer input,
 .person-answer select { min-height: 50px; font-size: 17px; }
 .name-preview p { font-size: 14px; }
 .name-preview strong { font-size: 20px; }
-.upload-zone { min-height: 165px; }
-.upload-zone strong { font-size: 17px; }
-.upload-zone small { color: #625e67; font-size: 15px; }
-.location-choice { min-height: 70px; }
-.location-choice strong { font-size: 16px; }
-.location-choice small { font-size: 14px; }
+.reference-safety-note strong { font-size: 16px; }
+.reference-safety-note span { font-size: 14px; }
 .bank-answer button { min-height: 72px; }
 .bank-logo { font-size: 13px; }
 .bank-answer strong { font-size: 16px; }
-.account-answer p { font-size: 14px; line-height: 1.5; }
 .access-note strong { font-size: 16px; }
 .access-note small { font-size: 14px; }
 .complete-copy > p { font-size: 18px; line-height: 1.7; }
@@ -501,9 +490,8 @@ button { cursor: pointer; }
   .quick-options { grid-template-columns: 1fr; }
   .answer-list button { min-height: 64px; font-size: 17px; }
   .name-preview { min-height: 90px; }
-  .upload-zone { min-height: 170px; }
-  .location-choice { min-height: 76px; }
-  .account-answer > div { grid-template-columns: 1fr; }
+  .reference-fields { grid-template-columns: 1fr; }
+  .reference-field-wide { grid-column: auto; }
   .person-answer { grid-template-columns: auto 1fr; align-items: center; }
   .person-answer label { grid-column: 1 / -1 !important; }
   .person-answer .access-note { grid-column: 1 / -1; }
@@ -610,12 +598,10 @@ button { cursor: pointer; }
   .welcome-promises span,
   .welcome-footer > span:last-child { font-size: 16px; }
   .name-answer label,
-  .account-answer label,
+  .reference-answer label,
   .person-answer label,
   .name-preview p,
-  .upload-zone small,
-  .location-choice small,
-  .account-answer p,
+  .reference-safety-note span,
   .access-note small { font-size: 16px; }
   .bank-logo { font-size: 14px; }
 
@@ -657,8 +643,7 @@ button { cursor: pointer; }
 
 /* WCAG AA contrast on cream and white surfaces. */
 .app-header nav button,
-.upload-zone small,
-.account-answer p,
+.reference-safety-note span,
 .path-stop > small,
 .message-prompts button span,
 .app-footer > button {

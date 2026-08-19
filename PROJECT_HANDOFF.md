@@ -113,9 +113,11 @@ The setup uses a map and a series of questions. It currently includes:
 1. Identifying who the owner is preparing for
 2. Naming the owner's OnePlace
 3. Recording whether the owner has a will
-4. Uploading a will or recording where the original is kept
-5. Choosing everyday financial institutions
-6. Adding one identifying account detail
+4. Recording who holds a will, how to contact them, the original's general
+   location, and when that reference was last confirmed—without uploading it
+5. Choosing financial institutions the family may need to contact
+6. Adding a safe financial reference using a nickname, category, contact path,
+   and verification date—without an account number, balance, or password
 7. Selecting protections, including disability insurance
 8. Choosing a first trusted person and preparing an invitation
 9. Recording a meaningful possession and intended recipient

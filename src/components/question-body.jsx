@@ -1,6 +1,6 @@
-import AccountDetailsAnswer from './account-details-answer';
 import BankSelectionAnswer from './bank-selection-answer';
-import DocumentUploadAnswer from './document-upload-answer';
+import DocumentReferenceAnswer from './document-reference-answer';
+import FinancialReferenceAnswer from './financial-reference-answer';
 import MultipleChoiceAnswer from './multiple-choice-answer';
 import PlaceNameAnswer from './place-name-answer';
 import PossessionsAnswer from './possessions-answer';
@@ -8,7 +8,7 @@ import SingleChoiceAnswer from './single-choice-answer';
 import TrustedPersonAnswer from './trusted-person-answer';
 import VoiceMessageAnswer from './voice-message-answer';
 
-const QuestionBody = ({ question, value, onChange, uploadedFileName, onUploadedFileNameChange }) => {
+const QuestionBody = ({ question, value, onChange }) => {
 	if (question.type === 'multi') {
 		return <MultipleChoiceAnswer options={question.options} value={value} onChange={onChange} />;
 	}
@@ -21,23 +21,16 @@ const QuestionBody = ({ question, value, onChange, uploadedFileName, onUploadedF
 		return <PlaceNameAnswer value={value} onChange={onChange} />;
 	}
 
-	if (question.type === 'upload') {
-		return (
-			<DocumentUploadAnswer
-				value={value}
-				onChange={onChange}
-				uploadedFileName={uploadedFileName}
-				onUploadedFileNameChange={onUploadedFileNameChange}
-			/>
-		);
+	if (question.type === 'document-reference') {
+		return <DocumentReferenceAnswer value={value} onChange={onChange} />;
 	}
 
 	if (question.type === 'banks') {
 		return <BankSelectionAnswer options={question.options} value={value} onChange={onChange} />;
 	}
 
-	if (question.type === 'account') {
-		return <AccountDetailsAnswer value={value} onChange={onChange} />;
+	if (question.type === 'financial-reference') {
+		return <FinancialReferenceAnswer value={value} onChange={onChange} />;
 	}
 
 	if (question.type === 'person') {

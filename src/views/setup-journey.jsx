@@ -30,7 +30,6 @@ const JourneyHeader = ({ current, onExit }) => {
 
 const SetupJourneyView = ({ initialQuestion, journeyProgress, onComplete, onExit }) => {
 	const [current, setCurrent] = useState(initialQuestion);
-	const [uploaded, setUploaded] = useState('');
 	const question = questions[current];
 	const answer = journeyProgress.answers[current];
 	const resetScroll = useScrollToTop(current);
@@ -93,8 +92,6 @@ const SetupJourneyView = ({ initialQuestion, journeyProgress, onComplete, onExit
 						question={question}
 						value={answer}
 						onChange={updateAnswer}
-						uploadedFileName={uploaded}
-						onUploadedFileNameChange={setUploaded}
 					/>
 					<div className='question-actions'>
 						<button className='back-button' disabled={current === 0} onClick={() => showQuestion(Math.max(0, current - 1))}><Icon name='back' size={18} /> Back</button>

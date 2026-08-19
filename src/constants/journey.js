@@ -33,25 +33,25 @@ export const questions = [
 	},
 	{
 		chapter: 1,
-		eyebrow: 'Bring it into OnePlace',
-		title: 'Want to add your will now?',
-		copy: 'Upload a copy, take a photo, or tell us where the original is kept.',
-		type: 'upload'
+		eyebrow: 'Make it easy to find',
+		title: 'Where can your family find your will?',
+		copy: 'Add a safe reference to the original and the person who can help. OnePlace won’t store the document itself.',
+		type: 'document-reference'
 	},
 	{
 		chapter: 2,
 		eyebrow: 'Money Meadow · Accounts',
-		title: 'Where do you keep everyday accounts?',
-		copy: 'We’ll make a simple inventory first. You decide whether to add account details or passwords later.',
+		title: 'Which financial institutions should your family know about?',
+		copy: 'Create a simple list of who they may need to contact. Don’t add account numbers or sign-in details.',
 		type: 'banks',
 		options: ['Chase', 'Wells Fargo', 'Mountain America', 'Capital One', 'Another institution']
 	},
 	{
 		chapter: 2,
-		eyebrow: 'One helpful detail',
-		title: 'How should your family identify this account?',
-		copy: 'For this concept, use fictional information only.',
-		type: 'account'
+		eyebrow: 'One safe reference',
+		title: 'What will help them know which account you mean?',
+		copy: 'Use a nickname, category, and contact path—not an account number, balance, or password.',
+		type: 'financial-reference'
 	},
 	{
 		chapter: 3,

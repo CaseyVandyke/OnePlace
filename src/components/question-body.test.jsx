@@ -5,18 +5,15 @@ import QuestionBody from './question-body';
 
 const renderQuestion = ({ type, options = [], value } = {}) => {
 	const onChange = vi.fn();
-	const onUploadedFileNameChange = vi.fn();
 	const view = render(
 		<QuestionBody
 			question={{ type, options }}
 			value={value}
 			onChange={onChange}
-			uploadedFileName=''
-			onUploadedFileNameChange={onUploadedFileNameChange}
 		/>
 	);
 
-	return { ...view, onChange, onUploadedFileNameChange };
+	return { ...view, onChange };
 };
 
 describe('QuestionBody', () => {
@@ -46,14 +43,14 @@ describe('QuestionBody', () => {
 		expect(onChange).toHaveBeenCalledWith('Morgan');
 	});
 
-	test('reports an uploaded document and its file name', () => {
-		const { container, onChange, onUploadedFileNameChange } = renderQuestion({ type: 'upload' });
-		const file = new File(['demo'], 'will.pdf', { type: 'application/pdf' });
+	test('updates a safe document reference without offering an upload', () => {
+		const { container, onChange } = renderQuestion({ type: 'document-reference', value: { holder: 'Attorney' } });
 
-		fireEvent.change(container.querySelector("input[type='file']"), { target: { files: [file] } });
+		fireEvent.change(screen.getByPlaceholderText('Original held by the estate attorney'), { target: { value: 'Home office fire safe' } });
 
-		expect(onUploadedFileNameChange).toHaveBeenCalledWith('will.pdf');
-		expect(onChange).toHaveBeenCalledWith('uploaded');
+		expect(onChange).toHaveBeenCalledWith({ holder: 'Attorney', generalLocation: 'Home office fire safe' });
+		expect(container.querySelector("input[type='file']")).not.toBeInTheDocument();
+		expect(screen.getByText('Add a helpful reference, not the secret itself.')).toBeVisible();
 	});
 
 	test('updates selected banks', async() => {
@@ -65,12 +62,14 @@ describe('QuestionBody', () => {
 		expect(onChange).toHaveBeenCalledWith(['Chase']);
 	});
 
-	test('updates account details while keeping the existing value', () => {
-		const { onChange } = renderQuestion({ type: 'account', value: { nickname: 'Daily' } });
+	test('updates a financial reference without collecting account numbers', () => {
+		const { onChange } = renderQuestion({ type: 'financial-reference', value: { nickname: 'Daily' } });
 
 		fireEvent.change(screen.getByPlaceholderText('Mountain America'), { target: { value: 'Bank' } });
 
-		expect(onChange).toHaveBeenCalledWith({ nickname: 'Daily', bank: 'Bank' });
+		expect(onChange).toHaveBeenCalledWith({ nickname: 'Daily', institution: 'Bank' });
+		expect(screen.queryByLabelText(/account number/i)).not.toBeInTheDocument();
+		expect(screen.queryByLabelText(/last 4/i)).not.toBeInTheDocument();
 	});
 
 	test('updates a trusted person', () => {

@@ -26,6 +26,7 @@ describe('OnePlace', () => {
 		render(<App />);
 		const appShell = screen.getByRole('main');
 		expect(screen.getByText('oneplace')).toBeVisible();
+		expect(document.querySelector('.welcome-footer')).not.toBeInTheDocument();
 		expect(document.querySelector('.map-stop.current > .map-stop-icon')).toBeInTheDocument();
 
 		window.scrollTo.mockClear();

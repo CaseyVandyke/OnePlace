@@ -30,10 +30,6 @@ const WelcomeView = ({ onStart, onPreview }) => {
 				</div>
 				<WorldMap chapter={0} preview />
 			</section>
-			<footer className='welcome-footer'>
-				<span>One question at a time.</span>
-				<span>No real information is stored.</span>
-			</footer>
 		</section>
 	);
 };

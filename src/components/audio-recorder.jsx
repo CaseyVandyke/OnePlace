@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import Icon from './icon';
 
 const maximumRecordingSeconds = 300;
+const microphoneReuseMilliseconds = 30000;
 
 const getAudioExtension = (mimeType = '') => {
 	if (mimeType.includes('mp4')) return 'm4a';
@@ -20,6 +21,16 @@ const stopStream = (stream) => {
 	stream?.getTracks().forEach((track) => track.stop());
 };
 
+const setStreamEnabled = (stream, enabled) => {
+	stream?.getTracks().forEach((track) => {
+		track.enabled = enabled;
+	});
+};
+
+const canReuseStream = (stream) => (
+	stream?.getTracks().some((track) => track.readyState !== 'ended') ?? false
+);
+
 const AudioRecorder = ({ description, onChange, title, value, variant = 'light' }) => {
 	const [status, setStatus] = useState('idle');
 	const [elapsedSeconds, setElapsedSeconds] = useState(0);
@@ -28,6 +39,7 @@ const AudioRecorder = ({ description, onChange, title, value, variant = 'light' 
 	const mediaRecorderRef = useRef(null);
 	const streamRef = useRef(null);
 	const timerRef = useRef(null);
+	const releaseTimerRef = useRef(null);
 	const startedAtRef = useRef(0);
 	const canRecord = typeof window.MediaRecorder !== 'undefined' && Boolean(navigator.mediaDevices?.getUserMedia);
 	const playbackUrl = useMemo(() => (
@@ -40,6 +52,7 @@ const AudioRecorder = ({ description, onChange, title, value, variant = 'light' 
 
 	useEffect(() => () => {
 		window.clearInterval(timerRef.current);
+		window.clearTimeout(releaseTimerRef.current);
 		const recorder = mediaRecorderRef.current;
 		if (recorder && recorder.state !== 'inactive') {
 			recorder.onstop = null;
@@ -64,7 +77,11 @@ const AudioRecorder = ({ description, onChange, title, value, variant = 'light' 
 		setStatus('requesting');
 
 		try {
-			const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+			window.clearTimeout(releaseTimerRef.current);
+			const stream = canReuseStream(streamRef.current)
+				? streamRef.current
+				: await navigator.mediaDevices.getUserMedia({ audio: true });
+			setStreamEnabled(stream, true);
 			const recorder = new window.MediaRecorder(stream);
 			const chunks = [];
 			if (value?.blob) onChange(null);
@@ -78,9 +95,14 @@ const AudioRecorder = ({ description, onChange, title, value, variant = 'light' 
 				const duration = Math.max(1, Math.round((Date.now() - startedAtRef.current) / 1000));
 				const mimeType = recorder.mimeType || chunks[0]?.type || 'audio/webm';
 				window.clearInterval(timerRef.current);
-				stopStream(stream);
-				streamRef.current = null;
+				setStreamEnabled(stream, false);
 				mediaRecorderRef.current = null;
+				releaseTimerRef.current = window.setTimeout(() => {
+					if (streamRef.current === stream && !mediaRecorderRef.current) {
+						stopStream(stream);
+						streamRef.current = null;
+					}
+				}, microphoneReuseMilliseconds);
 				setElapsedSeconds(duration);
 				setStatus('idle');
 				onChange({
@@ -118,6 +140,9 @@ const AudioRecorder = ({ description, onChange, title, value, variant = 'light' 
 	const addAudioFile = (event) => {
 		const file = event.target.files?.[0];
 		if (!file) return;
+		window.clearTimeout(releaseTimerRef.current);
+		stopStream(streamRef.current);
+		streamRef.current = null;
 		setError('');
 		onChange({
 			blob: file,
@@ -128,6 +153,9 @@ const AudioRecorder = ({ description, onChange, title, value, variant = 'light' 
 		event.target.value = '';
 	};
 	const removeRecording = () => {
+		window.clearTimeout(releaseTimerRef.current);
+		stopStream(streamRef.current);
+		streamRef.current = null;
 		setElapsedSeconds(0);
 		setError('');
 		onChange(null);
@@ -182,7 +210,7 @@ const AudioRecorder = ({ description, onChange, title, value, variant = 'light' 
 				</>
 			)}
 			{error && <p className='audio-error' role='alert'>{error}</p>}
-			<p className='audio-privacy'><Icon name='lock' size={16} /> This recording stays in this browser session for the prototype.</p>
+			<p className='audio-privacy'><Icon name='lock' size={16} /> The microphone turns off after recording. Your audio stays in this browser session for the prototype.</p>
 		</div>
 	);
 };

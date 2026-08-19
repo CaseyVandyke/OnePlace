@@ -4,8 +4,12 @@ import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import AudioRecorder from './audio-recorder';
 
-const trackStop = vi.fn();
 const getUserMedia = vi.fn();
+const microphoneTrack = {
+	enabled: true,
+	readyState: 'live',
+	stop: vi.fn()
+};
 
 class MockMediaRecorder {
 	constructor() {
@@ -38,9 +42,11 @@ const RecorderHarness = () => {
 
 describe('AudioRecorder', () => {
 	beforeEach(() => {
-		trackStop.mockClear();
+		microphoneTrack.enabled = true;
+		microphoneTrack.readyState = 'live';
+		microphoneTrack.stop.mockClear();
 		getUserMedia.mockReset();
-		getUserMedia.mockResolvedValue({ getTracks: () => [{ stop: trackStop }] });
+		getUserMedia.mockResolvedValue({ getTracks: () => [microphoneTrack] });
 		Object.defineProperty(navigator, 'mediaDevices', {
 			configurable: true,
 			value: { getUserMedia }
@@ -57,7 +63,7 @@ describe('AudioRecorder', () => {
 
 	test('records, stops, and prepares playback', async() => {
 		const user = userEvent.setup();
-		render(<RecorderHarness />);
+		const view = render(<RecorderHarness />);
 
 		await user.click(screen.getByRole('button', { name: 'Start recording' }));
 		expect(getUserMedia).toHaveBeenCalledWith({ audio: true });
@@ -69,7 +75,16 @@ describe('AudioRecorder', () => {
 		expect(screen.getByRole('link', { name: /Download/ })).toHaveAttribute('download', 'oneplace-voice-message.webm');
 		expect(screen.getByRole('button', { name: /Record again/ })).toBeVisible();
 		expect(screen.getByRole('button', { name: /Delete/ })).toBeVisible();
-		expect(trackStop).toHaveBeenCalled();
+		expect(microphoneTrack.enabled).toBe(false);
+
+		await user.click(screen.getByRole('button', { name: /Record again/ }));
+
+		expect(await screen.findByRole('button', { name: 'Stop recording' })).toBeVisible();
+		expect(getUserMedia).toHaveBeenCalledTimes(1);
+		expect(microphoneTrack.enabled).toBe(true);
+
+		view.unmount();
+		expect(microphoneTrack.stop).toHaveBeenCalled();
 	});
 
 	test('explains a denied microphone permission without losing the fallback', async() => {

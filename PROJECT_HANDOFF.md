@@ -143,7 +143,8 @@ The prototype main app includes:
 - **Mount Vault** — passwords, vault codes, devices, and digital keys
 
 The path illuminates between stops as chapters are reached. The current location
-uses a restrained pulsing treatment without an additional marker or text badge.
+uses a restrained halo without an additional marker or text badge. The icon
+itself remains stationary so the pulse cannot make nearby map elements shimmer.
 
 ## Recently implemented features
 
@@ -186,6 +187,10 @@ professional.
 - The recorder requests microphone access only after the user presses the
   record button, shows elapsed time, stops automatically after five minutes,
   and supports playback, downloading, re-recording, and deletion.
+- After recording, the microphone track is muted immediately and retained for
+  up to 30 seconds so an immediate re-record does not wait for Safari to reopen
+  the hardware. It is fully released after that window, when the recording is
+  removed or replaced by a file, and when the recorder unmounts.
 - An audio-file picker provides a fallback when microphone recording is
   unavailable or permission is denied.
 - Recordings are held as browser `Blob` objects in session-only React state.

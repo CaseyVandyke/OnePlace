@@ -111,8 +111,22 @@ describe('OnePlace', () => {
 		await user.click(screen.getByRole('button', { name: 'Preview the app' }));
 		expect(screen.getByRole('button', { name: 'Continue my path' })).toBeVisible();
 		expect(screen.getByText('0% lit.')).toBeVisible();
+		expect(screen.getByText('Your first small step')).toBeVisible();
+		expect(screen.queryByText(/Wednesday’s small win/i)).not.toBeInTheDocument();
 		expect(screen.queryByText(/\bglow\b/i)).not.toBeInTheDocument();
 		expect(screen.queryByRole('button', { name: /change guide/i })).not.toBeInTheDocument();
+	});
+
+	test('shows completed guided setup as fully lit', async() => {
+		const user = userEvent.setup();
+		seedCompletedOnboarding();
+		render(<App />);
+
+		await user.click(screen.getByRole('button', { name: 'Preview the app' }));
+
+		expect(screen.getByText('100% lit.')).toBeVisible();
+		expect(screen.getByText('Guided setup complete')).toBeVisible();
+		expect(screen.getByText('10 of 10 setup steps complete')).toBeVisible();
 	});
 
 	test('returns to the welcome screen from the main app logo', async() => {

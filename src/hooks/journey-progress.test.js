@@ -2,10 +2,10 @@ import { describe, expect, test } from 'vitest';
 import { summarizeJourneyProgress } from './journey-progress';
 
 describe('summarizeJourneyProgress', () => {
-	test('starts at Basecamp with no completed essentials', () => {
+	test('starts at Basecamp with no completed setup steps', () => {
 		const summary = summarizeJourneyProgress({ questionStatuses: {}, completedQuickSteps: [] });
 
-		expect(summary.percentComplete).toBe(0);
+		expect(summary.setupPercentComplete).toBe(0);
 		expect(summary.currentChapter).toBe(0);
 		expect(summary.nextQuestionIndex).toBe(0);
 	});
@@ -16,8 +16,8 @@ describe('summarizeJourneyProgress', () => {
 		);
 		const summary = summarizeJourneyProgress({ questionStatuses, completedQuickSteps: [] });
 
-		expect(summary.completedEssentials).toBe(9);
-		expect(summary.percentComplete).toBe(39);
+		expect(summary.completedSetupSteps).toBe(9);
+		expect(summary.setupPercentComplete).toBe(90);
 		expect(summary.nextQuestionIndex).toBe(4);
 		expect(summary.currentChapter).toBe(2);
 		expect(summary.skippedQuestions).toEqual([4]);
@@ -29,9 +29,19 @@ describe('summarizeJourneyProgress', () => {
 		);
 		const summary = summarizeJourneyProgress({ questionStatuses, completedQuickSteps: [] });
 
-		expect(summary.completedEssentials).toBe(10);
-		expect(summary.percentComplete).toBe(43);
+		expect(summary.completedSetupSteps).toBe(10);
+		expect(summary.setupPercentComplete).toBe(100);
 		expect(summary.nextQuestionIndex).toBe(-1);
 		expect(summary.currentChapter).toBe(6);
+	});
+
+	test('keeps post-setup quick steps separate from guided setup progress', () => {
+		const summary = summarizeJourneyProgress({
+			questionStatuses: { 0: 'answered' },
+			completedQuickSteps: ['device-access-location']
+		});
+
+		expect(summary.completedSetupSteps).toBe(1);
+		expect(summary.setupPercentComplete).toBe(10);
 	});
 });

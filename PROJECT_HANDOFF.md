@@ -127,11 +127,14 @@ The rendered question count is data-driven. Treat the `questions` array in
 `src/constants/journey.js` as authoritative.
 
 Each question is tracked as answered or skipped. Answered questions increase the
-calculated progress percentage; skipped questions remain pending and appear in a
-“Come back to this” list in My Path. The first unanswered or skipped question
-determines the active map destination. After all onboarding questions are
-answered, Mount Vault becomes the next recommended destination for digital-access
-instructions.
+guided-setup percentage against the ten available onboarding questions; skipped
+questions remain pending and appear in a “Come back to this” list in My Path.
+Completing all ten questions therefore displays 100% rather than dividing by
+unimplemented future tasks. Post-setup quick steps remain separate milestones.
+The first unanswered or skipped question determines the active map destination.
+After all onboarding questions are answered, Mount Vault becomes the next
+recommended destination for digital-access instructions. The My Path status pill
+is derived from this progress and must not use a hard-coded weekday.
 
 ### 5. Completion and main app
 

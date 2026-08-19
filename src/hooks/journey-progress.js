@@ -5,7 +5,6 @@ export const journeyProgressStorageKey = 'oneplace-journey-progress-v1';
 const answered = 'answered';
 const skipped = 'skipped';
 const validStatuses = new Set([answered, skipped]);
-const totalEssentials = 23;
 const nextDestination = mapStops.findIndex((stop) => stop.name === 'Mount Vault');
 
 const emptyProgress = {
@@ -44,19 +43,17 @@ export const summarizeJourneyProgress = (progress) => {
 		.map((_, index) => index)
 		.filter((index) => normalized.questionStatuses[index] === skipped);
 	const nextQuestionIndex = questions.findIndex((_, index) => normalized.questionStatuses[index] !== answered);
-	const completedEssentials = Math.min(
-		totalEssentials,
-		answeredQuestions.length + normalized.completedQuickSteps.length
-	);
+	const completedSetupSteps = answeredQuestions.length;
+	const totalSetupSteps = questions.length;
 
 	return {
 		answeredQuestions,
-		completedEssentials,
+		completedSetupSteps,
 		currentChapter: nextQuestionIndex >= 0 ? questions[nextQuestionIndex].chapter : nextDestination,
 		nextQuestionIndex,
-		percentComplete: Math.round((completedEssentials / totalEssentials) * 100),
+		setupPercentComplete: Math.round((completedSetupSteps / totalSetupSteps) * 100),
 		skippedQuestions,
-		totalEssentials
+		totalSetupSteps
 	};
 };
 

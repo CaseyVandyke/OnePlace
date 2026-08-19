@@ -6,6 +6,11 @@ import { chapters, questions } from '../constants/journey';
 const PathHomeView = ({ onContinue, onResumeQuestion, progress, summary }) => {
 	const nextQuestion = summary.nextQuestionIndex >= 0 ? questions[summary.nextQuestionIndex] : null;
 	const nextQuestionWasSkipped = progress.questionStatuses[summary.nextQuestionIndex] === 'skipped';
+	const progressLabel = nextQuestion
+		? summary.completedSetupSteps === 0
+			? 'Your first small step'
+			: `${summary.completedSetupSteps} of ${summary.totalSetupSteps} setup steps complete`
+		: 'Guided setup complete';
 	const activePathStop = nextQuestion
 		? pathStops.findIndex((stop) => stop.questionIndexes.includes(summary.nextQuestionIndex))
 		: 3;
@@ -23,8 +28,8 @@ const PathHomeView = ({ onContinue, onResumeQuestion, progress, summary }) => {
 		<div className='path-page'>
 			<section className='path-intro'>
 				<div>
-					<span className='hello-pill'><i /> Wednesday’s small win</span>
-					<h1>Your place is<br /><em>{summary.percentComplete}% lit.</em></h1>
+					<span className='hello-pill'><i /> {progressLabel}</span>
+					<h1>Your path is<br /><em>{summary.setupPercentComplete}% lit.</em></h1>
 					<p>One thoughtful answer today will make the path clearer for your family tomorrow.</p>
 					<button className='continue-button' onClick={onContinue}>
 						{nextQuestion ? nextQuestionWasSkipped ? 'Return to saved question' : 'Continue setup' : 'Take today’s 3-minute step'}
@@ -69,7 +74,7 @@ const PathHomeView = ({ onContinue, onResumeQuestion, progress, summary }) => {
 			<section className='path-section'>
 				<div className='path-heading'>
 					<div><p>YOUR JOURNEY</p><h2>A little clearer with every stop.</h2></div>
-					<span>{summary.completedEssentials} of {summary.totalEssentials} essentials cared for</span>
+					<span>{summary.completedSetupSteps} of {summary.totalSetupSteps} setup steps complete</span>
 				</div>
 				<div className='winding-path'>
 					<svg viewBox='0 0 900 720' preserveAspectRatio='none' aria-hidden='true'>
@@ -88,11 +93,11 @@ const PathHomeView = ({ onContinue, onResumeQuestion, progress, summary }) => {
 					})}
 				</div>
 			</section>
-			{summary.completedEssentials > 0 && (
+			{summary.completedSetupSteps > 0 && (
 				<section className='achievement-strip'>
 					<div>
 						<Icon name='check' size={27} />
-						<span><small>PROGRESS SAVED</small><strong>{summary.percentComplete}% of your path is lit</strong></span>
+						<span><small>PROGRESS SAVED</small><strong>{summary.setupPercentComplete}% of your setup path is lit</strong></span>
 					</div>
 					<p>Your completed steps stay marked while skipped questions wait for you.</p>
 				</section>

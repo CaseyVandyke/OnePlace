@@ -69,7 +69,6 @@ button { cursor: pointer; }
 .welcome-glow { position: absolute; width: 55vw; height: 55vw; border-radius: 50%; filter: blur(80px); opacity: .14; }
 .glow-red { background: var(--red); left: -30%; top: 20%; }.glow-blue { background: var(--blue); right: -28%; top: -20%; }
 .welcome-footer { position: relative; z-index: 5; padding: 20px 42px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,.07); color: #777384; font-size: 9px; text-transform: uppercase; letter-spacing: .09em; }
-.welcome-footer div { display: flex; gap: 6px; }.welcome-footer i { width: 22px; height: 3px; border-radius: 3px; background: #444153; }.welcome-footer i.active { background: linear-gradient(90deg, var(--red), var(--purple)); }
 
 /* Companion guide and family map */
 .world-map { position: relative; width: min(650px,100%); aspect-ratio: 1.22; justify-self: center; }
@@ -459,7 +458,6 @@ button { cursor: pointer; }
   .welcome-footer { position: static; margin: 0; padding: 20px 22px 34px; }
   .welcome-footer > span:first-child { display: none; }
   .welcome-footer > span:last-child { font-size: 13px; }
-  .welcome-footer > div { order: -1; }
 
   .journey-header { padding: 12px 16px; grid-template-columns: minmax(0,1fr) auto; gap: 9px; }
   .journey-header .brand { font-size: 21px; }

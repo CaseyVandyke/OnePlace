@@ -32,7 +32,6 @@ const WelcomeView = ({ onStart, onPreview }) => {
 			</section>
 			<footer className='welcome-footer'>
 				<span>One question at a time.</span>
-				<div><i className='active' /><i /><i /><i /></div>
 				<span>No real information is stored.</span>
 			</footer>
 		</section>

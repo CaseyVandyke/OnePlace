@@ -6,8 +6,8 @@ const VoiceMessageAnswer = ({ value, onChange }) => {
 			<AudioRecorder
 				value={value}
 				onChange={onChange}
-				title='If you’re listening to this…'
-				description='Start with those words, then say whatever feels important. Nothing has to be perfect—just sound like you.'
+				title='Record your message'
+				description='Nothing has to be perfect. Just sound like you.'
 			/>
 		</div>
 	);

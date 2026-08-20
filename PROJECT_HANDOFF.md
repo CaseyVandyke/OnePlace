@@ -161,17 +161,20 @@ The prototype main app includes:
 - **My people** — trusted-person access concept
 - **Messages** — personal audio-message concept
 
-The map on **My path** is interactive. Completed/reached locations are real,
+The map on **My path** is interactive. A visible instruction tells people to
+choose a reached place to open it. Completed/reached locations are real,
 keyboard-accessible buttons that open their corresponding main-app section.
 Map state distinguishes completed, visited, current, and future locations.
 Completed locations and earned trail segments are illuminated. Visited but
 incomplete or skipped locations use a softer neutral treatment and remain
-clickable. The current location is fully visible and pulsing but is not a
-redundant button. Future gray locations remain locked and noninteractive.
-Destination sections provide an explicit **Back to map** action. The guided
-setup map follows the same rule and navigates to the first question of a reached
-chapter. Mount Vault stays noninteractive during setup because it has no guided
-question yet.
+clickable. On the dashboard, the current location is also selectable because
+the map acts as navigation; Basecamp resumes the saved setup question, while
+the other destinations open their related main-app section. Future gray
+locations remain locked and noninteractive. Destination sections provide an
+explicit **Back to map** action. The guided setup map navigates to the first
+question of a reached chapter. Its current location remains a noninteractive
+position marker because that question is already open. Mount Vault stays
+noninteractive during setup because it has no guided question yet.
 Viewing an earlier chapter must not undo earned illumination: trail lighting,
 the percentage, and completed chapter styling come from saved answer progress,
 while the current marker comes from the question being viewed. The Welcome map

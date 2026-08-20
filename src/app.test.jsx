@@ -159,9 +159,22 @@ describe('OnePlace', () => {
 		render(<App />);
 
 		await user.click(screen.getByRole('button', { name: 'Preview the app' }));
-		expect(screen.queryByRole('button', { name: 'Open Basecamp' })).not.toBeInTheDocument();
+		expect(screen.getByText('Choose a reached place to open it.')).toBeVisible();
+		expect(screen.getByRole('button', { name: 'Open Basecamp' })).toBeVisible();
 		expect(screen.queryByRole('button', { name: 'Open Money Meadow' })).not.toBeInTheDocument();
 		expect(document.querySelector('.map-stop.money-meadow')).toHaveClass('locked');
+	});
+
+	test('resumes setup from Basecamp on the main map', async() => {
+		const user = userEvent.setup();
+		render(<App />);
+
+		await user.click(screen.getByRole('button', { name: 'Preview the app' }));
+		await user.click(screen.getByRole('button', { name: 'Open Basecamp' }));
+
+		expect(screen.getByText('Question 1 of 10')).toBeVisible();
+		expect(screen.getByRole('heading', { name: 'Who are you preparing this for?' })).toBeVisible();
+		expect(screen.queryByText('Choose a reached place to open it.')).not.toBeInTheDocument();
 	});
 
 	test('navigates between guided question groups from the map', async() => {

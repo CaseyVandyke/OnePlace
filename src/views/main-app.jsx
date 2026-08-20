@@ -19,16 +19,21 @@ const MainAppView = ({ journeyProgress, onRestart, onResumeJourney }) => {
 		resetScroll();
 		setActive(nextView);
 	};
-	const showMapDestination = (stopName) => {
-		const nextView = mapDestinationViews[stopName];
-		if (nextView) showView(nextView);
-	};
 	const continuePath = () => {
 		if (journeyProgress.summary.nextQuestionIndex >= 0) {
 			onResumeJourney(journeyProgress.summary.nextQuestionIndex);
 		} else {
 			setResume(true);
 		}
+	};
+	const showMapDestination = (stopName) => {
+		if (stopName === 'Basecamp') {
+			continuePath();
+			return;
+		}
+
+		const nextView = mapDestinationViews[stopName];
+		if (nextView) showView(nextView);
 	};
 
 	return (

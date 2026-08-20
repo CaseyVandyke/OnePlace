@@ -36,12 +36,16 @@ const PathHomeView = ({ onContinue, onMapDestination, onResumeQuestion, progress
 						<Icon name='arrow' />
 					</button>
 				</div>
-				<WorldMap
-					availableChapter={summary.availableChapter}
-					chapter={summary.currentChapter}
-					compact
-					onSelectStop={onMapDestination}
-				/>
+				<div className='path-map-navigation'>
+					<p className='map-navigation-hint'><Icon name='spark' size={18} /> Choose a reached place to open it.</p>
+					<WorldMap
+						allowCurrentSelection
+						availableChapter={summary.availableChapter}
+						chapter={summary.currentChapter}
+						compact
+						onSelectStop={onMapDestination}
+					/>
+				</div>
 			</section>
 			<section className='today-quest'>
 				<div className='quest-number'>

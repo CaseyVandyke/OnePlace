@@ -41,6 +41,7 @@ const JourneyHeader = ({ current, onExit, progressChapter }) => {
 
 const SetupJourneyView = ({ initialQuestion, journeyProgress, onComplete, onExit }) => {
 	const [current, setCurrent] = useState(initialQuestion);
+	const [hasChangedQuestion, setHasChangedQuestion] = useState(false);
 	const question = questions[current];
 	const [furthestChapter, setFurthestChapter] = useState(() => Math.max(
 		journeyProgress.summary.availableChapter,
@@ -50,6 +51,7 @@ const SetupJourneyView = ({ initialQuestion, journeyProgress, onComplete, onExit
 	const resetScroll = useScrollToTop(current);
 	const showQuestion = (nextQuestion) => {
 		resetScroll();
+		setHasChangedQuestion(true);
 		setFurthestChapter((furthest) => Math.max(furthest, questions[nextQuestion]?.chapter ?? 0));
 		setCurrent(nextQuestion);
 	};
@@ -85,7 +87,7 @@ const SetupJourneyView = ({ initialQuestion, journeyProgress, onComplete, onExit
 	};
 
 	return (
-		<section className='journey-screen'>
+		<section className='journey-screen screen-enter'>
 			<JourneyHeader current={current} onExit={onExit} progressChapter={journeyProgress.summary.currentChapter} />
 			<section className='journey-layout'>
 				<aside className='journey-place'>
@@ -106,7 +108,7 @@ const SetupJourneyView = ({ initialQuestion, journeyProgress, onComplete, onExit
 						<div><small>NOW BUILDING</small><strong>{chapters[question.chapter].name}</strong></div>
 					</div>
 				</aside>
-				<article className='question-stage screen-enter' key={current}>
+				<article className={`question-stage ${hasChangedQuestion ? 'screen-enter' : ''}`} key={current}>
 					<div className='question-counter'>
 						<span>Question {current + 1} of {questions.length}</span>
 						<i><b style={{ width: `${((current + 1) / questions.length) * 100}%` }} /></i>

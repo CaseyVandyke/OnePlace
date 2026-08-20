@@ -346,6 +346,7 @@ describe('OnePlace', () => {
 		expect(within(pendingQuestions).getByText('10 items')).toBeVisible();
 		await user.click(within(pendingQuestions).getByRole('button', { name: /Who are you preparing this for/ }));
 		expect(screen.getByRole('heading', { name: 'Who are you preparing this for?' })).toBeVisible();
+		expect(document.querySelector('.journey-screen')).toHaveClass('screen-enter');
 	});
 
 	test('keeps the map trail mounted while completed segments illuminate', async() => {

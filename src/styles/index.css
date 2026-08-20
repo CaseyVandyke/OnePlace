@@ -511,7 +511,9 @@ button { cursor: pointer; }
   .complete-copy > p { font-size: 18px; }
   .complete-stats { gap: 20px; overflow-x: auto; }
   .complete-actions { align-items: stretch; flex-direction: column; }
-  .complete-actions > button { width: 100%; justify-content: space-between; }
+  .complete-actions > button { width: 100%; }
+  .complete-actions .complete-back { justify-content: flex-start; }
+  .complete-actions .journey-button { justify-content: space-between; }
 
   .app-header { height: 74px; padding: 0 16px; grid-template-columns: 1fr auto; }
   .app-header .brand { font-size: 21px; }

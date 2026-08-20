@@ -326,15 +326,29 @@ describe('OnePlace', () => {
 		expect(screen.getByRole('button', { name: 'Build my OnePlace' })).toBeVisible();
 	});
 
-	test('labels unavailable prototype actions when selected', async() => {
+	test('adds a trusted person and assigns specific access', async() => {
 		const user = userEvent.setup();
 		render(<App />);
 
 		await user.click(screen.getByRole('button', { name: 'Preview the app' }));
 		await user.click(screen.getByRole('button', { name: 'My people' }));
-		await user.click(screen.getByRole('button', { name: 'Invite someone' }));
+		await user.click(screen.getByRole('button', { name: 'Add trusted person' }));
+		await user.type(screen.getByRole('textbox', { name: 'Full name' }), 'KyLee Morgan');
+		await user.type(screen.getByRole('textbox', { name: /Relationship/ }), 'Daughter');
+		await user.click(screen.getByRole('button', { name: /Add person/ }));
 
-		expect(screen.getByRole('status')).toHaveTextContent('Preview only — this feature isn’t available in the prototype yet.');
+		expect(screen.getByRole('heading', { name: 'Choose what KyLee Morgan can access.' })).toBeVisible();
+		const messageAccess = screen.getByRole('checkbox', { name: /Personal voice message/ });
+		await user.click(messageAccess);
+
+		expect(messageAccess).toBeChecked();
+		expect(screen.getByText('1 item selected for KyLee Morgan')).toBeVisible();
+		expect(screen.getByText('No invitation is sent and no real access is granted in this prototype.')).toBeVisible();
+
+		await user.click(screen.getByRole('button', { name: 'My things' }));
+		await user.click(screen.getByRole('button', { name: 'My people' }));
+		await user.click(screen.getByRole('button', { name: /KyLee Morgan/ }));
+		expect(screen.getByRole('heading', { name: 'Choose what KyLee Morgan can access.' })).toBeVisible();
 	});
 
 	test('offers real audio recording and selectable prompts on the messages page', async() => {

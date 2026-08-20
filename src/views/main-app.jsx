@@ -3,6 +3,7 @@ import AppHeader from '../components/app-header';
 import Icon from '../components/icon';
 import Logo from '../components/logo';
 import MiniQuest from '../components/mini-quest';
+import { initialTrustedPeople } from '../constants/access';
 import { appViews, mapDestinationViews } from '../constants/navigation';
 import useScrollToTop from '../hooks/scroll-to-top';
 import MessagesView from './messages';
@@ -17,9 +18,27 @@ const questionByRoom = {
 	'safety-harbor': 6
 };
 
+const getInitialTrustedPeople = (guidedPerson) => {
+	if (!guidedPerson?.name?.trim()) {
+		return initialTrustedPeople.map((person) => ({
+			...person,
+			itemIds: [...person.itemIds]
+		}));
+	}
+
+	return [{
+		id: 'guided-trusted-person',
+		name: guidedPerson.name.trim(),
+		relationship: guidedPerson.relationship || 'Trusted person',
+		accessMode: 'when-needed',
+		itemIds: []
+	}];
+};
+
 const MainAppView = ({ journeyProgress, onRestart, onResumeJourney }) => {
 	const [active, setActive] = useState(appViews.PATH);
 	const [resume, setResume] = useState(false);
+	const [trustedPeople, setTrustedPeople] = useState(() => getInitialTrustedPeople(journeyProgress.answers[7]));
 	const resetScroll = useScrollToTop(active);
 	const showView = (nextView) => {
 		resetScroll();
@@ -91,7 +110,7 @@ const MainAppView = ({ journeyProgress, onRestart, onResumeJourney }) => {
 					<ThingsView onOpenRoom={showRoom} />
 				)}
 				{active === appViews.POSSESSIONS && <PossessionsView onBack={() => showView(appViews.THINGS)} />}
-				{active === appViews.PEOPLE && <PeopleView />}
+				{active === appViews.PEOPLE && <PeopleView people={trustedPeople} onPeopleChange={setTrustedPeople} />}
 				{active === appViews.MESSAGES && (
 					<MessagesView
 						message={journeyProgress.answers[9]}

@@ -163,7 +163,9 @@ The prototype main app includes:
   questions, milestones, and achievements
 - **My things** — themed destinations for documents, accounts, protections,
   digital access, memories, and possessions
-- **My people** — trusted-person access concept
+- **My people** — an interactive trusted-person access concept where the owner
+  can add people, choose exact safe references or personal items, and select
+  whether access is intended now or only when needed
 - **Messages** — personal audio-message concept
 
 The map on **My path** is interactive. A visible instruction tells people to
@@ -189,6 +191,14 @@ unfinished question, completed cards can be reviewed, and future cards are
 visibly labeled **Not reached yet** instead of looking interactive while
 ignoring input. Mount Vault remains a separate post-setup quick step because it
 does not yet have a guided question.
+
+The trusted person entered in guided Question 8 becomes the first person shown
+in **My people** for that app session. When the app is opened through the preview
+route without a guided answer, fictional demonstration people are shown instead.
+The access editor offers specific, data-minimized references and personal items;
+its choices remain in React state while the preview app is open. No invitation
+is sent and no actual authorization is granted.
+
 Viewing an earlier chapter must not undo earned illumination: trail lighting,
 the percentage, and completed chapter styling come from saved answer progress,
 while the current marker comes from the question being viewed. The Welcome map

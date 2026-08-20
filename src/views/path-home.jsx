@@ -11,17 +11,30 @@ const PathHomeView = ({ onContinue, onMapDestination, onResumeQuestion, progress
 			? 'Your first small step'
 			: `${summary.completedSetupSteps} of ${summary.totalSetupSteps} setup steps complete`
 		: 'Guided setup complete';
-	const activePathStop = nextQuestion
+	const matchedPathStop = nextQuestion
 		? pathStops.findIndex((stop) => stop.questionIndexes.includes(summary.nextQuestionIndex))
-		: 3;
+		: -1;
+	const activePathStop = nextQuestion
+		? Math.max(0, matchedPathStop)
+		: progress.completedQuickSteps.includes('device-access-location') ? -1 : 3;
 	const getStopProgress = (stop, index) => {
 		const target = stop.questionIndexes.length || 1;
 		const completed = stop.questionIndexes.length
 			? stop.questionIndexes.filter((questionIndex) => progress.questionStatuses[questionIndex] === 'answered').length
 			: Number(progress.completedQuickSteps.includes('device-access-location'));
-		const state = index === activePathStop ? 'current' : completed === target ? 'complete' : '';
+		const visited = stop.questionIndexes.some((questionIndex) => progress.questionStatuses[questionIndex]);
+		const complete = completed === target;
+		const current = index === activePathStop;
+		const available = complete || current || visited;
+		const state = complete ? 'complete' : current ? 'current' : available ? 'available' : 'locked';
+		const resumeQuestion = stop.questionIndexes.find((questionIndex) => progress.questionStatuses[questionIndex] !== 'answered')
+			?? stop.questionIndexes[0];
+		const onSelect = current
+			? onContinue
+			: available && resumeQuestion !== undefined ? () => onResumeQuestion(resumeQuestion) : null;
+		const actionLabel = current ? 'Continue' : complete ? 'Review' : 'Return';
 
-		return { completed, state, target };
+		return { actionLabel, completed, onSelect, state, target };
 	};
 
 	return (
@@ -91,13 +104,24 @@ const PathHomeView = ({ onContinue, onMapDestination, onResumeQuestion, progress
 					</svg>
 					{pathStops.map((stop, index) => {
 						const stopProgress = getStopProgress(stop, index);
+						const Stop = stopProgress.onSelect ? 'button' : 'article';
 						return (
-							<article className={`path-stop stop-${index} ${stopProgress.state}`} key={stop.chapter}>
+							<Stop
+								aria-label={stopProgress.onSelect ? `${stopProgress.actionLabel} ${stop.chapter}` : undefined}
+								className={`path-stop ${stopProgress.onSelect ? 'path-stop-button' : ''} stop-${index} ${stopProgress.state}`}
+								key={stop.chapter}
+								onClick={stopProgress.onSelect || undefined}
+								type={stopProgress.onSelect ? 'button' : undefined}
+							>
 								<span className='stop-icon'>{stopProgress.state === 'complete' ? <Icon name='check' /> : <Icon name={stop.icon} />}</span>
 								<div><p>{stop.chapter}</p><h3>{stop.title}</h3><span>{stop.copy}</span></div>
 								<small>{stopProgress.completed} of {stopProgress.target}</small>
-								{stopProgress.state === 'current' && <button onClick={onContinue}>Continue <Icon name='arrow' size={15} /></button>}
-							</article>
+								<span className='path-stop-action'>
+									{stopProgress.onSelect
+										? <>{stopProgress.actionLabel} <Icon name='arrow' size={15} /></>
+										: <><Icon name='lock' size={15} /> Not reached yet</>}
+								</span>
+							</Stop>
 						);
 					})}
 				</div>

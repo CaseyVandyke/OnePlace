@@ -122,6 +122,19 @@ describe('OnePlace', () => {
 		expect(screen.queryByText(/Wednesday’s small win/i)).not.toBeInTheDocument();
 		expect(screen.queryByText(/\bglow\b/i)).not.toBeInTheDocument();
 		expect(screen.queryByRole('button', { name: /change guide/i })).not.toBeInTheDocument();
+		expect(screen.getByRole('button', { name: 'Continue The essentials' })).toBeVisible();
+		expect(screen.getAllByText('Not reached yet', { selector: '.path-stop-action' })[0]).toBeVisible();
+	});
+
+	test('continues setup from the current detailed path card', async() => {
+		const user = userEvent.setup();
+		render(<App />);
+
+		await user.click(screen.getByRole('button', { name: 'Preview the app' }));
+		await user.click(screen.getByRole('button', { name: 'Continue The essentials' }));
+
+		expect(screen.getByRole('heading', { name: 'Who are you preparing this for?' })).toBeVisible();
+		expect(document.querySelector('.journey-screen')).toHaveClass('screen-enter');
 	});
 
 	test('shows completed guided setup as fully lit', async() => {

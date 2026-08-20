@@ -175,6 +175,10 @@ explicit **Back to map** action. The guided setup map navigates to the first
 question of a reached chapter. Its current location remains a noninteractive
 position marker because that question is already open. Mount Vault stays
 noninteractive during setup because it has no guided question yet.
+The detailed **Your journey** cards follow the same progress boundary. The
+current card continues setup, visited cards return to their unfinished question,
+completed cards can be reviewed, and future cards are visibly labeled
+**Not reached yet** instead of looking interactive while ignoring input.
 Viewing an earlier chapter must not undo earned illumination: trail lighting,
 the percentage, and completed chapter styling come from saved answer progress,
 while the current marker comes from the question being viewed. The Welcome map

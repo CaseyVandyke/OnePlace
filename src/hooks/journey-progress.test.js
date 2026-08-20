@@ -6,6 +6,7 @@ describe('summarizeJourneyProgress', () => {
 		const summary = summarizeJourneyProgress({ questionStatuses: {}, completedQuickSteps: [] });
 
 		expect(summary.setupPercentComplete).toBe(0);
+		expect(summary.availableChapter).toBe(0);
 		expect(summary.currentChapter).toBe(0);
 		expect(summary.nextQuestionIndex).toBe(0);
 	});
@@ -20,6 +21,7 @@ describe('summarizeJourneyProgress', () => {
 		expect(summary.setupPercentComplete).toBe(90);
 		expect(summary.nextQuestionIndex).toBe(4);
 		expect(summary.currentChapter).toBe(2);
+		expect(summary.availableChapter).toBe(5);
 		expect(summary.skippedQuestions).toEqual([4]);
 	});
 
@@ -33,6 +35,7 @@ describe('summarizeJourneyProgress', () => {
 		expect(summary.setupPercentComplete).toBe(100);
 		expect(summary.nextQuestionIndex).toBe(-1);
 		expect(summary.currentChapter).toBe(6);
+		expect(summary.availableChapter).toBe(6);
 	});
 
 	test('keeps post-setup quick steps separate from guided setup progress', () => {

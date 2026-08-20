@@ -1,7 +1,7 @@
 import Icon from './icon';
 import { mapStops, mapTrailSegments } from '../constants/journey';
 
-const WorldMap = ({ chapter = 0, compact = false, litChapter = chapter, onSelectStop, preview = false, selectableStops }) => {
+const WorldMap = ({ chapter = 0, availableChapter = chapter, compact = false, litChapter = chapter, onSelectStop, preview = false, selectableStops }) => {
 	return (
 		<div className={`world-map ${compact ? 'map-compact' : ''} ${preview ? 'map-preview' : ''}`}>
 			<div className='map-paper'>
@@ -26,16 +26,18 @@ const WorldMap = ({ chapter = 0, compact = false, litChapter = chapter, onSelect
 				<div className='map-compass' aria-label='Map compass pointing north'><b>NORTH</b><i /><span>✦</span></div>
 				{mapStops.map((stop, index) => {
 					const current = index === chapter;
-					const unlocked = index <= litChapter || preview;
+					const illuminated = index < litChapter || preview;
+					const available = index <= availableChapter || preview || current;
 					const selectable = !selectableStops || selectableStops.includes(stop.name);
-					const interactive = Boolean(onSelectStop && selectable && unlocked && !current);
+					const interactive = Boolean(onSelectStop && selectable && available && !current);
+					const progressState = illuminated ? 'unlocked' : available ? 'available' : 'locked';
 					const Stop = interactive ? 'button' : 'div';
 
 					return (
 						<Stop
 							aria-current={current ? 'location' : undefined}
 							aria-label={interactive ? `Open ${stop.name}` : undefined}
-							className={`map-stop ${interactive ? 'map-stop-button' : ''} ${stop.className} ${current ? 'current' : ''} ${unlocked ? 'unlocked' : 'locked'}`}
+							className={`map-stop ${interactive ? 'map-stop-button' : ''} ${stop.className} ${current ? 'current' : ''} ${progressState}`}
 							key={stop.name}
 							onClick={interactive ? () => onSelectStop(stop.name) : undefined}
 							style={{ left: `${stop.x}%`, top: `${stop.y}%` }}

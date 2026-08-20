@@ -42,10 +42,15 @@ const JourneyHeader = ({ current, onExit, progressChapter }) => {
 const SetupJourneyView = ({ initialQuestion, journeyProgress, onComplete, onExit }) => {
 	const [current, setCurrent] = useState(initialQuestion);
 	const question = questions[current];
+	const [furthestChapter, setFurthestChapter] = useState(() => Math.max(
+		journeyProgress.summary.availableChapter,
+		question.chapter
+	));
 	const answer = journeyProgress.answers[current];
 	const resetScroll = useScrollToTop(current);
 	const showQuestion = (nextQuestion) => {
 		resetScroll();
+		setFurthestChapter((furthest) => Math.max(furthest, questions[nextQuestion]?.chapter ?? 0));
 		setCurrent(nextQuestion);
 	};
 	const showMapDestination = (stopName) => {
@@ -89,6 +94,7 @@ const SetupJourneyView = ({ initialQuestion, journeyProgress, onComplete, onExit
 						<strong>{journeyProgress.summary.setupPercentComplete}% lit</strong>
 					</div>
 					<WorldMap
+						availableChapter={Math.max(furthestChapter, journeyProgress.summary.availableChapter)}
 						chapter={question.chapter}
 						compact
 						litChapter={journeyProgress.summary.currentChapter}

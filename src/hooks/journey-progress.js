@@ -43,13 +43,18 @@ export const summarizeJourneyProgress = (progress) => {
 		.map((_, index) => index)
 		.filter((index) => normalized.questionStatuses[index] === skipped);
 	const nextQuestionIndex = questions.findIndex((_, index) => normalized.questionStatuses[index] !== answered);
+	const currentChapter = nextQuestionIndex >= 0 ? questions[nextQuestionIndex].chapter : nextDestination;
+	const furthestVisitedChapter = Object.keys(normalized.questionStatuses).reduce((furthest, index) => (
+		Math.max(furthest, questions[Number(index)]?.chapter ?? 0)
+	), 0);
 	const completedSetupSteps = answeredQuestions.length;
 	const totalSetupSteps = questions.length;
 
 	return {
 		answeredQuestions,
+		availableChapter: Math.max(currentChapter, furthestVisitedChapter),
 		completedSetupSteps,
-		currentChapter: nextQuestionIndex >= 0 ? questions[nextQuestionIndex].chapter : nextDestination,
+		currentChapter,
 		nextQuestionIndex,
 		setupPercentComplete: Math.round((completedSetupSteps / totalSetupSteps) * 100),
 		skippedQuestions,

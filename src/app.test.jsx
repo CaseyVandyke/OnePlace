@@ -213,6 +213,27 @@ describe('OnePlace', () => {
 		expect(screen.queryByRole('button', { name: 'Open Basecamp' })).not.toBeInTheDocument();
 	});
 
+	test('keeps skipped chapters available without illuminating them as complete', async() => {
+		const user = userEvent.setup();
+		await beginSetup(user);
+
+		await user.click(screen.getByRole('button', { name: 'My children' }));
+		await user.click(screen.getByRole('button', { name: 'Save & continue' }));
+		await user.type(screen.getByRole('textbox', { name: 'Your place’s name' }), 'Morgan family');
+		await user.click(screen.getByRole('button', { name: 'Save & continue' }));
+		for (let index = 0; index < 5; index += 1) {
+			await user.click(screen.getByRole('button', { name: 'I’ll come back to this' }));
+		}
+
+		expect(screen.getByText('Question 8 of 10')).toBeVisible();
+		expect(document.querySelector('.map-stop.kindred-grove')).toHaveClass('current', 'available');
+		expect(document.querySelector('.map-stop.paper-port')).toHaveClass('available');
+		expect(document.querySelector('.map-stop.paper-port')).not.toHaveClass('unlocked');
+		expect(screen.getByRole('button', { name: 'Open Paper Port' })).toBeVisible();
+		expect(document.querySelector('.map-stop.memory-lake')).toHaveClass('locked');
+		expect(screen.queryByRole('button', { name: 'Open Memory Lake' })).not.toBeInTheDocument();
+	});
+
 	test('returns to the welcome screen from the main app logo', async() => {
 		const user = userEvent.setup();
 		render(<App />);

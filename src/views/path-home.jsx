@@ -36,7 +36,12 @@ const PathHomeView = ({ onContinue, onMapDestination, onResumeQuestion, progress
 						<Icon name='arrow' />
 					</button>
 				</div>
-				<WorldMap chapter={summary.currentChapter} compact onSelectStop={onMapDestination} />
+				<WorldMap
+					availableChapter={summary.availableChapter}
+					chapter={summary.currentChapter}
+					compact
+					onSelectStop={onMapDestination}
+				/>
 			</section>
 			<section className='today-quest'>
 				<div className='quest-number'>

@@ -11,6 +11,7 @@ import { screens } from './constants/navigation';
 
 const App = () => {
 	const [screen, setScreen] = useState(screens.WELCOME);
+	const [screenChanging, setScreenChanging] = useState(false);
 	const journeyProgress = useJourneyProgress();
 	const [journeyQuestion, setJourneyQuestion] = useState(0);
 
@@ -25,12 +26,16 @@ const App = () => {
 
 	const resetScroll = useScrollToTop(screen);
 	const showScreen = (nextScreen) => {
-		resetScroll();
-		// Give WebKit one painted frame at the document top before replacing a
-		// long screen with a shorter one. Otherwise it can preserve the tapped
-		// element's previous scroll anchor on the new screen.
+		setScreenChanging(true);
+		// Cover the outgoing screen while WebKit paints it once at the document
+		// top. This preserves the Safari scroll-anchor fix without exposing the
+		// old page's necessary scroll reset to the user.
 		window.requestAnimationFrame(() => {
-			window.requestAnimationFrame(() => setScreen(nextScreen));
+			resetScroll();
+			window.requestAnimationFrame(() => {
+				setScreen(nextScreen);
+				setScreenChanging(false);
+			});
 		});
 	};
 	const showWelcome = () => showScreen(screens.WELCOME);
@@ -78,7 +83,12 @@ const App = () => {
 		);
 	}
 
-	return <main className='app-shell'>{content}</main>;
+	return (
+		<main className={`app-shell ${screenChanging ? 'screen-changing' : ''}`}>
+			{content}
+			<div className='screen-transition-cover' aria-hidden='true' />
+		</main>
+	);
 };
 
 export default App;

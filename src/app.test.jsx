@@ -1,6 +1,6 @@
-import { render, screen, within } from '@testing-library/react';
+import { act, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import App from './app';
 import { journeyProgressStorageKey } from './hooks/journey-progress';
 
@@ -135,6 +135,31 @@ describe('OnePlace', () => {
 
 		expect(screen.getByRole('heading', { name: 'Who are you preparing this for?' })).toBeVisible();
 		expect(document.querySelector('.journey-screen')).toHaveClass('screen-enter');
+	});
+
+	test('covers the outgoing page during the Safari scroll reset', async() => {
+		const user = userEvent.setup();
+		render(<App />);
+		await user.click(screen.getByRole('button', { name: 'Preview the app' }));
+
+		const frames = [];
+		const frameSpy = vi.spyOn(window, 'requestAnimationFrame').mockImplementation((callback) => {
+			frames.push(callback);
+			return frames.length;
+		});
+		const appShell = screen.getByRole('main');
+
+		await user.click(screen.getByRole('button', { name: 'Continue The essentials' }));
+		expect(appShell).toHaveClass('screen-changing');
+
+		act(() => frames.shift()());
+		expect(window.scrollTo).toHaveBeenCalledWith(0, 0);
+		expect(appShell).toHaveClass('screen-changing');
+
+		act(() => frames.shift()());
+		expect(appShell).not.toHaveClass('screen-changing');
+		expect(screen.getByRole('heading', { name: 'Who are you preparing this for?' })).toBeVisible();
+		frameSpy.mockRestore();
 	});
 
 	test('shows completed guided setup as fully lit', async() => {

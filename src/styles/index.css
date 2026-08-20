@@ -18,6 +18,8 @@
 * { box-sizing: border-box; }
 html { scroll-behavior: auto; }
 body { margin: 0; min-width: 320px; background: var(--paper); }
+.screen-transition-cover { position: fixed; z-index: 1000; inset: 0; visibility: hidden; pointer-events: none; background: var(--paper); opacity: 0; }
+.app-shell.screen-changing .screen-transition-cover { visibility: visible; opacity: 1; }
 button, input, select, textarea { font: inherit; }
 button { color: inherit; }
 button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid rgba(72, 100, 170, .25); outline-offset: 3px; }

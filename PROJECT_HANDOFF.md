@@ -135,7 +135,9 @@ The rendered question count is data-driven. Treat the `questions` array in
 
 Each question is tracked as answered or skipped. Answered questions increase the
 guided-setup percentage against the ten available onboarding questions; skipped
-questions remain pending and appear in a “Come back to this” list in My Path.
+questions remain pending in My Path. The dashboard leads with **Continue where
+you left off** and keeps the full skipped-question list collapsed behind a clear
+**View all** control so returning users are not confronted by a wall of cards.
 Completing all ten questions therefore displays 100% rather than dividing by
 unimplemented future tasks. Post-setup quick steps remain separate milestones.
 The first unanswered or skipped question determines the active map destination.
@@ -175,10 +177,15 @@ explicit **Back to map** action. The guided setup map navigates to the first
 question of a reached chapter. Its current location remains a noninteractive
 position marker because that question is already open. Mount Vault stays
 noninteractive during setup because it has no guided question yet.
-The detailed **Your journey** cards follow the same progress boundary. The
-current card continues setup, visited cards return to their unfinished question,
-completed cards can be reviewed, and future cards are visibly labeled
-**Not reached yet** instead of looking interactive while ignoring input.
+The six detailed **Your journey** cards correspond exactly to the six guided map
+chapters and their question indexes: Basecamp (Questions 1–2), Paper Port
+(3–4), Money Meadow (5–6), Safety Harbor (7), Kindred Grove (8–9), and Memory
+Lake (10). Their `X of Y` values are derived from answered questions in those
+exact groups. The current card continues setup, visited cards return to their
+unfinished question, completed cards can be reviewed, and future cards are
+visibly labeled **Not reached yet** instead of looking interactive while
+ignoring input. Mount Vault remains a separate post-setup quick step because it
+does not yet have a guided question.
 Viewing an earlier chapter must not undo earned illumination: trail lighting,
 the percentage, and completed chapter styling come from saved answer progress,
 while the current marker comes from the question being viewed. The Welcome map

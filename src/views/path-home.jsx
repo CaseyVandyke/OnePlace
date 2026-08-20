@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import Icon from '../components/icon';
 import WorldMap from '../components/world-map';
 import { pathStops } from '../constants/dashboard';
 import { chapters, questions } from '../constants/journey';
 
 const PathHomeView = ({ onContinue, onMapDestination, onResumeQuestion, progress, summary }) => {
+	const [showPendingQuestions, setShowPendingQuestions] = useState(false);
 	const nextQuestion = summary.nextQuestionIndex >= 0 ? questions[summary.nextQuestionIndex] : null;
 	const nextQuestionWasSkipped = progress.questionStatuses[summary.nextQuestionIndex] === 'skipped';
 	const progressLabel = nextQuestion
@@ -14,14 +16,10 @@ const PathHomeView = ({ onContinue, onMapDestination, onResumeQuestion, progress
 	const matchedPathStop = nextQuestion
 		? pathStops.findIndex((stop) => stop.questionIndexes.includes(summary.nextQuestionIndex))
 		: -1;
-	const activePathStop = nextQuestion
-		? Math.max(0, matchedPathStop)
-		: progress.completedQuickSteps.includes('device-access-location') ? -1 : 3;
+	const activePathStop = nextQuestion ? matchedPathStop : -1;
 	const getStopProgress = (stop, index) => {
-		const target = stop.questionIndexes.length || 1;
-		const completed = stop.questionIndexes.length
-			? stop.questionIndexes.filter((questionIndex) => progress.questionStatuses[questionIndex] === 'answered').length
-			: Number(progress.completedQuickSteps.includes('device-access-location'));
+		const target = stop.questionIndexes.length;
+		const completed = stop.questionIndexes.filter((questionIndex) => progress.questionStatuses[questionIndex] === 'answered').length;
 		const visited = stop.questionIndexes.some((questionIndex) => progress.questionStatuses[questionIndex]);
 		const complete = completed === target;
 		const current = index === activePathStop;
@@ -45,7 +43,7 @@ const PathHomeView = ({ onContinue, onMapDestination, onResumeQuestion, progress
 					<h1>Your path is<br /><em>{summary.setupPercentComplete}% lit.</em></h1>
 					<p>One thoughtful answer today will make the path clearer for your family tomorrow.</p>
 					<button className='continue-button' onClick={onContinue}>
-						{nextQuestion ? nextQuestionWasSkipped ? 'Return to saved question' : 'Continue setup' : 'Take today’s 3-minute step'}
+						{nextQuestion ? 'Continue where you left off' : 'Take today’s 3-minute step'}
 						<Icon name='arrow' />
 					</button>
 				</div>
@@ -79,18 +77,34 @@ const PathHomeView = ({ onContinue, onMapDestination, onResumeQuestion, progress
 			{summary.skippedQuestions.length > 0 && (
 				<section className='pending-questions' aria-labelledby='pending-questions-title'>
 					<header>
-						<div><p>COME BACK TO THIS</p><h2 id='pending-questions-title'>Saved for when you’re ready.</h2></div>
-						<span>{summary.skippedQuestions.length} {summary.skippedQuestions.length === 1 ? 'item' : 'items'}</span>
+						<div>
+							<p>COME BACK TO THIS</p>
+							<h2 id='pending-questions-title'>
+								{summary.skippedQuestions.length} {summary.skippedQuestions.length === 1 ? 'question' : 'questions'} saved for later.
+							</h2>
+						</div>
+						<button
+							aria-controls='pending-question-list'
+							aria-expanded={showPendingQuestions}
+							className='pending-toggle'
+							onClick={() => setShowPendingQuestions((shown) => !shown)}
+							type='button'
+						>
+							{showPendingQuestions ? 'Hide questions' : 'View all'}
+							<Icon name={showPendingQuestions ? 'back' : 'arrow'} size={18} />
+						</button>
 					</header>
-					<div>
-						{summary.skippedQuestions.map((questionIndex) => (
-							<button onClick={() => onResumeQuestion(questionIndex)} key={questionIndex}>
-								<span>{chapters[questions[questionIndex].chapter].name}</span>
-								<strong>{questions[questionIndex].title}</strong>
-								<Icon name='arrow' />
-							</button>
-						))}
-					</div>
+					{showPendingQuestions && (
+						<div className='pending-question-list screen-enter' id='pending-question-list'>
+							{summary.skippedQuestions.map((questionIndex) => (
+								<button onClick={() => onResumeQuestion(questionIndex)} key={questionIndex}>
+									<span>{chapters[questions[questionIndex].chapter].name}</span>
+									<strong>{questions[questionIndex].title}</strong>
+									<Icon name='arrow' />
+								</button>
+							))}
+						</div>
+					)}
 				</section>
 			)}
 			<section className='path-section'>
@@ -99,8 +113,8 @@ const PathHomeView = ({ onContinue, onMapDestination, onResumeQuestion, progress
 					<span>{summary.completedSetupSteps} of {summary.totalSetupSteps} setup steps complete</span>
 				</div>
 				<div className='winding-path'>
-					<svg viewBox='0 0 900 720' preserveAspectRatio='none' aria-hidden='true'>
-						<path d='M160 0 C160 100 730 70 730 190 S170 285 170 390 S730 480 730 570 S380 690 160 720' />
+					<svg viewBox='0 0 900 900' preserveAspectRatio='none' aria-hidden='true'>
+						<path d='M160 0 C160 100 730 70 730 190 S170 285 170 390 S730 480 730 570 S170 660 170 730 S730 820 730 900' />
 					</svg>
 					{pathStops.map((stop, index) => {
 						const stopProgress = getStopProgress(stop, index);

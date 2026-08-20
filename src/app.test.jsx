@@ -122,8 +122,25 @@ describe('OnePlace', () => {
 		expect(screen.queryByText(/Wednesday’s small win/i)).not.toBeInTheDocument();
 		expect(screen.queryByText(/\bglow\b/i)).not.toBeInTheDocument();
 		expect(screen.queryByRole('button', { name: /change guide/i })).not.toBeInTheDocument();
-		expect(screen.getByRole('button', { name: 'Continue The essentials' })).toBeVisible();
+		expect(screen.getByRole('button', { name: 'Continue where you left off' })).toBeVisible();
+		expect(screen.getByRole('button', { name: 'Continue Basecamp' })).toBeVisible();
 		expect(screen.getAllByText('Not reached yet', { selector: '.path-stop-action' })[0]).toBeVisible();
+	});
+
+	test('aligns detailed path counts with their map chapters', async() => {
+		const user = userEvent.setup();
+		window.localStorage.setItem(journeyProgressStorageKey, JSON.stringify({
+			questionStatuses: { 0: 'answered', 1: 'skipped' },
+			completedQuickSteps: []
+		}));
+		render(<App />);
+
+		await user.click(screen.getByRole('button', { name: 'Preview the app' }));
+		const basecampCard = screen.getByRole('button', { name: 'Continue Basecamp' });
+
+		expect(within(basecampCard).getByText('1 of 2')).toBeVisible();
+		expect(screen.getByRole('heading', { name: '1 question saved for later.' })).toBeVisible();
+		expect(screen.queryByRole('button', { name: /What should your family call this place/ })).not.toBeInTheDocument();
 	});
 
 	test('continues setup from the current detailed path card', async() => {
@@ -131,7 +148,7 @@ describe('OnePlace', () => {
 		render(<App />);
 
 		await user.click(screen.getByRole('button', { name: 'Preview the app' }));
-		await user.click(screen.getByRole('button', { name: 'Continue The essentials' }));
+		await user.click(screen.getByRole('button', { name: 'Continue Basecamp' }));
 
 		expect(screen.getByRole('heading', { name: 'Who are you preparing this for?' })).toBeVisible();
 		expect(document.querySelector('.journey-screen')).toHaveClass('screen-enter');
@@ -149,7 +166,7 @@ describe('OnePlace', () => {
 		});
 		const appShell = screen.getByRole('main');
 
-		await user.click(screen.getByRole('button', { name: 'Continue The essentials' }));
+		await user.click(screen.getByRole('button', { name: 'Continue Basecamp' }));
 		expect(appShell).toHaveClass('screen-changing');
 
 		act(() => frames.shift()());
@@ -378,10 +395,14 @@ describe('OnePlace', () => {
 		expect(screen.getByText('Question 10 of 10')).toBeVisible();
 		await user.click(screen.getByRole('button', { name: 'I’ll come back to this' }));
 		await user.click(screen.getByRole('button', { name: 'Enter my OnePlace' }));
-		const pendingQuestions = screen.getByRole('heading', { name: 'Saved for when you’re ready.' }).closest('section');
+		const pendingQuestions = screen.getByRole('heading', { name: '10 questions saved for later.' }).closest('section');
 
 		expect(screen.getByText('0% lit.')).toBeVisible();
-		expect(within(pendingQuestions).getByText('10 items')).toBeVisible();
+		const viewAllButton = within(pendingQuestions).getByRole('button', { name: 'View all' });
+		expect(viewAllButton).toHaveAttribute('aria-expanded', 'false');
+		expect(within(pendingQuestions).queryByRole('button', { name: /Who are you preparing this for/ })).not.toBeInTheDocument();
+		await user.click(viewAllButton);
+		expect(viewAllButton).toHaveAttribute('aria-expanded', 'true');
 		await user.click(within(pendingQuestions).getByRole('button', { name: /Who are you preparing this for/ }));
 		expect(screen.getByRole('heading', { name: 'Who are you preparing this for?' })).toBeVisible();
 		expect(document.querySelector('.journey-screen')).toHaveClass('screen-enter');

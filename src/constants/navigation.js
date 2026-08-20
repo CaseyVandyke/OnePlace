@@ -27,6 +27,5 @@ export const mapDestinationViews = {
 	'Money Meadow': appViews.THINGS,
 	'Safety Harbor': appViews.THINGS,
 	'Kindred Grove': appViews.PEOPLE,
-	'Memory Lake': appViews.MESSAGES,
-	'Mount Vault': appViews.THINGS
+	'Memory Lake': appViews.MESSAGES
 };

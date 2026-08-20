@@ -137,14 +137,15 @@ Each question is tracked as answered or skipped. Answered questions increase the
 guided-setup percentage against the ten available onboarding questions; skipped
 questions remain pending in My Path. The dashboard keeps the full skipped-question
 list collapsed behind a clear **View all** control so returning users are not
-confronted by a wall of cards. Contextual resume actions remain on the current
-question card, reached map destination, and current detailed journey card rather
-than repeating a generic hero button.
+confronted by a wall of cards. Contextual resume actions remain on the reached
+map destination and current detailed journey card rather than repeating generic
+hero or current-task buttons.
 Completing all ten questions therefore displays 100% rather than dividing by
 unimplemented future tasks. Post-setup quick steps remain separate milestones.
 The first unanswered or skipped question determines the active map destination.
 After all onboarding questions are answered, Mount Vault becomes the next
-recommended destination for digital-access instructions. The My Path status pill
+recommended destination for digital-access instructions. Selecting Mount Vault
+from the dashboard map opens that quick setup directly. The My Path status pill
 is derived from this progress and must not use a hard-coded weekday.
 
 ### 5. Completion and main app

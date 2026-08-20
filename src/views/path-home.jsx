@@ -7,7 +7,6 @@ import { chapters, questions } from '../constants/journey';
 const PathHomeView = ({ onContinue, onMapDestination, onResumeQuestion, progress, summary }) => {
 	const [showPendingQuestions, setShowPendingQuestions] = useState(false);
 	const nextQuestion = summary.nextQuestionIndex >= 0 ? questions[summary.nextQuestionIndex] : null;
-	const nextQuestionWasSkipped = progress.questionStatuses[summary.nextQuestionIndex] === 'skipped';
 	const progressLabel = nextQuestion
 		? summary.completedSetupSteps === 0
 			? 'Your first small step'
@@ -53,22 +52,6 @@ const PathHomeView = ({ onContinue, onMapDestination, onResumeQuestion, progress
 						onSelectStop={onMapDestination}
 					/>
 				</div>
-			</section>
-			<section className='today-quest'>
-				<div className='quest-number'>
-					<span>{nextQuestion ? summary.answeredQuestions.length : 3}</span>
-					<small>{nextQuestion ? 'DONE' : 'MIN'}</small>
-				</div>
-				<div>
-					<p>
-						{nextQuestion
-							? `${nextQuestionWasSkipped ? 'COME BACK TO THIS' : 'CONTINUE SETUP'} · ${chapters[nextQuestion.chapter].name}`
-							: 'NEXT RECOMMENDED · MOUNT VAULT'}
-					</p>
-					<h2>{nextQuestion ? nextQuestion.title : 'Add where device-access instructions are kept.'}</h2>
-					<span>{nextQuestion ? nextQuestion.copy : 'Record only the safe location—not a password or access code.'}</span>
-				</div>
-				<button onClick={onContinue}>{nextQuestionWasSkipped ? 'Return to it' : 'Let’s do it'} <Icon name='arrow' /></button>
 			</section>
 			{summary.skippedQuestions.length > 0 && (
 				<section className='pending-questions' aria-labelledby='pending-questions-title'>

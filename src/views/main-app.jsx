@@ -37,6 +37,10 @@ const MainAppView = ({ journeyProgress, onRestart, onResumeJourney }) => {
 			continuePath();
 			return;
 		}
+		if (stopName === 'Mount Vault') {
+			setResume(true);
+			return;
+		}
 
 		const nextView = mapDestinationViews[stopName];
 		if (nextView) showView(nextView);

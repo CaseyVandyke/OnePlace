@@ -123,6 +123,7 @@ describe('OnePlace', () => {
 		expect(screen.queryByText(/\bglow\b/i)).not.toBeInTheDocument();
 		expect(screen.queryByRole('button', { name: /change guide/i })).not.toBeInTheDocument();
 		expect(screen.queryByRole('button', { name: 'Continue where you left off' })).not.toBeInTheDocument();
+		expect(screen.queryByRole('button', { name: 'Let’s do it' })).not.toBeInTheDocument();
 		expect(screen.getByRole('button', { name: 'Continue Basecamp' })).toBeVisible();
 		expect(screen.getAllByText('Not reached yet', { selector: '.path-stop-action' })[0]).toBeVisible();
 	});
@@ -454,12 +455,12 @@ describe('OnePlace', () => {
 		render(<App />);
 		await user.click(screen.getByRole('button', { name: 'Preview the app' }));
 
-		await user.click(screen.getByRole('button', { name: 'Let’s do it' }));
+		await user.click(screen.getByRole('button', { name: 'Open Mount Vault' }));
 		expect(screen.getByRole('dialog', { name: 'Where can your family find device-access instructions?' })).toBeVisible();
 		await user.click(screen.getAllByRole('button', { name: 'Close quick step' })[0]);
 		expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
 
-		await user.click(screen.getByRole('button', { name: 'Let’s do it' }));
+		await user.click(screen.getByRole('button', { name: 'Open Mount Vault' }));
 		await user.click(screen.getAllByRole('button', { name: 'Close quick step' })[1]);
 		expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
 	});

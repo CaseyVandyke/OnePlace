@@ -11,6 +11,12 @@ import PeopleView from './people';
 import PossessionsView from './possessions';
 import ThingsView from './things';
 
+const questionByRoom = {
+	'paper-port': 2,
+	'money-meadow': 4,
+	'safety-harbor': 6
+};
+
 const MainAppView = ({ journeyProgress, onRestart, onResumeJourney }) => {
 	const [active, setActive] = useState(appViews.PATH);
 	const [resume, setResume] = useState(false);
@@ -34,6 +40,24 @@ const MainAppView = ({ journeyProgress, onRestart, onResumeJourney }) => {
 
 		const nextView = mapDestinationViews[stopName];
 		if (nextView) showView(nextView);
+	};
+	const showRoom = (roomId) => {
+		if (roomId in questionByRoom) {
+			onResumeJourney(questionByRoom[roomId]);
+			return;
+		}
+
+		if (roomId === 'mount-vault') {
+			setResume(true);
+			return;
+		}
+
+		if (roomId === 'memory-lake') {
+			showView(appViews.MESSAGES);
+			return;
+		}
+
+		if (roomId === 'possessions') showView(appViews.POSSESSIONS);
 	};
 
 	return (
@@ -60,10 +84,7 @@ const MainAppView = ({ journeyProgress, onRestart, onResumeJourney }) => {
 					/>
 				)}
 				{active === appViews.THINGS && (
-					<ThingsView
-						onContinue={() => setResume(true)}
-						onPossessions={() => showView(appViews.POSSESSIONS)}
-					/>
+					<ThingsView onOpenRoom={showRoom} />
 				)}
 				{active === appViews.POSSESSIONS && <PossessionsView onBack={() => showView(appViews.THINGS)} />}
 				{active === appViews.PEOPLE && <PeopleView />}

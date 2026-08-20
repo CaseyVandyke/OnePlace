@@ -135,9 +135,11 @@ The rendered question count is data-driven. Treat the `questions` array in
 
 Each question is tracked as answered or skipped. Answered questions increase the
 guided-setup percentage against the ten available onboarding questions; skipped
-questions remain pending in My Path. The dashboard leads with **Continue where
-you left off** and keeps the full skipped-question list collapsed behind a clear
-**View all** control so returning users are not confronted by a wall of cards.
+questions remain pending in My Path. The dashboard keeps the full skipped-question
+list collapsed behind a clear **View all** control so returning users are not
+confronted by a wall of cards. Contextual resume actions remain on the current
+question card, reached map destination, and current detailed journey card rather
+than repeating a generic hero button.
 Completing all ten questions therefore displays 100% rather than dividing by
 unimplemented future tasks. Post-setup quick steps remain separate milestones.
 The first unanswered or skipped question determines the active map destination.
@@ -245,6 +247,9 @@ Possessions are included in two places:
    the device, both during onboarding and from the dedicated keepsake list.
    Photo previews remain only in the current browser session and reset with the
    rest of the prototype state.
+4. Every card on **My Things** is functional: document, money, and protection
+   cards reopen their guided questions; Mount Vault opens its quick setup;
+   Memory Lake opens messages; and possessions opens the keepsake list.
 
 The page includes a reminder that personal wishes are useful but important gifts
 should also appear in a will or trust and be reviewed with an estate

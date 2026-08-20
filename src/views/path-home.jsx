@@ -42,10 +42,6 @@ const PathHomeView = ({ onContinue, onMapDestination, onResumeQuestion, progress
 					<span className='hello-pill'><i /> {progressLabel}</span>
 					<h1>Your path is<br /><em>{summary.setupPercentComplete}% lit.</em></h1>
 					<p>One thoughtful answer today will make the path clearer for your family tomorrow.</p>
-					<button className='continue-button' onClick={onContinue}>
-						{nextQuestion ? 'Continue where you left off' : 'Take today’s 3-minute step'}
-						<Icon name='arrow' />
-					</button>
 				</div>
 				<div className='path-map-navigation'>
 					<p className='map-navigation-hint'><Icon name='spark' size={18} /> Choose a reached place to open it.</p>

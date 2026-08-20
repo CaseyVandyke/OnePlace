@@ -122,9 +122,22 @@ describe('OnePlace', () => {
 		expect(screen.queryByText(/Wednesday’s small win/i)).not.toBeInTheDocument();
 		expect(screen.queryByText(/\bglow\b/i)).not.toBeInTheDocument();
 		expect(screen.queryByRole('button', { name: /change guide/i })).not.toBeInTheDocument();
-		expect(screen.getByRole('button', { name: 'Continue where you left off' })).toBeVisible();
+		expect(screen.queryByRole('button', { name: 'Continue where you left off' })).not.toBeInTheDocument();
 		expect(screen.getByRole('button', { name: 'Continue Basecamp' })).toBeVisible();
 		expect(screen.getAllByText('Not reached yet', { selector: '.path-stop-action' })[0]).toBeVisible();
+	});
+
+	test('opens a My things category from its card', async() => {
+		const user = userEvent.setup();
+		seedCompletedOnboarding();
+		render(<App />);
+
+		await user.click(screen.getByRole('button', { name: 'Preview the app' }));
+		await user.click(screen.getByRole('button', { name: 'Open Money Meadow' }));
+		expect(screen.getByText('Choose a section to review or continue.')).toBeVisible();
+
+		await user.click(screen.getByRole('button', { name: /Paper Port/ }));
+		expect(screen.getByRole('heading', { name: 'Do you have a will?' })).toBeVisible();
 	});
 
 	test('aligns detailed path counts with their map chapters', async() => {
@@ -441,12 +454,12 @@ describe('OnePlace', () => {
 		render(<App />);
 		await user.click(screen.getByRole('button', { name: 'Preview the app' }));
 
-		await user.click(screen.getByRole('button', { name: 'Take today’s 3-minute step' }));
+		await user.click(screen.getByRole('button', { name: 'Let’s do it' }));
 		expect(screen.getByRole('dialog', { name: 'Where can your family find device-access instructions?' })).toBeVisible();
 		await user.click(screen.getAllByRole('button', { name: 'Close quick step' })[0]);
 		expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
 
-		await user.click(screen.getByRole('button', { name: 'Take today’s 3-minute step' }));
+		await user.click(screen.getByRole('button', { name: 'Let’s do it' }));
 		await user.click(screen.getAllByRole('button', { name: 'Close quick step' })[1]);
 		expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
 	});

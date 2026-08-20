@@ -8,12 +8,12 @@ export const pathStops = [
 ];
 
 export const rooms = [
-	['file', 'Paper Port', '3 items', 'Your important papers are in good order', 'red'],
-	['bank', 'Money Meadow', '2 items', 'Four steps will make the trail clear', 'purple'],
-	['shield', 'Safety Harbor', '1 item', 'Add life or disability insurance next', 'blue'],
-	['key', 'Mount Vault', 'Not started', 'Vault codes, devices and digital access', 'iris'],
-	['heart', 'Memory Lake', '1 message', 'Stories and wishes in your own words', 'pink'],
-	['gift', 'Possessions & keepsakes', '2 wishes', 'Meaningful belongings and who should receive them', 'plum']
+	{ id: 'paper-port', icon: 'file', name: 'Paper Port', count: '3 items', copy: 'Your important papers are in good order', color: 'red' },
+	{ id: 'money-meadow', icon: 'bank', name: 'Money Meadow', count: '2 items', copy: 'Four steps will make the trail clear', color: 'purple' },
+	{ id: 'safety-harbor', icon: 'shield', name: 'Safety Harbor', count: '1 item', copy: 'Add life or disability insurance next', color: 'blue' },
+	{ id: 'mount-vault', icon: 'key', name: 'Mount Vault', count: 'Not started', copy: 'Vault codes, devices and digital access', color: 'iris' },
+	{ id: 'memory-lake', icon: 'heart', name: 'Memory Lake', count: '1 message', copy: 'Stories and wishes in your own words', color: 'pink' },
+	{ id: 'possessions', icon: 'gift', name: 'Possessions & keepsakes', count: '2 wishes', copy: 'Meaningful belongings and who should receive them', color: 'plum' }
 ];
 
 export const messagePrompts = [

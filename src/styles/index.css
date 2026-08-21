@@ -62,8 +62,8 @@ button { cursor: pointer; }
 .menu-toggle-icon.open > span:nth-child(1) { top: 10px; transform: rotate(45deg); }
 .menu-toggle-icon.open > span:nth-child(2) { opacity: 0; transform: scaleX(.35); }
 .menu-toggle-icon.open > span:nth-child(3) { top: 10px; transform: rotate(-45deg); }
-.welcome-layout { position: relative; z-index: 2; width: min(1250px, calc(100% - 8vw)); margin: 0 auto; padding: 90px 0 clamp(270px,28vw,430px); }
-.welcome-copy { width: min(680px, 62%); padding: 0; }
+.welcome-layout { position: relative; z-index: 2; width: min(1320px, calc(100% - 8vw)); margin: 0 auto; padding: 70px 0 28px; display: grid; grid-template-columns: minmax(0,.82fr) minmax(0,1.18fr); gap: 30px 4vw; align-items: center; }
+.welcome-copy { width: 100%; padding: 0; }
 .hello-pill { display: inline-flex; align-items: center; gap: 8px; width: fit-content; border: 1px solid rgba(95,105,75,.3); background: rgba(255,250,241,.7); color: #4f593e; padding: 8px 12px; border-radius: 99px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .09em; }
 .hello-pill i { width: 6px; height: 6px; border-radius: 50%; background: var(--bark); box-shadow: 0 0 0 4px rgba(113,101,79,.14); }
 .welcome-copy h1, .complete-copy h1 { margin: 27px 0 23px; font: 600 clamp(48px, 5.6vw, 82px)/.97 "Playfair Display", serif; letter-spacing: -.045em; }
@@ -73,9 +73,26 @@ button { cursor: pointer; }
 .journey-button { display: inline-flex; align-items: center; gap: 18px; border: 0; border-radius: 99px; color: #fff; background: linear-gradient(105deg, var(--bark), #5f694b 55%, var(--olivewood)); padding: 16px 21px 16px 25px; font-size: 13px; font-weight: 800; box-shadow: 0 16px 42px rgba(66,69,48,.22); transition: transform .2s, box-shadow .2s; }
 .journey-button svg { padding: 7px; width: 33px; height: 33px; border-radius: 50%; background: rgba(255,255,255,.16); }
 .journey-button:hover { transform: translateY(-2px); box-shadow: 0 20px 50px rgba(66,69,48,.3); }
-.welcome-promises { display: flex; flex-wrap: wrap; gap: 23px; margin-top: 31px; color: var(--bark); font-size: 9px; text-transform: uppercase; letter-spacing: .08em; }
-.welcome-promises span { display: flex; gap: 7px; align-items: center; }
-.welcome-promises svg { width: 14px; height: 14px; color: var(--sage); }
+.welcome-map { min-width: 0; align-self: stretch; display: grid; align-items: center; }
+.welcome-map .world-map { width: 100%; max-width: 760px; }
+.welcome-map .map-paper { border: 0; border-radius: 0; color: var(--ink); background: transparent; box-shadow: none; }
+.welcome-map .map-paper::before { opacity: .07; }
+.welcome-map .map-contours path { stroke: rgba(95,105,75,.32); }
+.welcome-map .map-contours .map-shore { fill: rgba(255,250,241,.24); stroke: rgba(113,101,79,.24); }
+.welcome-map .map-contours .trail-segment-base { stroke: rgba(95,105,75,.72); }
+.welcome-map .map-contours .river-line { stroke: #899176; opacity: .45; }
+.welcome-map .map-stop { color: var(--ink); filter: none; opacity: 1; }
+.welcome-map .map-stop strong { color: var(--ink); background: rgba(255,250,241,.9); box-shadow: 0 4px 14px rgba(41,45,32,.1); }
+.welcome-map .map-stop small { color: var(--ink); background: rgba(255,250,241,.92); box-shadow: 0 4px 14px rgba(41,45,32,.1); }
+.welcome-map .map-stop-icon { color: #fff; }
+.welcome-map .map-preview-note { display: none; }
+.welcome-promises { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3,1fr); margin-top: 5px; padding: 24px 28px; border: 1px solid rgba(113,101,79,.18); border-radius: 22px; color: var(--ink); background: rgba(255,250,241,.76); box-shadow: 0 12px 35px rgba(41,45,32,.06); }
+.welcome-promises > span { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: start; padding: 0 28px; }
+.welcome-promises > span + span { border-left: 1px solid rgba(113,101,79,.18); }
+.welcome-promises > span > svg { width: 42px; height: 42px; padding: 10px; border-radius: 50%; color: var(--olivewood); background: rgba(219,201,170,.42); }
+.welcome-promises > span > span { display: grid; gap: 5px; }
+.welcome-promises strong { color: var(--ink); text-transform: uppercase; letter-spacing: .07em; }
+.welcome-promises small { color: var(--muted); font-size: 15px; line-height: 1.5; text-transform: none; letter-spacing: 0; }
 
 /* Companion guide and family map */
 .world-map { position: relative; width: min(650px,100%); aspect-ratio: 1.22; justify-self: center; }
@@ -445,15 +462,22 @@ button { cursor: pointer; }
   .welcome-nav .brand { font-size: 22px; }
   .welcome-meta { gap: 8px; }
   .welcome-nav button { min-height: 44px; }
-  .welcome-layout { display: block; width: 100%; padding: 54px 22px clamp(420px,105vw,540px); }
+  .welcome-layout { display: grid; grid-template-columns: 1fr; gap: 30px; width: 100%; padding: 48px 22px 30px; }
   .welcome-copy { width: 100%; padding: 0; text-align: left; }
   .welcome-copy .hello-pill,
   .welcome-copy > p { margin-left: 0; margin-right: 0; }
   .welcome-copy h1 { margin: 24px 0 20px; font-size: clamp(45px, 13vw, 62px); line-height: 1; }
   .welcome-copy > p { font-size: 19px; line-height: 1.65; }
   .journey-button { width: 100%; max-width: 390px; justify-content: space-between; }
-  .welcome-promises { display: grid; justify-content: start; gap: 14px; margin-top: 28px; }
+  .welcome-promises { order: 2; grid-column: 1; grid-template-columns: 1fr; gap: 0; margin-top: 0; padding: 10px 20px; }
+  .welcome-promises > span { padding: 16px 0; }
+  .welcome-promises > span + span { border-top: 1px solid rgba(113,101,79,.18); border-left: 0; }
   .welcome-promises span { font-size: 14px; }
+  .welcome-map { order: 3; width: 100%; margin-top: 2px; }
+  .welcome-map .world-map { width: 100%; margin: 0 auto; }
+  .welcome-map .map-stop { min-width: 96px; }
+  .welcome-map .map-stop strong { font-size: 13px; }
+  .welcome-map .map-stop small { display: none; }
   .journey-header { padding: 12px 16px; grid-template-columns: minmax(0,1fr) auto; gap: 9px; }
   .journey-header .brand { font-size: 21px; }
   .journey-header .brand-door { transform: scale(.82); transform-origin: left center; }

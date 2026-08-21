@@ -28,7 +28,7 @@ describe('OnePlace', () => {
 		expect(screen.getByText('oneplace')).toBeVisible();
 		expect(document.querySelector('.welcome-screen')).toBeInTheDocument();
 		expect(document.querySelector('.welcome-footer')).not.toBeInTheDocument();
-		expect(document.querySelector('.welcome-layout .world-map')).not.toBeInTheDocument();
+		expect(document.querySelector('.welcome-layout .world-map')).toBeInTheDocument();
 
 		window.scrollTo.mockClear();
 		await user.click(screen.getByRole('button', { name: 'Build my OnePlace' }));

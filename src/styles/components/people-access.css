@@ -6,8 +6,8 @@
 
 .orbit-person:hover,
 .orbit-person.selected {
-	border-color: #9b7caf;
-	box-shadow: 0 15px 34px rgba(112, 78, 139, .16);
+	border-color: var(--sage);
+	box-shadow: 0 15px 34px rgba(73, 83, 57, .16);
 }
 
 .orbit-person.selected {
@@ -54,8 +54,8 @@
 	margin: 0 auto 28px;
 	border: 1px solid var(--line);
 	border-radius: 22px;
-	background: #fff;
-	box-shadow: 0 18px 45px rgba(55, 43, 59, .07);
+	background: var(--surface);
+	box-shadow: 0 18px 45px rgba(41, 45, 32, .07);
 }
 
 .add-person-panel {
@@ -100,11 +100,11 @@
 .add-person-panel input {
 	width: 100%;
 	min-height: 52px;
-	border: 1px solid #dcd5d1;
+	border: 1px solid var(--line);
 	border-radius: 12px;
 	padding: 13px 15px;
 	color: var(--ink);
-	background: #fff;
+	background: var(--surface);
 	font-size: 17px;
 }
 
@@ -119,7 +119,7 @@
 	border: 1px solid var(--line);
 	border-radius: 99px;
 	padding: 12px 18px;
-	background: #fff;
+	background: var(--surface);
 	font-size: 16px;
 	font-weight: 800;
 }
@@ -130,7 +130,7 @@
 	gap: 9px;
 	border-color: transparent;
 	color: #fff;
-	background: linear-gradient(110deg, #b64f72, #7355a0 62%, #466f9e);
+	background: linear-gradient(110deg, var(--bark), var(--purple) 62%, var(--olivewood));
 }
 
 .add-person-actions button:disabled {
@@ -164,7 +164,7 @@
 	place-items: center;
 	border-radius: 50%;
 	color: #fff;
-	background: linear-gradient(145deg, var(--red), var(--purple));
+	background: linear-gradient(145deg, var(--bark), var(--purple));
 	font-size: 18px;
 	font-weight: 800;
 }
@@ -201,13 +201,13 @@
 	border: 1px solid var(--line);
 	border-radius: 14px;
 	padding: 16px;
-	background: #fff;
+	background: var(--surface);
 	cursor: pointer;
 }
 
 .access-timing label.selected {
-	border-color: #9b7caf;
-	background: #f4eff7;
+	border-color: var(--sage);
+	background: rgba(187, 195, 163, .3);
 }
 
 .access-timing input,
@@ -255,13 +255,13 @@
 	border: 1px solid var(--line);
 	border-radius: 14px;
 	padding: 16px;
-	background: #fff;
+	background: var(--surface);
 	cursor: pointer;
 }
 
 .access-item-picker > div > label.selected {
-	border-color: #9b7caf;
-	background: #f8f4fa;
+	border-color: var(--sage);
+	background: rgba(187, 195, 163, .2);
 }
 
 .access-item-copy > small,
@@ -293,7 +293,7 @@
 	border-radius: 99px;
 	padding: 7px 10px;
 	color: #655f68;
-	background: #efebe9;
+	background: #e8e0d2;
 	font-size: 14px;
 	font-weight: 800;
 	text-align: center;
@@ -313,7 +313,7 @@
 	border-radius: 14px;
 	padding: 16px;
 	color: var(--blue);
-	background: #edf1f5;
+	background: rgba(187, 195, 163, .3);
 }
 
 .access-selection-summary strong,

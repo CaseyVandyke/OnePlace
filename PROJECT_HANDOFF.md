@@ -52,7 +52,13 @@ current prototype.
 
 - Working name: **OnePlace**
 - Tone: warm and comforting first, never clinical or gloomy
-- Core colors: red, purple, and blue
+- Core colors: parchment, sand, olive, sage, bark, and olivewood. Darker
+  olivewood, bark, and sage tones carry text and interactive controls so the
+  softer palette still meets practical contrast requirements.
+- The Welcome screen uses the supplied watercolor path-and-house artwork as a
+  responsive background: `src/assets/oneplace-path-mobile.jpg` below 780px and
+  `src/assets/oneplace-path-desktop.jpg` on larger screens. Keep form and setup
+  surfaces calm and readable rather than placing the illustration behind them.
 - The experience should feel like a family journey rather than a recovery app,
   enterprise dashboard, or checklist of death-related chores.
 - Progress is meaningful rather than game-like: completed steps light locations

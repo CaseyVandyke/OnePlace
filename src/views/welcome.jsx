@@ -1,21 +1,18 @@
 import AccountMenu from '../components/account-menu';
 import Icon from '../components/icon';
 import Logo from '../components/logo';
-import WorldMap from '../components/world-map';
 
 const WelcomeView = ({ onStart, onPreview }) => {
 	return (
 		<section className='welcome-screen'>
 			<header className='site-header welcome-nav'>
-				<Logo light />
+				<Logo />
 				<div className='welcome-meta'>
 					<span><Icon name='lock' size={14} /> Private concept demo</span>
 					<button onClick={onPreview}>Preview the app</button>
 					<AccountMenu />
 				</div>
 			</header>
-			<div className='welcome-glow glow-red' />
-			<div className='welcome-glow glow-blue' />
 			<section className='welcome-layout screen-enter'>
 				<div className='welcome-copy'>
 					<span className='hello-pill'><i /> A kinder way to get prepared</span>
@@ -28,7 +25,6 @@ const WelcomeView = ({ onStart, onPreview }) => {
 						<span><Icon name='heart' /> Pause anytime</span>
 					</div>
 				</div>
-				<WorldMap chapter={0} preview />
 			</section>
 		</section>
 	);

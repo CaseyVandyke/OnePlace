@@ -937,7 +937,7 @@ button { cursor: pointer; }
 }
 
 .room-block:nth-child(5) { grid-column: span 1; }
-.room-plum { background: #765074; }
+.room-plum { background: #4f5940; }
 
 .possessions-page { width: min(1120px,calc(100% - 8vw)); margin: 0 auto; padding: 38px 0 100px; }
 .possessions-back { min-height: 48px; display: inline-flex; align-items: center; gap: 8px; border: 0; color: #5f5a66; background: transparent; padding: 5px 0; font-size: 16px; font-weight: 700; }
